@@ -21,7 +21,7 @@
                     Grid.Column="0"
                     VerticalAlignment="Center"
                     FontSize="32"
-                    Glyph="{x:Bind Symbol}"
+                    Glyph="&#xe8bd;"
                     AutomationProperties.Name="{x:Bind SymbolName}" />
                 <StackPanel
                     Grid.Column="1"

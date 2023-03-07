@@ -27,4 +27,46 @@ public sealed partial class PrivateMessagesDetailControl : UserControl
             control.ForegroundElement.ChangeView(0, 0, 1);
         }
     }
+    private void AddItemToEnd(object sender, RoutedEventArgs e)
+    {
+        var messageContent = MessageField.Text;
+        MessageField.Text = String.Empty;
+        InvertedListView.Items.Add(
+            new PrivateMessage(messageContent, DateTime.Now, HorizontalAlignment.Right)
+            );
+    }
+
+    private void MessageReceived(object sender, RoutedEventArgs e)
+    {
+
+        InvertedListView.Items.Add(
+            new PrivateMessage("Message ", DateTime.Now, HorizontalAlignment.Left)
+            );
+    }
+}
+public class PrivateMessage
+{
+    public string MsgText
+    {
+        get; private set;
+    }
+    public DateTime MsgDateTime
+    {
+        get; private set;
+    }
+    public HorizontalAlignment MsgAlignment
+    {
+        get; set;
+    }
+    public PrivateMessage(string text, DateTime dateTime, HorizontalAlignment align)
+    {
+        MsgText = text;
+        MsgDateTime = dateTime;
+        MsgAlignment = align;
+    }
+
+    public override string ToString()
+    {
+        return MsgDateTime.ToString() + " " + MsgText;
+    }
 }

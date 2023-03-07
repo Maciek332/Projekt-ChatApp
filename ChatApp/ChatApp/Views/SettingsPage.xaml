@@ -60,8 +60,17 @@
                     x:Uid="Settings_AboutDescription"
                     Margin="{StaticResource XSmallTopMargin}"
                     Style="{ThemeResource BodyTextBlockStyle}" />
+
                 <HyperlinkButton x:Uid="SettingsPage_PrivacyTermsLink" Margin="{StaticResource SettingsPageHyperlinkButtonMargin}" />
             </StackPanel>
+            <TextBlock x:Uid="Settings_Authors" Margin="{StaticResource XSmallTopMargin}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+            <RichTextBlock>
+
+                <Paragraph>Anna Więzik</Paragraph>
+                <Paragraph>Szymon Nycz</Paragraph>
+                <Paragraph>Krzysztof Walusiak</Paragraph>
+            </RichTextBlock>
+            <Image Source="/Assets/Cat.png" Height="50"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -25,7 +25,7 @@ public sealed partial class GroupMessagesDetailControl : UserControl
         var messageContent = GroupMessageField.Text;
         GroupMessageField.Text = String.Empty;
         InvertedListView.Items.Add(
-            new PrivateMessage(messageContent, DateTime.Now, HorizontalAlignment.Right)
+            new GroupMessage(messageContent, DateTime.Now, HorizontalAlignment.Right)
             );
     }
 
@@ -33,7 +33,7 @@ public sealed partial class GroupMessagesDetailControl : UserControl
     {
 
         InvertedListView.Items.Add(
-            new PrivateMessage("Message ", DateTime.Now, HorizontalAlignment.Left)
+            new GroupMessage("Message ", DateTime.Now, HorizontalAlignment.Left)
             );
     }
     private static void OnListDetailsMenuItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -44,7 +44,7 @@ public sealed partial class GroupMessagesDetailControl : UserControl
         }
     }
 }
-public class PrivateMessage
+public class GroupMessage
 {
     public string MsgText
     {
@@ -58,7 +58,7 @@ public class PrivateMessage
     {
         get; set;
     }
-    public PrivateMessage(string text, DateTime dateTime, HorizontalAlignment align)
+    public GroupMessage(string text, DateTime dateTime, HorizontalAlignment align)
     {
         MsgText = text;
         MsgDateTime = dateTime;

@@ -60,56 +60,6 @@ public class SampleDataService : ISampleDataService
                     },
                 }
             },
-            new SampleGroup()
-            {
-                GroupID = "GRUPA_B",
-                Users = new List<SampleUser>()
-                {
-                    new SampleUser()
-                    {
-                        UserID = 000002, // Symbol Globe
-                        Name = "Jan",
-                        Surname = "Nowak"
-                    },
-                    new SampleUser()
-                    {
-                        UserID = 000003, // Symbol Globe
-                        Name = "Leon",
-                        Surname = "Mazur"
-                    },
-                    new SampleUser()
-                    {
-                        UserID = 000004, // Symbol Globe
-                        Name = "Ola",
-                        Surname = "Dudek"
-                    },
-                }
-            },
-            new SampleGroup()
-            {
-                GroupID = "GRUPA_C",
-                Users = new List<SampleUser>()
-                {
-                    new SampleUser()
-                    {
-                        UserID = 000001, // Symbol Globe
-                        Name = "Adam",
-                        Surname = "Kowalski"
-                    },
-                    new SampleUser()
-                    {
-                        UserID = 000002, // Symbol Globe
-                        Name = "Jan",
-                        Surname = "Nowak"
-                    },
-                    new SampleUser()
-                    {
-                        UserID = 000004, // Symbol Globe
-                        Name = "Ola",
-                        Surname = "Dudek"
-                    },
-                }
-            }
         };
     }
 

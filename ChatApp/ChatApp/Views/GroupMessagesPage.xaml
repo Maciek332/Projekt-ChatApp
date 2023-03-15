@@ -11,7 +11,7 @@
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     mc:Ignorable="d">
     <Page.Resources>
-        <DataTemplate x:Key="ItemTemplate" x:DataType="models:SampleOrder">
+        <DataTemplate x:Key="ItemTemplate" x:DataType="models:SampleGroup">
             <Grid Height="60">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -21,13 +21,12 @@
                     Grid.Column="0"
                     VerticalAlignment="Center"
                     FontSize="32"
-                    Glyph="&#xe8bd;"
-                    AutomationProperties.Name="{x:Bind SymbolName}" />
+                    Glyph="&#xe8bd;"/>
                 <StackPanel
                     Grid.Column="1"
                     Margin="{StaticResource SmallLeftMargin}"
                     VerticalAlignment="Center">
-                    <TextBlock Text="Group Chat" Style="{StaticResource ListTitleStyle}" />
+                    <TextBlock Text="Konwersacje Grupowe" Style="{StaticResource ListTitleStyle}" />
                 </StackPanel>
             </Grid>
         </DataTemplate>

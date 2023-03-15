@@ -11,15 +11,15 @@ namespace ChatApp.ViewModels;
 public class GroupMessagesViewModel : ObservableRecipient, INavigationAware
 {
     private readonly ISampleDataService _sampleDataService;
-    private SampleOrder? _selected;
+    private SampleUser? _selected;
 
-    public SampleOrder? Selected
+    public SampleUser? Selected
     {
         get => _selected;
         set => SetProperty(ref _selected, value);
     }
 
-    public ObservableCollection<SampleOrder> SampleItems { get; private set; } = new ObservableCollection<SampleOrder>();
+    public ObservableCollection<SampleUser> SampleItems { get; private set; } = new ObservableCollection<SampleUser>();
 
     public GroupMessagesViewModel(ISampleDataService sampleDataService)
     {

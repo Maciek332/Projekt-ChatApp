@@ -26,7 +26,7 @@
                     Grid.Column="1"
                     Margin="{StaticResource SmallLeftMargin}"
                     VerticalAlignment="Center">
-                    <TextBlock Text="Private Message" Style="{StaticResource ListTitleStyle}" />
+                    <TextBlock Text="{x:Bind ShortDescription}" Style="{StaticResource ListTitleStyle}" />
                 </StackPanel>
             </Grid>
         </DataTemplate>

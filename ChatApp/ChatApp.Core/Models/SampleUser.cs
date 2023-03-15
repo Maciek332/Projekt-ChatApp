@@ -18,7 +18,7 @@ public class SampleUser
         get; set;
     }
 
-    public string ShortDescription => $"User ID: {UserID} - {Name}";
+    public string ShortDescription => $"{Name} {Surname}";
 
     public override string ToString() => $"{Name} {Surname}";
 }

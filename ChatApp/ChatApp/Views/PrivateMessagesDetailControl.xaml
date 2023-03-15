@@ -33,7 +33,7 @@
         <TextBlock
                     Margin="{StaticResource SmallLeftMargin}"
                     VerticalAlignment="Center"
-                    Text="Sample Message Chat"
+                    Text="{x:Bind ListDetailsMenuItem.ShortDescription}"
                     Style="{ThemeResource TitleTextBlockStyle}" 
                     ToolTipService.ToolTip="{x:Bind ListDetailsMenuItem.UserID}"
                         Grid.Row="0"

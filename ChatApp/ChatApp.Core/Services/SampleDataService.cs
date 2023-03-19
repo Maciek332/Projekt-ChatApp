@@ -12,65 +12,182 @@ namespace ChatApp.Core.Services;
 // 5. Models/SampleOrderDetail.cs
 public class SampleDataService : ISampleDataService
 {
-    private List<SampleUser> _allUsers;
+    private List<User> _allUsers;
+    private List<Messages> _allMessages;
+    private List<GroupMessage> _allGroupMessages;
 
     public SampleDataService()
     {
     }
 
-    private static IEnumerable<SampleUser> AllUsers()
+    private static IEnumerable<User> AllUsers()
     {
         // The following is order summary data
-        var companies = AllGroups();
-        return companies.SelectMany(c => c.Users);
+        var users = AddUsers();
+        return users.ToList();
     }
 
-    private static IEnumerable<SampleGroup> AllGroups()
+    private static IEnumerable<Messages> AllMessages()
     {
-        return new List<SampleGroup>()
+        // The following is order summary data
+        var messages = AddMessages();
+        return (IEnumerable<Messages>)messages.SelectMany(c => c.MessageContent);
+    }
+
+    private static IEnumerable<GroupMessage> AllGroupMessages()
+    {
+        // The following is order summary data
+        var companies = AddGroupMessages();
+        return (IEnumerable<GroupMessage>)companies.SelectMany(c => c.MessageContent);
+    }
+
+    private static IEnumerable<User> AddUsers()
+    {
+        return new List<User>()
         {
-            new SampleGroup()
+            new User()
             {
-                GroupID = "GRUPA_A",
-                Users = new List<SampleUser>()
-                {
-                    new SampleUser()
-                    {
-                        UserID = 000001, // Symbol Globe
-                        Name = "Adam",
-                        Surname = "Kowalski"
-                    },
-                    new SampleUser()
-                    {
-                        UserID = 000002, // Symbol Globe
-                        Name = "Jan",
-                        Surname = "Nowak"
-                    },
-                    new SampleUser()
-                    {
-                        UserID = 000003, // Symbol Globe
-                        Name = "Leon",
-                        Surname = "Mazur"
-                    },
-                    new SampleUser()
-                    {
-                        UserID = 000004, // Symbol Globe
-                        Name = "Ola",
-                        Surname = "Dudek"
-                    },
-                }
+                UserID = 1,
+                E_Mail = "bleble@gmail.com",
+                UserName = "Ola",
+                Password = "1234",
+                RegisterDate = new DateTime(2023, 3, 1),
+            },
+            new User()
+            {
+                UserID = 2,
+                E_Mail = "aleale@gmail.com",
+                UserName = "Adam",
+                Password = "qwer",
+                RegisterDate = new DateTime(2023, 3, 5),
+            },
+            new User()
+            {
+                UserID = 3,
+                E_Mail = "qwer@gmail.com",
+                UserName = "Jan",
+                Password = "asdf",
+                RegisterDate = new DateTime(2023, 3, 4),
+            },
+            new User()
+            {
+                UserID = 4,
+                E_Mail = "piupiu@gmail.com",
+                UserName = "Leon",
+                Password = "zxcv",
+                RegisterDate = new DateTime(2023, 3, 8),
             },
         };
     }
 
-    public async Task<IEnumerable<SampleUser>> GetListDetailsDataAsync()
+    private static IEnumerable<Messages> AddMessages()
+    {
+        return new List<Messages>()
+        {
+            new Messages()
+            {
+                MessageID = 1,
+                SentDate = new DateTime(2023, 3, 10, 20, 0, 0),
+                MessageAuthor = 1,
+                MessageDestination = 2,
+                MessageContent = "Hej",
+            },
+            new Messages()
+            {
+                MessageID = 2,
+                SentDate = new DateTime(2023, 3, 10, 20, 0, 5),
+                MessageAuthor = 2,
+                MessageDestination = 1,
+                MessageContent = "Hej2",
+            },
+            new Messages()
+            {
+                MessageID = 3,
+                SentDate = new DateTime(2023, 3, 10, 20, 5, 0),
+                MessageAuthor = 1,
+                MessageDestination = 2,
+                MessageContent = "Hej3",
+            },
+            new Messages()
+            {
+                MessageID = 4,
+                SentDate = new DateTime(2023, 3, 10, 20, 10, 5),
+                MessageAuthor = 2,
+                MessageDestination = 1,
+                MessageContent = "Hej4",
+            },
+        };
+    }
+
+    private static IEnumerable<GroupMessage> AddGroupMessages()
+    {
+        return new List<GroupMessage>()
+        {
+            new GroupMessage()
+            {
+                GroupMessageID = 1,
+                SentDate = new DateTime(2023, 3, 11, 10, 0, 0),
+                MessageAuthor = 1,
+                MessageGroup = 1,
+                MessageContent = "Hej",
+            },
+            new GroupMessage()
+            {
+                GroupMessageID = 2,
+                SentDate = new DateTime(2023, 3, 11, 10, 10, 0),
+                MessageAuthor = 2,
+                MessageGroup = 1,
+                MessageContent = "Hej2",
+            },
+            new GroupMessage()
+            {
+                GroupMessageID = 3,
+                SentDate = new DateTime(2023, 3, 11, 10, 10, 5),
+                MessageAuthor = 3,
+                MessageGroup = 2,
+                MessageContent = "Hej3",
+            },
+            new GroupMessage()
+            {
+                GroupMessageID = 4,
+                SentDate = new DateTime(2023, 3, 11, 10, 20, 5),
+                MessageAuthor = 2,
+                MessageGroup = 3,
+                MessageContent = "Hej4",
+            },
+        };
+    }
+
+    public async Task<IEnumerable<User>> GetListUsersDataAsync()
     {
         if (_allUsers == null)
         {
-            _allUsers = new List<SampleUser>(AllUsers());
+            _allUsers = new List<User>(AllUsers());
         }
 
         await Task.CompletedTask;
         return _allUsers;
+    }
+
+    public async Task<IEnumerable<Messages>> GetListMessagesDataAsync()
+    {
+        if (_allMessages == null)
+        {
+            _allMessages = new List<Messages>(AllMessages());
+        }
+
+        await Task.CompletedTask;
+        return _allMessages;
+    }
+
+    public async Task<IEnumerable<GroupMessage>> GetListGroupMessagesDataAsync()
+    {
+        if (_allGroupMessages == null)
+        {
+            _allGroupMessages = new List<GroupMessage>(AllGroupMessages());
+        }
+
+        await Task.CompletedTask;
+        return _allGroupMessages;
     }
 }

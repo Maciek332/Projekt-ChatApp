@@ -2,6 +2,7 @@
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using MySql.Data.MySqlClient;
 
 namespace ChatApp.Views;
 
@@ -30,10 +31,19 @@ public sealed partial class PrivateMessagesDetailControl : UserControl
     private void AddItemToEnd(object sender, RoutedEventArgs e)
     {
         var messageContent = MessageField.Text;
-        MessageField.Text = String.Empty;
+        
         InvertedListView.Items.Add(
             new PrivateMessage(messageContent, DateTime.Now, HorizontalAlignment.Right)
             );
+        string connstr1 = "datasource=localhost;port=3306;username=root;password=";
+        string Query = "INSERT INTO chatdb.messages(MessageID,MessageAuthor,MessageContent,MessageDestination,SentDate) values('" + 1 + "','" + 1 + "','"+this.MessageField.Text+"','" + ListDetailsMenuItem.UserID + "','" +DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")+ "');";
+        MySqlConnection SendPrivMessageCon = new MySqlConnection(connstr1);
+        MessageField.Text = String.Empty;
+        MySqlCommand InsertPrivMessageSend = new MySqlCommand(Query, SendPrivMessageCon);
+        MySqlDataReader MyReader2;
+        SendPrivMessageCon.Open();
+        MyReader2 = InsertPrivMessageSend.ExecuteReader();
+        SendPrivMessageCon.Close();
     }
 
     private void MessageReceived(object sender, RoutedEventArgs e)
@@ -42,6 +52,15 @@ public sealed partial class PrivateMessagesDetailControl : UserControl
         InvertedListView.Items.Add(
             new PrivateMessage("Message ", DateTime.Now, HorizontalAlignment.Left)
             );
+        string connstr1 = "datasource=localhost;port=3306;username=root;password=";
+        string Query = "INSERT INTO chatdb.messages(MessageID,MessageAuthor,MessageContent,MessageDestination,SentDate) values('" + 1 + "','" + ListDetailsMenuItem.UserID + "','" + this.MessageField.Text + "','" + 1 + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "');";
+        MySqlConnection SendPrivMessageCon = new MySqlConnection(connstr1);
+        MessageField.Text = String.Empty;
+        MySqlCommand InsertPrivMessageSend = new MySqlCommand(Query, SendPrivMessageCon);
+        MySqlDataReader MyReader2;
+        SendPrivMessageCon.Open();
+        MyReader2 = InsertPrivMessageSend.ExecuteReader();
+        SendPrivMessageCon.Close();
     }
 }
 public class PrivateMessage

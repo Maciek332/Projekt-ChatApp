@@ -24,7 +24,8 @@ public partial class ChatDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("datasource=localhost; username=root; password=; databse=ChatDB");
+            //optionsBuilder.UseSqlServer("datasource=localhost; username=root; password=; database=ChatDB");
+            optionsBuilder.UseMySQL("Server=localhost;Database=ChatDB;Uid=root;Pwd=;");
         }
     }
 
@@ -34,7 +35,7 @@ public partial class ChatDbContext : DbContext
         {
             entity.ToTable("User");
 
-            entity.Property(e => e.UserID).HasColumnType("UserID");
+            entity.Property(e => e.UserID);
 
             entity.Property(e => e.E_Mail).HasMaxLength(25);
 
@@ -53,7 +54,7 @@ public partial class ChatDbContext : DbContext
 
             entity.Property(e => e.SentDate)
                 .HasColumnType("datetime")
-                .HasDefaultValueSql("(getdate())");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             entity.Property(e => e.MessageAuthor).HasColumnType("text");
 

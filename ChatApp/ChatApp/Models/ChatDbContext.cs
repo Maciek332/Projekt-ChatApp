@@ -7,9 +7,6 @@ namespace ChatApp.Models;
 
 public partial class ChatDbContext : DbContext
 {
-    public ChatDbContext()
-    {
-    }
 
     public ChatDbContext(DbContextOptions<ChatDbContext> options)
         : base(options)
@@ -22,7 +19,7 @@ public partial class ChatDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySQL("Server=localhost; User=root; password=; Database=ChatDB; port=3306");
+        => optionsBuilder.UseMySQL("Server=localhost;Database=ChatDB;Uid=root;Pwd=;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,7 +28,7 @@ public partial class ChatDbContext : DbContext
         {
             entity.ToTable("User");
 
-            entity.Property(e => e.UserID).HasColumnType("UserID");
+            entity.Property(e => e.UserID).HasColumnName("UserID");
 
             entity.Property(e => e.E_Mail).HasMaxLength(25);
 
@@ -39,7 +36,7 @@ public partial class ChatDbContext : DbContext
 
             entity.Property(e => e.Password).HasMaxLength(15);
 
-            entity.Property(e => e.RegisterDate).HasColumnType("text");
+            entity.Property(e => e.RegisterDate).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Messages>(entity =>
@@ -50,7 +47,7 @@ public partial class ChatDbContext : DbContext
 
             entity.Property(e => e.SentDate)
                 .HasColumnType("datetime")
-                .HasDefaultValueSql("(getdate())");
+                .HasDefaultValueSql("'getdate()'");
 
             entity.Property(e => e.MessageAuthor).HasColumnType("text");
 

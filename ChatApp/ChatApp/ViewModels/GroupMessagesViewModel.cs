@@ -10,18 +10,18 @@ namespace ChatApp.ViewModels;
 
 public class GroupMessagesViewModel : ObservableRecipient, INavigationAware
 {
-    private readonly ISampleDataService _sampleDataService;
-    private SampleUser? _selected;
+    private readonly IDataService _sampleDataService;
+    private User? _selected;
 
-    public SampleUser? Selected
+    public User? Selected
     {
         get => _selected;
         set => SetProperty(ref _selected, value);
     }
 
-    public ObservableCollection<SampleUser> SampleItems { get; private set; } = new ObservableCollection<SampleUser>();
+    public ObservableCollection<User> SampleItems { get; private set; } = new ObservableCollection<User>();
 
-    public GroupMessagesViewModel(ISampleDataService sampleDataService)
+    public GroupMessagesViewModel(IDataService sampleDataService)
     {
         _sampleDataService = sampleDataService;
     }
@@ -31,7 +31,7 @@ public class GroupMessagesViewModel : ObservableRecipient, INavigationAware
         SampleItems.Clear();
 
         // TODO: Replace with real data.
-        var data = await _sampleDataService.GetListDetailsDataAsync();
+        var data = await _sampleDataService.GetListUsersDataAsync();
 
         foreach (var item in data)
         {

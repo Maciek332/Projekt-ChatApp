@@ -7,13 +7,13 @@ namespace ChatApp.Views;
 
 public sealed partial class PrivateMessagesDetailControl : UserControl
 {
-    public SampleUser? ListDetailsMenuItem
+    public User? ListDetailsMenuItem
     {
-        get => GetValue(ListDetailsMenuItemProperty) as SampleUser;
+        get => GetValue(ListDetailsMenuItemProperty) as User;
         set => SetValue(ListDetailsMenuItemProperty, value);
     }
 
-    public static readonly DependencyProperty ListDetailsMenuItemProperty = DependencyProperty.Register("ListDetailsMenuItem", typeof(SampleUser), typeof(PrivateMessagesDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
+    public static readonly DependencyProperty ListDetailsMenuItemProperty = DependencyProperty.Register("ListDetailsMenuItem", typeof(User), typeof(PrivateMessagesDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
 
     public PrivateMessagesDetailControl()
     {

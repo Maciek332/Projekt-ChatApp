@@ -64,7 +64,7 @@ public partial class App : Application
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Core Services
-            services.AddSingleton<ISampleDataService, SampleDataService>();
+            services.AddSingleton<IDataService, SampleDataService>();
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels

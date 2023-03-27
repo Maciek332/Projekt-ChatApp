@@ -35,7 +35,7 @@
                     VerticalAlignment="Center"
                     Text="{x:Bind ListDetailsMenuItem.UserName}"
                     Style="{ThemeResource TitleTextBlockStyle}" 
-                    ToolTipService.ToolTip="{x:Bind ListDetailsMenuItem.UserID}"
+                    ToolTipService.ToolTip="{x:Bind ListDetailsMenuItem.UserId}"
                         Grid.Row="0"
                         Grid.Column="0"/>
         <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="10000" Y2="0" StrokeThickness="2" Margin="{StaticResource SmallTopBottomMargin}" Grid.Row="1" Grid.ColumnSpan="3"/>

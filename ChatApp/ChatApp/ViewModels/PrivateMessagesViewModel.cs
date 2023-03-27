@@ -11,15 +11,15 @@ namespace ChatApp.ViewModels;
 public class PrivateMessagesViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IDataService _sampleDataService;
-    private User? _selected;
+    private Users? _selected;
 
-    public User? Selected
+    public Users? Selected
     {
         get => _selected;
         set => SetProperty(ref _selected, value);
     }
 
-    public ObservableCollection<User> SampleItems { get; private set; } = new ObservableCollection<User>();
+    public ObservableCollection<Users> SampleItems { get; private set; } = new ObservableCollection<Users>();
 
     public PrivateMessagesViewModel(IDataService sampleDataService)
     {

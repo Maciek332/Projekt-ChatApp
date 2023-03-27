@@ -8,13 +8,13 @@ namespace ChatApp.Views;
 
 public sealed partial class PrivateMessagesDetailControl : UserControl
 {
-    public User? ListDetailsMenuItem
+    public Users? ListDetailsMenuItem
     {
-        get => GetValue(ListDetailsMenuItemProperty) as User;
+        get => GetValue(ListDetailsMenuItemProperty) as Users;
         set => SetValue(ListDetailsMenuItemProperty, value);
     }
 
-    public static readonly DependencyProperty ListDetailsMenuItemProperty = DependencyProperty.Register("ListDetailsMenuItem", typeof(User), typeof(PrivateMessagesDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
+    public static readonly DependencyProperty ListDetailsMenuItemProperty = DependencyProperty.Register("ListDetailsMenuItem", typeof(Users), typeof(PrivateMessagesDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
 
     public PrivateMessagesDetailControl()
     {
@@ -35,8 +35,8 @@ public sealed partial class PrivateMessagesDetailControl : UserControl
         InvertedListView.Items.Add(
             new PrivateMessage(messageContent, DateTime.Now, HorizontalAlignment.Right)
             );
-        string connstr1 = "datasource=localhost;port=3306;username=root;password=";
-        string Query = "INSERT INTO chatdb.messages(MessageID,MessageAuthor,MessageContent,MessageDestination,SentDate) values('" + 1 + "','" + 1 + "','"+this.MessageField.Text+"','" + ListDetailsMenuItem.UserID + "','" +DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")+ "');";
+        var connstr1 = "Server=localhost;Database=ChatDB;Uid=root;Pwd=;";
+        var Query = "INSERT INTO chatdb.messages(MessageAuthor,MessageContent,MessageDestination,SentDate) values('" + 1 + "','" + this.MessageField.Text + "','" + ListDetailsMenuItem.UserId + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "');";
         MySqlConnection SendPrivMessageCon = new MySqlConnection(connstr1);
         MessageField.Text = String.Empty;
         MySqlCommand InsertPrivMessageSend = new MySqlCommand(Query, SendPrivMessageCon);
@@ -52,8 +52,8 @@ public sealed partial class PrivateMessagesDetailControl : UserControl
         InvertedListView.Items.Add(
             new PrivateMessage("Message ", DateTime.Now, HorizontalAlignment.Left)
             );
-        string connstr1 = "datasource=localhost;port=3306;username=root;password=";
-        string Query = "INSERT INTO chatdb.messages(MessageID,MessageAuthor,MessageContent,MessageDestination,SentDate) values('" + 1 + "','" + ListDetailsMenuItem.UserID + "','" + this.MessageField.Text + "','" + 1 + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "');";
+        var connstr1 = "datasource=localhost;port=3306;username=root;password=";
+        var Query = "INSERT INTO chatdb.messages(MessageAuthor,MessageContent,MessageDestination,SentDate) values('" +  + ListDetailsMenuItem.UserId + "','" + this.MessageField.Text + "','" + 1 + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "');";
         MySqlConnection SendPrivMessageCon = new MySqlConnection(connstr1);
         MessageField.Text = String.Empty;
         MySqlCommand InsertPrivMessageSend = new MySqlCommand(Query, SendPrivMessageCon);

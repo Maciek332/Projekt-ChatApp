@@ -8,13 +8,13 @@ namespace ChatApp.Views;
 
 public sealed partial class GroupMessagesDetailControl : UserControl
 {
-    public User? ListDetailsMenuItem
+    public Users? ListDetailsMenuItem
     {
-        get => GetValue(ListDetailsMenuItemProperty) as User;
+        get => GetValue(ListDetailsMenuItemProperty) as Users;
         set => SetValue(ListDetailsMenuItemProperty, value);
     }
 
-    public static readonly DependencyProperty ListDetailsMenuItemProperty = DependencyProperty.Register("ListDetailsMenuItem", typeof(User), typeof(GroupMessagesDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
+    public static readonly DependencyProperty ListDetailsMenuItemProperty = DependencyProperty.Register("ListDetailsMenuItem", typeof(Users), typeof(GroupMessagesDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
 
     public GroupMessagesDetailControl()
     {

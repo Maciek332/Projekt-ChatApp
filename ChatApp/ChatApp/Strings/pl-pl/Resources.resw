@@ -199,4 +199,7 @@ Bawcie się dobrze! =^.^=
   <data name="UsernamePlaceholder.PlaceholderText" xml:space="preserve">
     <value>Nazwa Użytkownika</value>
   </data>
+  <data name="LogOutButtonPlaceholder.Content" xml:space="preserve">
+    <value>Wyloguj się</value>
+  </data>
 </root>

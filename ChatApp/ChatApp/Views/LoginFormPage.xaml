@@ -26,10 +26,13 @@
             <ColumnDefinition Width="150"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Row="0" Grid.Column="0" Margin="{StaticResource MediumBottomMargin}" x:Uid="EmailPlaceholder"/>
-        <PasswordBox Grid.Row="1" Grid.Column="0" Margin="{StaticResource MediumBottomMargin}" x:Uid="PasswordPlaceholder"/>
-        <Button Grid.Row="2" Grid.Column="0" Margin="{StaticResource MediumBottomMargin}" Style="{StaticResource AccentButtonStyle}"  x:Uid="LoginButtonPlaceholder"/>
-
+        <TextBox Grid.Row="0" Grid.Column="0" Margin="{StaticResource MediumBottomMargin}" x:Uid="EmailPlaceholder" x:Name="LoginEmail"/>
+        <PasswordBox Grid.Row="1" Grid.Column="0" Margin="{StaticResource MediumBottomMargin}" x:Uid="PasswordPlaceholder" x:Name="LoginPassword"/>
+        <Button Grid.Row="2" Grid.Column="0" Margin="{StaticResource MediumBottomMargin}" Style="{StaticResource AccentButtonStyle}"  x:Uid="LoginButtonPlaceholder" Click="LoginClick"/>
+        <Button Grid.Row="0" Grid.Column="2" Margin="{StaticResource MediumBottomMargin}" Style="{StaticResource AccentButtonStyle}"  x:Uid="LogOutButtonPlaceholder" Click="LogoutClick"/>
+        <InfoBar Grid.Row="3" Grid.RowSpan="3" IsOpen="False" x:Name="LoginSuccess" Width="auto" Severity="Success"/>
+        <InfoBar Grid.Row="3" Grid.RowSpan="3" IsOpen="False" x:Name="LoginFail" Width="auto" Severity="Error"/>
+        
         <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="0" Y2="9000" StrokeThickness="2" Grid.Column="1" Grid.RowSpan="9" Margin="{StaticResource MediumLeftRightMargin}"/>
 
         <TextBlock Grid.Row="4" Grid.Column="0"  Style="{ThemeResource TitleTextBlockStyle}" Text="Rejestracja"/>
@@ -38,7 +41,8 @@
         <PasswordBox Grid.Row="7" Grid.Column="0"  Margin="{StaticResource MediumBottomMargin}" x:Uid="PasswordPlaceholder" x:Name="RegPassword"/>
         <Button Grid.Row="8" Grid.Column="0" Margin="{StaticResource MediumBottomMargin}" Style="{StaticResource AccentButtonStyle}" x:Uid="RegisterButtonPlaceholder" Click="RegisterClick"/>
         <InfoBar Grid.Row="9" Grid.RowSpan="3" IsOpen="False" x:Name="RegisterSuccess" Width="auto" Severity="Success"/>
-        <InfoBar Grid.Row="9" Grid.RowSpan="3" IsOpen="False" x:Name="RegisterFali" Width="auto" Severity="Error"/>
+        <InfoBar Grid.Row="9" Grid.RowSpan="3" IsOpen="False" x:Name="RegisterFail" Width="auto" Severity="Error"/>
+        
         <Image Source="/Assets/Cat.png" Height="50" Grid.Column="2" Grid.Row="1"/>
         <TextBlock Grid.Column="2" Grid.Row="3" Grid.RowSpan="7" TextWrapping="Wrap" x:Uid="MainPageDescription" VerticalAlignment="Center"/>
     </Grid>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChatApp.Core.Models;
@@ -25,7 +24,7 @@ public partial class ChatDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseMySQL(ConfigurationManager.ConnectionStrings["ChatDB"].ConnectionString);
+        optionsBuilder.UseMySQL("Server=localhost;Database=ChatDB;Uid=root;Pwd=;");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

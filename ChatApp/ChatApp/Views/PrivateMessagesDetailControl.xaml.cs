@@ -35,15 +35,22 @@ public sealed partial class PrivateMessagesDetailControl : UserControl
         InvertedListView.Items.Add(
             new PrivateMessage(messageContent, DateTime.Now, HorizontalAlignment.Right)
             );
-        var connstr1 = "Server=localhost;Database=ChatDB;Uid=root;Pwd=;";
-        var Query = "INSERT INTO chatdb.messages(MessageAuthor,MessageContent,MessageDestination,SentDate) values('" + 1 + "','" + this.MessageField.Text + "','" + ListDetailsMenuItem.UserId + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "');";
-        MySqlConnection SendPrivMessageCon = new MySqlConnection(connstr1);
+
+        using var context = new ChatDbContext();
+        
+        var LoggedUserId = context.Users
+                        .FirstOrDefault(x => x.IsLogedIn == true);
+        var NewMessage = new Messages
+        {
+            SentDate = DateTime.Now,
+            MessageAuthor = LoggedUserId.UserId,
+            MessageDestination =ListDetailsMenuItem.UserId,
+            MessageContent = messageContent,
+        };
+        context.Messages.Add(NewMessage);
+        context.SaveChanges();
         MessageField.Text = String.Empty;
-        MySqlCommand InsertPrivMessageSend = new MySqlCommand(Query, SendPrivMessageCon);
-        MySqlDataReader MyReader2;
-        SendPrivMessageCon.Open();
-        MyReader2 = InsertPrivMessageSend.ExecuteReader();
-        SendPrivMessageCon.Close();
+
     }
 
     private void MessageReceived(object sender, RoutedEventArgs e)
@@ -52,15 +59,22 @@ public sealed partial class PrivateMessagesDetailControl : UserControl
         InvertedListView.Items.Add(
             new PrivateMessage("Message ", DateTime.Now, HorizontalAlignment.Left)
             );
-        var connstr1 = "datasource=localhost;port=3306;username=root;password=";
-        var Query = "INSERT INTO chatdb.messages(MessageAuthor,MessageContent,MessageDestination,SentDate) values('" +  + ListDetailsMenuItem.UserId + "','" + this.MessageField.Text + "','" + 1 + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "');";
-        MySqlConnection SendPrivMessageCon = new MySqlConnection(connstr1);
+        var messageContent = MessageField.Text;
+
+        using var context = new ChatDbContext();
+
+        var LoggedUserId = context.Users
+                        .FirstOrDefault(x => x.IsLogedIn == true);
+        var NewMessage = new Messages
+        {
+            SentDate = DateTime.Now,
+            MessageDestination = LoggedUserId.UserId,
+            MessageAuthor= ListDetailsMenuItem.UserId,
+            MessageContent = messageContent,
+        };
+        context.Messages.Add(NewMessage);
+        context.SaveChanges();
         MessageField.Text = String.Empty;
-        MySqlCommand InsertPrivMessageSend = new MySqlCommand(Query, SendPrivMessageCon);
-        MySqlDataReader MyReader2;
-        SendPrivMessageCon.Open();
-        MyReader2 = InsertPrivMessageSend.ExecuteReader();
-        SendPrivMessageCon.Close();
     }
 }
 public class PrivateMessage

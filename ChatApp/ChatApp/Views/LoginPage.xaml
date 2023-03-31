@@ -1,4 +1,4 @@
-<!-- Copyright (c) Microsoft Corporation and Contributors. -->
+﻿<!-- Copyright (c) Microsoft Corporation and Contributors. -->
 <!-- Licensed under the MIT License. -->
 
 <Page
@@ -11,6 +11,53 @@
     mc:Ignorable="d">
 
     <Grid>
-        <TextBox></TextBox>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBox Grid.Row="0" Grid.Column="0" x:Name="LoginEmail" Margin="10,7,20,10" PlaceholderText="Login"/>
+        <PasswordBox Grid.Row="1" Grid.Column="0" x:Name="LoginPassword" Margin="10,7,20,10" PlaceholderText="Hasło"/>
+        <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource AccentButtonStyle}" Margin="10,7,20,10" Content="Zaloguj się"/>
+        <InfoBar Grid.Row="3" Grid.RowSpan="3" IsOpen="False" x:Name="LoginSuccess" Width="auto" Severity="Success" Margin="10,5,20,5"/>
+        <InfoBar Grid.Row="3" Grid.RowSpan="3" IsOpen="True" x:Name="LoginFail" Width="auto" Severity="Error" Margin="10,5,20,5"/>
+
+        <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="0" Y2="9000" StrokeThickness="2" Grid.Column="1" Grid.RowSpan="11" />
+
+        <TextBlock Grid.Row="4" Grid.Column="0"  Style="{ThemeResource TitleTextBlockStyle}" Text="Rejestracja"/>
+        <TextBox Grid.Row="5" Grid.Column="0" x:Name="RegEmail" Margin="10,7,20,10" PlaceholderText="E-mail"/>
+        <TextBox Grid.Row="6" Grid.Column="0"  x:Name="RegUsername" Margin="10,7,20,10" PlaceholderText="Login"/>
+        <PasswordBox Grid.Row="7" Grid.Column="0" x:Name="RegPassword" Margin="10,7,20,10" PlaceholderText="Hasło"/>
+        <PasswordBox Grid.Row="8" Grid.Column="0" x:Name="RegPasswordRepeat" Margin="10,7,20,10" PlaceholderText="Powtórz hasło"/>
+        <Button Grid.Row="9" Grid.Column="0" Style="{StaticResource AccentButtonStyle}" Margin="10,7,20,10" Content="Zarejestruj się"/>
+        <InfoBar Grid.Row="10" Grid.RowSpan="3" IsOpen="True" x:Name="RegisterSuccess" Width="auto" Severity="Success" Margin="10,5,20,5"/>
+        <InfoBar Grid.Row="10" Grid.RowSpan="3" IsOpen="False" x:Name="RegisterFail" Width="auto" Severity="Error" Margin="10,5,20,5"/>
+
+        <Image Source="/Assets/Cat.png" Height="50" Grid.Column="2" Grid.Row="1"/>
+        <TextBlock Grid.Column="2" Grid.Row="3" Grid.RowSpan="7" TextWrapping="Wrap" VerticalAlignment="Center">
+            Koci kącik rozmów to miejsce które stworzyliśmy aby umożliwić wszystkim kociakom rozmowy między sobą.<LineBreak/>
+            Możesz prowadzić rozmowę tylko z jednym kotkiem, ale możliwe jest także zgromadzenie stada i rozmawiania z wszystkimi jego członkami na raz!<LineBreak/>
+            Włożyliśmy w tą aplikację mnóstwo serca i kawy, więc mamy nadzieję, że każdy kociak który do nas dołączy będzie się tutaj bawił jeszcze lepiej niż z kłębkiem włóczki :3<LineBreak/>
+            Bawcie się dobrze! =^.^=<LineBreak/>
+ 　              ／l、<LineBreak/>
+             ﾞ（ﾟ､ ｡ ７<LineBreak/>
+  　            l、ﾞ ~ヽ<LineBreak/>
+  　            じしf_, )ノ<LineBreak/>
+        </TextBlock>
     </Grid>
 </Page>

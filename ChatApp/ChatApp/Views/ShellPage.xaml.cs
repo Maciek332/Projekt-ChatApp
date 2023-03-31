@@ -40,6 +40,10 @@ namespace ChatApp.Views
         {
             get { return ContentFrame; }
         }
+        public Grid CustomAppTitleBar
+        {
+            get { return AppTitleBar; }
+        }
         private void NavigationMenu_ItemInvoked(NavigationView sender,
                       NavigationViewItemInvokedEventArgs args)
         {

@@ -19,6 +19,8 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using ChatApp.Views;
+using WinUIEx;
+using Microsoft.UI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -54,7 +56,8 @@ namespace ChatApp
             //shellPage.MainContentFrame.Navigate(typeof(LoginPage));
             // Wyświetl okno
             window.ExtendsContentIntoTitleBar = true;
-            window.SetTitleBar(shellPage.AppTitleBar);
+            
+            window.SetTitleBar(shellPage.CustomAppTitleBar);
             window.Activate();
         }
 

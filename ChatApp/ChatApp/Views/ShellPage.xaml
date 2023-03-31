@@ -9,25 +9,57 @@
     xmlns:helpers="using:ChatApp.Helpers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
 
     <Grid>
-        <NavigationView x:Name="NavigationMenu"
-                BackRequested="NavigationMenu_BackRequested" 
-            ItemInvoked="NavigationMenu_ItemInvoked">
+        <Grid x:Name="AppTitleBar" Visibility="Visible">
+            <Image Source="Images/WindowIcon.png"
+           HorizontalAlignment="Left" 
+           Width="16" Height="16" 
+           Margin="8,0"/>
+            <TextBlock x:Name="AppTitleTextBlock" Text="App title"
+               TextWrapping="NoWrap"
+               Style="{StaticResource CaptionTextBlockStyle}" 
+               VerticalAlignment="Center"
+               Margin="28,0,0,0"/>
+        </Grid>
+        <NavigationView
+            x:Name="NavigationMenu"
+            BackRequested="NavigationMenu_BackRequested" 
+            ItemInvoked="NavigationMenu_ItemInvoked"
+            PaneTitle="Koci koncik rosmuf :3"
+            IsSettingsVisible="False">
             <NavigationView.MenuItems>
-                <NavigationViewItem Icon="Play" Content="Logowanie" Tag="ChatApp.Views.LoginPage"/>
-                <NavigationViewItem Icon="Save" Content="Konwersacje Prywatne" Tag="ChatApp.Views.PrivateMessagePage" />
-                <NavigationViewItem Icon="Download" Content="Konwersacje Grupowe" Tag="ChatApp.Views.GroupMessagePage"/>
+                <NavigationViewItem x:Name="LoginNavigation" Icon="Contact" Content="Logowanie" Tag="ChatApp.Views.LoginPage"/>
+                <NavigationViewItem x:Name="PrivateMessageNavigation" Icon="Message" Content="Konwersacje Prywatne" Tag="ChatApp.Views.PrivateMessagePage" />
+                <NavigationViewItem x:Name="GroupMessageNavigation" Icon="Download" Content="Konwersacje Grupowe" Tag="ChatApp.Views.GroupMessagePage"/>
             </NavigationView.MenuItems>
 
             <NavigationView.PaneFooter>
-                <NavigationViewItem Icon="OtherUser" Content="[Aktualnie zalogowana osoba]" Tag="SamplePage4" IsExpanded="True"/>
-
+                <InfoBar x:Name="LoginStatusMessage" IsOpen="False" Severity="Success" Margin="20,50,20,10"/>
             </NavigationView.PaneFooter>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem Icon="OtherUser" Content="[Aktualnie zalogowana osoba]" SelectsOnInvoked="False"/>
+                <NavigationViewItem Icon="LeaveChat" Content="Wyloguj" Tag="LogOut" SelectsOnInvoked="False" />
+                <NavigationViewItem Icon="Setting" Content="Ustawienia" Tag="ChatApp.Views.SettingsPage"/> 
+                
+
+
+            </NavigationView.FooterMenuItems>
             <NavigationView.Content >
-                <Frame x:Name="ContentFrame" Navigated="ContentFrame_Navigated" Margin="50" />
+                <!--<Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>-->
+                    
+                    <Frame x:Name="ContentFrame" Navigated="ContentFrame_Navigated" Margin="30" Grid.Row="1"/>
+                    
+                <!--</Grid>-->
+                
             </NavigationView.Content>
         </NavigationView>
+        
     </Grid>
 </Page>

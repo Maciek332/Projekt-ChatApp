@@ -46,14 +46,15 @@ namespace ChatApp
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             Window window = new MainWindow();
-
+            window.Title = "Koci kącik rozmów :3";
             ShellPage shellPage = new ShellPage();
 
             // Ustaw zawartość ramki na ShellPage
             window.Content = shellPage;
             //shellPage.MainContentFrame.Navigate(typeof(LoginPage));
             // Wyświetl okno
-
+            window.ExtendsContentIntoTitleBar = true;
+            window.SetTitleBar(shellPage.AppTitleBar);
             window.Activate();
         }
 

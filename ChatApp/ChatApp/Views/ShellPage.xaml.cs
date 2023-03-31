@@ -49,15 +49,32 @@ namespace ChatApp.Views
             }
             else if (args.InvokedItemContainer != null && (args.InvokedItemContainer.Tag != null))
             {
-                Type newPage = Type.GetType(args.InvokedItemContainer.Tag.ToString());
-                ContentFrame.Navigate(
-                       newPage,
-                       null,
-                       args.RecommendedNavigationTransitionInfo
-                       );
+                if (args.InvokedItemContainer.Tag.ToString() == "LogOut")
+                {
+                    LogoutFunc();
+                }
+                else
+                {
+                    Type newPage = Type.GetType(args.InvokedItemContainer.Tag.ToString());
+                    ContentFrame.Navigate(
+                           newPage,
+                           null,
+                           args.RecommendedNavigationTransitionInfo
+                           );
+                }
+                
             }
-        }
 
+        }
+        private void LogoutFunc()
+        {
+            LoginStatusMessage.Message = "Pomyœlnie wylogowano";
+            LoginStatusMessage.IsOpen = true;
+            PrivateMessageNavigation.IsEnabled = false;
+            GroupMessageNavigation.IsEnabled = false;
+            ContentFrame.Navigate(typeof(Views.LoginPage));
+            // Wykonaj akcjê po klikniêciu przycisku
+        }
         private void NavigationMenu_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {
             if (ContentFrame.CanGoBack) ContentFrame.GoBack();

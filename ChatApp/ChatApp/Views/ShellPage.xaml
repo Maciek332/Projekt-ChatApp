@@ -17,9 +17,7 @@
             <RowDefinition Height="32"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid x:Name="AppTitleBar"
-              Background="{StaticResource Window}"
-              >
+        <Grid x:Name="AppTitleBar">
             <Image Source="Images/WindowIcon.png"
                    HorizontalAlignment="Left" 
                    Width="16" Height="16" 

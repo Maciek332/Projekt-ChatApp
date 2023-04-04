@@ -15,6 +15,10 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using ChatApp.Views;
+using ChatApp.ViewModel;
+using ChatApp.Models;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,9 +30,12 @@ namespace ChatApp.Views
     /// </summary>
     public sealed partial class ShellPage : Page
     {
+        private LoggedUserViewModel logedUserVM;
         public ShellPage()
         {
             this.InitializeComponent();
+            logedUserVM = new LoggedUserViewModel();
+            DataContext = logedUserVM;
             NavigationMenu.SelectedItem = NavigationMenu.MenuItems.OfType<NavigationViewItem>().First();
             ContentFrame.Navigate(
                        typeof(Views.LoginPage),
@@ -43,6 +50,15 @@ namespace ChatApp.Views
         public Grid CustomAppTitleBar
         {
             get { return AppTitleBar; }
+        }
+        public NavigationViewItem PrivMessagePublic
+        {
+            get { return PrivateMessageNavigation; }
+        }
+        public NavigationViewItem GroupMessagePublic
+        {
+            get { return (NavigationViewItem)GroupMessageNavigation.Content; }
+            set { GroupMessageNavigation.Content = value; }
         }
         private void NavigationMenu_ItemInvoked(NavigationView sender,
                       NavigationViewItemInvokedEventArgs args)
@@ -72,6 +88,14 @@ namespace ChatApp.Views
         }
         private void LogoutFunc()
         {
+            using var context = new ChatDbContext();
+            
+            var CurrentLogedIn = context.Users
+                        .FirstOrDefault(x => x.IsLogedIn == true);
+            var updateLoginStaus = context.Users
+                .FirstOrDefault(x => x.IsLogedIn == CurrentLogedIn.IsLogedIn);
+            updateLoginStaus.IsLogedIn = false;
+            context.SaveChanges();
             LoginStatusMessage.Message = "Pomyœlnie wylogowano";
             LoginStatusMessage.IsOpen = true;
             PrivateMessageNavigation.IsEnabled = false;
@@ -101,6 +125,9 @@ namespace ChatApp.Views
             }
 
             NavigationMenu.Header = ((NavigationViewItem)NavigationMenu.SelectedItem)?.Content?.ToString();
+
         }
+
+
     }
 }

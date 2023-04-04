@@ -28,14 +28,12 @@ public partial class ChatDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
 
-            var configuration = builder.Build();
 
-            string connectionString = configuration.GetConnectionString("DefaultConnection");
-
+            string connectionString = config.GetConnectionString("DefaultConnection");
             optionsBuilder.UseMySQL(connectionString);
         }
     }

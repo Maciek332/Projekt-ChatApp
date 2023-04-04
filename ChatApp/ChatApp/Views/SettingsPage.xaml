@@ -8,10 +8,65 @@
     xmlns:local="using:ChatApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
 
     <Grid>
-        <TextBlock Text="Ustawieani"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="180"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Personalizacja" Style="{ThemeResource TitleTextBlockStyle}" Margin="10,0,0,0" Grid.Row="0"/>
+        <StackPanel Margin="10,50,0,0" Grid.Row="1">
+            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Motywy" Margin="10,0,0,0" />
+            <StackPanel Margin="20,10,0,0">
+                <RadioButton
+                        x:Uid="Settings_Theme_Light"
+                        FontSize="15"
+                        GroupName="AppTheme"
+                        Content="Jasny">
+                </RadioButton>
+                <RadioButton
+                        x:Uid="Settings_Theme_Dark"
+                        FontSize="15"
+                        GroupName="AppTheme"
+                        Content="Ciemny">
+                </RadioButton>
+                <RadioButton
+                        x:Uid="Settings_Theme_Default"
+                        FontSize="15"
+                        GroupName="AppTheme"
+                        Content="Systemowy">
+                </RadioButton>
+            </StackPanel>
+        </StackPanel>
+        <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="500" Y2="0" StrokeThickness="1" Grid.Row="3" Margin="10,0,0,0"/>
+
+        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="O Aplikacji" Grid.Row="4" Margin="20,0,0,0"/>
+
+        <StackPanel Grid.Row="5">
+            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" Margin="30,0,0,0">Koci k¹cik rozmów to aplikacja umo¿liwiaj¹ca wysy³anie i odbieranie wiadomoœci prywatnych jak i grupowych.</TextBlock>
+
+            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" />
+
+            <HyperlinkButton Content="Kliknij na mnie!" Margin="20,0,0,0"/>
+        </StackPanel>
+        <TextBlock Text="Autorzy" Style="{ThemeResource SubtitleTextBlockStyle}" Grid.Row="6" Margin="20,10,0,0"/>
+        <RichTextBlock Grid.Row="7" Margin="30,10,0,0">
+            <Paragraph>Anna Wiêzik</Paragraph>
+            <Paragraph>Szymon Nycz</Paragraph>
+            <Paragraph>Krzysztof Walusiak</Paragraph>
+        </RichTextBlock>
+        <Image Source="/Assets/Cat.png" Height="50" Grid.Column="1" Grid.Row="5"/>
     </Grid>
 </Page>

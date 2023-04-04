@@ -61,6 +61,5 @@ namespace ChatApp
             window.Activate();
         }
 
-        private Window m_window;
     }
 }

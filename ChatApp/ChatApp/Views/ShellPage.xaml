@@ -18,11 +18,11 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid x:Name="AppTitleBar">
-            <Image Source="Assets/Cat.png"
+            <Image Source="/Assets/Cat.png"
                    HorizontalAlignment="Left" 
                    Width="16" Height="16" 
                    Margin="8,0"/>
-            <TextBlock x:Name="AppTitleTextBlock" Text="App title"
+            <TextBlock x:Name="AppTitleTextBlock" Text="Koci K¹cik Rozmów :3"
                        TextWrapping="NoWrap"
                        Style="{StaticResource CaptionTextBlockStyle}" 
                        VerticalAlignment="Center"
@@ -32,7 +32,6 @@
             x:Name="NavigationMenu"
             BackRequested="NavigationMenu_BackRequested" 
             ItemInvoked="NavigationMenu_ItemInvoked"
-            PaneTitle="Koci koncik rosmuf :3"
             IsSettingsVisible="False"
             Grid.Row="1">
             <NavigationView.MenuItems>
@@ -45,7 +44,7 @@
                 <InfoBar x:Name="LoginStatusMessage" IsOpen="False" Severity="Success" Margin="20,50,20,10"/>
             </NavigationView.PaneFooter>
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem x:Name="CurrentLoggedUser" Content="{Binding Source=View.LoginPage.}" Icon="OtherUser" SelectsOnInvoked="False"/>
+                <NavigationViewItem x:Name="CurrentLoggedUser" Icon="OtherUser" SelectsOnInvoked="False"/>
                 <NavigationViewItem Icon="LeaveChat" Content="Wyloguj" Tag="LogOut" SelectsOnInvoked="False" />
                 <NavigationViewItem x:Name="SettingsNavigation" Icon="Setting" Content="Ustawienia" Tag="ChatApp.Views.SettingsPage"/> 
                 

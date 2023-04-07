@@ -17,7 +17,6 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using ChatApp.Views;
-using ChatApp.ViewModel;
 using ChatApp.Models;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -30,12 +29,9 @@ namespace ChatApp.Views
     /// </summary>
     public sealed partial class ShellPage : Page
     {
-        private LoggedUserViewModel logedUserVM;
         public ShellPage()
         {
             this.InitializeComponent();
-            logedUserVM = new LoggedUserViewModel();
-            DataContext = logedUserVM;
             NavigationMenu.SelectedItem = NavigationMenu.MenuItems.OfType<NavigationViewItem>().First();
             ContentFrame.Navigate(
                        typeof(Views.LoginPage),
@@ -59,6 +55,11 @@ namespace ChatApp.Views
         {
             get { return (NavigationViewItem)GroupMessageNavigation.Content; }
             set { GroupMessageNavigation.Content = value; }
+        }
+        public NavigationViewItem CurrentLoggedUserField
+        {
+            get { return CurrentLoggedUser; }
+            set { CurrentLoggedUser.Content = value; }
         }
         private void NavigationMenu_ItemInvoked(NavigationView sender,
                       NavigationViewItemInvokedEventArgs args)
@@ -101,7 +102,6 @@ namespace ChatApp.Views
             PrivateMessageNavigation.IsEnabled = false;
             GroupMessageNavigation.IsEnabled = false;
             ContentFrame.Navigate(typeof(Views.LoginPage));
-            // Wykonaj akcjê po klikniêciu przycisku
         }
         private void NavigationMenu_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {

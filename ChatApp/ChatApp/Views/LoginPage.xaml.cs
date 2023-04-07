@@ -98,8 +98,9 @@ namespace ChatApp.Views
                             .FirstOrDefault(x => x.EMail == LoginEmail.Text);
                         LoginSuccess.Message = string.Format("Poprawnie zalogowano jako {0}", LoggedUserName.UserName);
                         LoginSuccess.IsOpen = true;
-                        LoggedUserNameVar = LoggedUserName.UserName;
-                        
+                        var shellPage = (ShellPage)Window.Current.Content;
+                        shellPage.CurrentLoggedUserField.Content = LoggedUserName.UserName;
+
 
                     }
                     else

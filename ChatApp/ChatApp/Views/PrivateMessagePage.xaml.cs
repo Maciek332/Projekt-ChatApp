@@ -27,6 +27,7 @@ namespace ChatApp.Views
     /// </summary>
     public class User
     {
+        public int Id { get; set; }
         public string Name { get; set; }
     }
 
@@ -47,29 +48,29 @@ namespace ChatApp.Views
             // Przyk³adowa lista osób
             var userList = new List<User>()
         {
-            new User() { Name = "Adam"},
-            new User() { Name = "Alicja" },
-            new User() { Name = "Bartek" },
-            new User() { Name = "Celina" },
-            new User() { Name = "Dominik" },
-            new User() { Name = "Emilia" },
-            new User() { Name = "Filip" },
-            new User() { Name = "Gabriela" },
-            new User() { Name = "Henryk" },
-            new User() { Name = "Igor" },
-            new User() { Name = "Julia" },
-            new User() { Name = "Karol" },
-            new User() { Name = "Lena" },
-            new User() { Name = "Maciej" },
-            new User() { Name = "Natalia" },
-            new User() { Name = "Oskar" },
-            new User() { Name = "Patrycja" },
-            new User() { Name = "Rafa³" },
-            new User() { Name = "Sylwia" },
-            new User() { Name = "Tomasz" },
-            new User() { Name = "Ula" },
-            new User() { Name = "Wojtek" },
-            new User() { Name = "Zuzanna" }
+            new User() { Id=1, Name = "Adam"},
+            new User() { Id=2, Name = "Alicja" },
+            new User() { Id=3, Name = "Bartek" },
+            new User() { Id=4, Name = "Celina" },
+            new User() { Id=5, Name = "Dominik" },
+            new User() { Id=6, Name = "Emilia" },
+            new User() { Id=7, Name = "Filip" },
+            new User() { Id=8, Name = "Gabriela" },
+            new User() { Id=9, Name = "Henryk" },
+            new User() { Id=10, Name = "Igor" },
+            new User() { Id=11, Name = "Julia" },
+            new User() { Id=12, Name = "Karol" },
+            new User() { Id=13, Name = "Lena" },
+            new User() { Id=14, Name = "Maciej" },
+            new User() { Id=15, Name = "Natalia" },
+            new User() { Id=16, Name = "Oskar" },
+            new User() { Id=17, Name = "Patrycja" },
+            new User() { Id=18, Name = "Rafa³" },
+            new User() { Id=19, Name = "Sylwia" },
+            new User() { Id=20, Name = "Tomasz" },
+            new User() { Id=21, Name = "Ula" },
+            new User() { Id=22, Name = "Wojtek" },
+            new User() { Id=23, Name = "Zuzanna" }
             };
             var sortedPeople = from user in userList
                                orderby user.Name
@@ -90,7 +91,7 @@ namespace ChatApp.Views
             // pobierz wybrany element z listy
             var selectedPerson = e.AddedItems.FirstOrDefault() as User;
             // ustaw zawartoœæ kontrolki Frame na now¹ stronê
-            PrivateMessageDetailsFrame.Navigate(typeof(PrivateMessagesDetail), selectedPerson.Name);
+            PrivateMessageDetailsFrame.Navigate(typeof(PrivateMessagesDetail), selectedPerson);
         }
 
     }

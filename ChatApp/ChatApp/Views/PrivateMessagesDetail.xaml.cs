@@ -33,13 +33,16 @@ namespace ChatApp.Views
         {
             InitializeComponent();
         }
+        public string MyTooltipText;
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            string exampleParameter = e.Parameter as string;
+            var exampleParameter = e.Parameter as User;
+            //string exampleParameter = e.Parameter as string;
             if (exampleParameter != null)
             {
-                UserName.Text = exampleParameter;
-                MessageField.PlaceholderText = $"Napisz do {exampleParameter}";
+                UserName.Text = exampleParameter.Name;
+                ToolTipService.SetToolTip(UserName, exampleParameter.Id);
+                MessageField.PlaceholderText = $"Napisz do {exampleParameter.Name}";
             }
         }
         private void AddItemToEnd(object sender, RoutedEventArgs e)

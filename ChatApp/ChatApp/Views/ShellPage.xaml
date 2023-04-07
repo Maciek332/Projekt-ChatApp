@@ -44,7 +44,7 @@
                 <InfoBar x:Name="LoginStatusMessage" IsOpen="False" Severity="Success" Margin="20,50,20,10"/>
             </NavigationView.PaneFooter>
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem x:Name="CurrentLoggedUser" Icon="OtherUser" SelectsOnInvoked="False"/>
+                <NavigationViewItem x:Name="CurrentLoggedUser" Content="Nie jesteœ zalogowany" Icon="OtherUser" SelectsOnInvoked="False"/>
                 <NavigationViewItem Icon="LeaveChat" Content="Wyloguj" Tag="LogOut" SelectsOnInvoked="False" />
                 <NavigationViewItem x:Name="SettingsNavigation" Icon="Setting" Content="Ustawienia" Tag="ChatApp.Views.SettingsPage"/> 
                 

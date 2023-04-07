@@ -16,6 +16,7 @@ using Windows.Foundation.Collections;
 using ChatApp.Views;
 using System.Security.Cryptography.X509Certificates;
 using Windows.Storage;
+using System.Diagnostics.Eventing.Reader;
 
 namespace ChatApp.Views
 {
@@ -30,45 +31,59 @@ namespace ChatApp.Views
         private void RegisterClick(object sender, RoutedEventArgs e)
         {
             string RegisterResult;
-            if (this.RegEmail.Text != "" || this.RegPassword.Password != "" || this.RegUsername.Text != "")
+            if (RegEmail.Text != "" || RegPassword.Password != "" || RegUsername.Text != "" || RegPasswordRepeat.Password !="")
             {
-                if (this.RegEmail.Text.Contains("@"))
+                if (RegPassword.Password == RegPasswordRepeat.Password)
                 {
-
-                    using var context = new ChatDbContext();
-                    var RegisterUser = new Users
+                    if (RegEmail.Text.Contains("@"))
                     {
-                        EMail = this.RegEmail.Text,
-                        UserName = this.RegUsername.Text,
-                        Password = this.RegPassword.Password,
-                        IsLogedIn = false,
-                        RegisterDate = DateTime.Now
-                    };
-                    context.Users.Add(RegisterUser);
-                    context.SaveChanges();
 
-                    RegisterResult = "Pomyœlnie zarejestrowano z danymi:" + "\nE-mail: " + this.RegEmail.Text + "\n Login: " + this.RegUsername.Text + "\n Has³o: " + this.RegPassword.Password;
-                    this.RegisterSuccess.Message = RegisterResult;
-                    this.RegisterFail.IsOpen = false;
-                    this.RegisterSuccess.IsOpen = true;
+                        using var context = new ChatDbContext();
+                        var RegisterUser = new Users
+                        {
+                            EMail = RegEmail.Text,
+                            UserName = RegUsername.Text,
+                            Password = RegPassword.Password,
+                            IsLogedIn = false,
+                            RegisterDate = DateTime.Now
+                        };
+                        context.Users.Add(RegisterUser);
+                        context.SaveChanges();
 
+                        RegisterResult = $"Pomyœlnie zarejestrowano z danymi: \nE-mail: {RegEmail.Text}\n Login: {RegUsername.Text}\n Has³o: {RegPassword.Password}";
+                        RegisterSuccess.Message = RegisterResult;
+                        RegisterFail.IsOpen = false;
+                        RegisterSuccess.IsOpen = true;
+
+                    }
+
+                    else
+                    {
+                        RegisterResult = "WprowadŸ poprawy E-mail";
+                        RegisterFail.Message = RegisterResult;
+                        RegisterSuccess.IsOpen = false;
+                        RegisterFail.IsOpen = true;
+                    }
                 }
                 else
                 {
-                    RegisterResult = "WprowadŸ poprawy E-mail";
-                    this.RegisterFail.Message = RegisterResult;
-                    this.RegisterSuccess.IsOpen = false;
-                    this.RegisterFail.IsOpen = true;
+                    RegisterResult = "Has³a s¹ ró¿ne";
+                    RegisterFail.Message = RegisterResult;
+                    RegisterSuccess.IsOpen = false;
+                    RegisterFail.IsOpen = true;
                 }
 
+
             }
+            
             else
             {
                 RegisterResult = "Pola nie mog¹ byæ puste";
-                this.RegisterFail.Message = RegisterResult;
-                this.RegisterSuccess.IsOpen = false;
-                this.RegisterFail.IsOpen = true;
+                RegisterFail.Message = RegisterResult;
+                RegisterSuccess.IsOpen = false;
+                RegisterFail.IsOpen = true;
             }
+            
 
 
         }
@@ -98,8 +113,10 @@ namespace ChatApp.Views
                             .FirstOrDefault(x => x.EMail == LoginEmail.Text);
                         LoginSuccess.Message = string.Format("Poprawnie zalogowano jako {0}", LoggedUserName.UserName);
                         LoginSuccess.IsOpen = true;
-                        var shellPage = (ShellPage)Window.Current.Content;
-                        shellPage.CurrentLoggedUserField.Content = LoggedUserName.UserName;
+                        ShellPage.CurrentLoggedUserLabel.Content = LoggedUserName.UserName;
+                        ShellPage.PrivateMessageNavigationLabel.IsEnabled = true;
+                        ShellPage.GroupMessageNavigationLabel.IsEnabled = true;
+
 
 
                     }
@@ -113,16 +130,16 @@ namespace ChatApp.Views
                 }
                 else
                 {
-                    this.LoginFail.Message = "WprowadŸ poprawy E-mail";
-                    this.LoginSuccess.IsOpen = false;
-                    this.LoginFail.IsOpen = true;
+                    LoginFail.Message = "WprowadŸ poprawy E-mail";
+                    LoginSuccess.IsOpen = false;
+                    LoginFail.IsOpen = true;
                 }
             }
             else
             {
-                this.LoginFail.Message = "Pola nie mog¹ byæ puste";
-                this.LoginSuccess.IsOpen = false;
-                this.LoginFail.IsOpen = true;
+                LoginFail.Message = "Pola nie mog¹ byæ puste";
+                LoginSuccess.IsOpen = false;
+                LoginFail.IsOpen = true;
             }
         }
         public string LoggedUserNameVar;

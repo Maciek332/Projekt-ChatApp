@@ -29,9 +29,15 @@ namespace ChatApp.Views
     /// </summary>
     public sealed partial class ShellPage : Page
     {
+        public static NavigationViewItem CurrentLoggedUserLabel;
+        public static NavigationViewItem PrivateMessageNavigationLabel;
+        public static NavigationViewItem GroupMessageNavigationLabel;
         public ShellPage()
         {
             this.InitializeComponent();
+            CurrentLoggedUserLabel = CurrentLoggedUser;
+            PrivateMessageNavigationLabel = PrivateMessageNavigation;
+            GroupMessageNavigationLabel = GroupMessageNavigation;
             NavigationMenu.SelectedItem = NavigationMenu.MenuItems.OfType<NavigationViewItem>().First();
             ContentFrame.Navigate(
                        typeof(Views.LoginPage),
@@ -102,6 +108,7 @@ namespace ChatApp.Views
             PrivateMessageNavigation.IsEnabled = false;
             GroupMessageNavigation.IsEnabled = false;
             ContentFrame.Navigate(typeof(Views.LoginPage));
+            CurrentLoggedUser.Content = "Nie jesteœ zalogowany";
         }
         private void NavigationMenu_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {

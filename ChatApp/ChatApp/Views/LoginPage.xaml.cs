@@ -42,7 +42,7 @@ namespace ChatApp.Views
                     {
 
                             using var context = new ChatDbContext();
-                            var RegisterUser = new Users
+                            var RegisterUser = new User
                             {
                                 EMail = RegEmail.Text,
                                 UserName = RegUsername.Text,

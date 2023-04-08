@@ -34,7 +34,7 @@ namespace ChatApp.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "messages",
+                name: "message",
                 columns: table => new
                 {
                     MessageID = table.Column<int>(type: "int(11)", nullable: false)
@@ -76,7 +76,7 @@ namespace ChatApp.Migrations
                 name: "groupmessage");
 
             migrationBuilder.DropTable(
-                name: "messages");
+                name: "message");
 
             migrationBuilder.DropTable(
                 name: "user");

@@ -28,7 +28,7 @@ namespace ChatApp.Views
     /// </summary>
     public sealed partial class PrivateMessagePage : Page
     {
-        public ObservableCollection<Users> Users { get; set; } = new ObservableCollection<Users>();
+        public ObservableCollection<User> Users { get; set; } = new ObservableCollection<User>();
 
 
         public PrivateMessagePage()
@@ -88,7 +88,7 @@ namespace ChatApp.Views
         private void PeopleListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // pobierz wybrany element z listy
-            var selectedPerson = e.AddedItems.FirstOrDefault() as Users;
+            var selectedPerson = e.AddedItems.FirstOrDefault() as User;
             // ustaw zawartoœæ kontrolki Frame na now¹ stronê
             PrivateMessageDetailsFrame.Navigate(typeof(PrivateMessagesDetail), selectedPerson);
         }

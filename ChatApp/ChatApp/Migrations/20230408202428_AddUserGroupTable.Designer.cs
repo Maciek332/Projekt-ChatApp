@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChatApp.Migrations
 {
     [DbContext(typeof(ChatDbContext))]
-    [Migration("20230331160247_Baza")]
-    partial class Baza
+    [Migration("20230408202428_AddUserGroupTable")]
+    partial class AddUserGroupTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,27 @@ namespace ChatApp.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("ChatApp.Models.Group", b =>
+                {
+                    b.Property<int>("GroupId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int(11)")
+                        .HasColumnName("GroupID");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("GroupId")
+                        .HasName("PRIMARY");
+
+                    b.ToTable("group", (string)null);
+                });
 
             modelBuilder.Entity("ChatApp.Models.GroupMessage", b =>
                 {
@@ -47,7 +68,7 @@ namespace ChatApp.Migrations
                     b.Property<DateTime>("SentDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .HasDefaultValueSql("'current_timestamp()'");
 
                     b.HasKey("GroupMessageId")
                         .HasName("PRIMARY");
@@ -75,12 +96,12 @@ namespace ChatApp.Migrations
                     b.Property<DateTime>("SentDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .HasDefaultValueSql("'current_timestamp()'");
 
                     b.HasKey("MessageId")
                         .HasName("PRIMARY");
 
-                    b.ToTable("messages", (string)null);
+                    b.ToTable("message", (string)null);
                 });
 
             modelBuilder.Entity("ChatApp.Models.User", b =>
@@ -116,6 +137,44 @@ namespace ChatApp.Migrations
                         .HasName("PRIMARY");
 
                     b.ToTable("user", (string)null);
+                });
+
+            modelBuilder.Entity("ChatApp.Models.UserGroup", b =>
+                {
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int(11)")
+                        .HasColumnName("GroupID");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int(11)")
+                        .HasColumnName("UserID");
+
+                    b.HasIndex(new[] { "GroupId" }, "UserGroupGroup");
+
+                    b.HasIndex(new[] { "UserId" }, "UserGroupUser");
+
+                    b.ToTable("usergroup", (string)null);
+                });
+
+            modelBuilder.Entity("ChatApp.Models.UserGroup", b =>
+                {
+                    b.HasOne("ChatApp.Models.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("UserGroupGroup");
+
+                    b.HasOne("ChatApp.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("UserGroupUser");
+
+                    b.Navigation("Group");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

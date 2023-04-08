@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChatApp.Migrations
 {
     [DbContext(typeof(ChatDbContext))]
-    [Migration("20230331160247_Baza")]
-    partial class Baza
+    [Migration("20230408192925_AddGroupTable")]
+    partial class AddGroupTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,27 @@ namespace ChatApp.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("ChatApp.Models.Group", b =>
+                {
+                    b.Property<int>("GroupId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int(11)")
+                        .HasColumnName("GroupID");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("GroupId")
+                        .HasName("PRIMARY");
+
+                    b.ToTable("group", (string)null);
+                });
 
             modelBuilder.Entity("ChatApp.Models.GroupMessage", b =>
                 {
@@ -96,6 +117,10 @@ namespace ChatApp.Migrations
                         .HasColumnType("varchar(50)")
                         .HasColumnName("E_Mail");
 
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int(11)")
+                        .HasColumnName("GroupID");
+
                     b.Property<bool>("IsLogedIn")
                         .HasColumnType("tinyint(1)");
 
@@ -115,7 +140,26 @@ namespace ChatApp.Migrations
                     b.HasKey("UserId")
                         .HasName("PRIMARY");
 
+                    b.HasIndex(new[] { "GroupId" }, "GroupMemeberID");
+
                     b.ToTable("user", (string)null);
+                });
+
+            modelBuilder.Entity("ChatApp.Models.User", b =>
+                {
+                    b.HasOne("ChatApp.Models.Group", "Group")
+                        .WithMany("User")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("GroupMemeberID");
+
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("ChatApp.Models.Group", b =>
+                {
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

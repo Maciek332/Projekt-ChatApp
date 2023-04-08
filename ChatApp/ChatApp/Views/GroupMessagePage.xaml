@@ -7,7 +7,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ChatApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:models="using:ChatApp.Models"
     mc:Ignorable="d">
 
     <Grid>
@@ -24,8 +24,8 @@
             SelectedIndex="0"
             Grid.Column="0">
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="local:Group">
-                    <TextBlock Text="{x:Bind Name}" Margin="10"/>
+                <DataTemplate x:DataType="models:Group">
+                    <TextBlock Text="{x:Bind GroupName}" Margin="10"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

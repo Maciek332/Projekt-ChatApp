@@ -33,21 +33,21 @@ namespace ChatApp.Views
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var exampleParameter = e.Parameter as Group;
-            //string exampleParameter = e.Parameter as string;
-            if (exampleParameter != null)
-            {
-                var groupMembers = exampleParameter.GroupMembers
-                    .Where(m => m.Id > 0)
-                    .Select(m => m.Name)
-                    .ToList();
+            //var exampleParameter = e.Parameter as Group;
+            ////string exampleParameter = e.Parameter as string;
+            //if (exampleParameter != null)
+            //{
+            //    var groupMembers = exampleParameter.User
+            //        .Where(m => m.UserId > 0)
+            //        .Select(m => m.UserName)
+            //        .ToList();
 
-                string members = string.Join("\n", groupMembers);
+            //    string members = string.Join("\n", groupMembers);
 
-                GroupName.Text = exampleParameter.Name;
-                ToolTipService.SetToolTip(GroupName, members);
-                MessageField.PlaceholderText = $"Napisz do {exampleParameter.Name}";
-            }
+            //    GroupName.Text = exampleParameter.GroupName;
+            //    ToolTipService.SetToolTip(GroupName, members);
+            //    MessageField.PlaceholderText = $"Napisz do {exampleParameter.GroupName}";
+            //}
         }
         private void AddItemToEnd(object sender, RoutedEventArgs e)
         {

@@ -17,6 +17,9 @@ using ChatApp.Views;
 using System.Security.Cryptography.X509Certificates;
 using Windows.Storage;
 using System.Diagnostics.Eventing.Reader;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Windows.UI.Core;
 
 namespace ChatApp.Views
 {
@@ -38,28 +41,32 @@ namespace ChatApp.Views
                     if (RegEmail.Text.Contains("@"))
                     {
 
-                        using var context = new ChatDbContext();
-                        var RegisterUser = new Users
-                        {
-                            EMail = RegEmail.Text,
-                            UserName = RegUsername.Text,
-                            Password = RegPassword.Password,
-                            IsLogedIn = false,
-                            RegisterDate = DateTime.Now
-                        };
-                        context.Users.Add(RegisterUser);
-                        context.SaveChanges();
+                            using var context = new ChatDbContext();
+                            var RegisterUser = new Users
+                            {
+                                EMail = RegEmail.Text,
+                                UserName = RegUsername.Text,
+                                Password = RegPassword.Password,
+                                IsLogedIn = false,
+                                RegisterDate = DateTime.Now
+                            };
+                            context.Users.Add(RegisterUser);
+                            context.SaveChanges();
 
-                        RegisterResult = $"Pomyúlnie zarejestrowano z danymi: \nE-mail: {RegEmail.Text}\n Login: {RegUsername.Text}\n Has≥o: {RegPassword.Password}";
+                            RegisterResult = $"Pomyúlnie zarejestrowano z danymi: \nE-mail: {RegEmail.Text}\n Login: {RegUsername.Text}\n Has≥o: {RegPassword.Password}";
                         RegisterSuccess.Message = RegisterResult;
                         RegisterFail.IsOpen = false;
                         RegisterSuccess.IsOpen = true;
+
+                        
+
+                        
 
                     }
 
                     else
                     {
-                        RegisterResult = "Wprowadü poprawy E-mail";
+                        RegisterResult = "Wprowadü poprawny E-mail";
                         RegisterFail.Message = RegisterResult;
                         RegisterSuccess.IsOpen = false;
                         RegisterFail.IsOpen = true;
@@ -130,7 +137,7 @@ namespace ChatApp.Views
                 }
                 else
                 {
-                    LoginFail.Message = "Wprowadü poprawy E-mail";
+                    LoginFail.Message = "Wprowadü poprawny E-mail";
                     LoginSuccess.IsOpen = false;
                     LoginFail.IsOpen = true;
                 }

@@ -13,6 +13,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Views\GroupMessagePage.xaml" />
+    <None Remove="Views\GroupMessagesDetail.xaml" />
     <None Remove="Views\GroupMessagesDetailControl.xaml" />
     <None Remove="Views\LoginPage.xaml" />
     <None Remove="Views\PrivateMessagePage.xaml" />
@@ -62,6 +63,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\GroupMessagesDetail.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\PrivateMessagesDetail.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

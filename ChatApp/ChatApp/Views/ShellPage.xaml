@@ -22,7 +22,7 @@
                    HorizontalAlignment="Left" 
                    Width="16" Height="16" 
                    Margin="8,0"/>
-            <TextBlock x:Name="AppTitleTextBlock" Text="Koci K¹cik Rozmów :3"
+            <TextBlock x:Name="AppTitleTextBlock" Text="Koci KÄ…cik RozmÃ³w :3"
                        TextWrapping="NoWrap"
                        Style="{StaticResource CaptionTextBlockStyle}" 
                        VerticalAlignment="Center"
@@ -44,7 +44,7 @@
                 <InfoBar x:Name="LoginStatusMessage" IsOpen="False" Severity="Success" Margin="20,50,20,10"/>
             </NavigationView.PaneFooter>
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem x:Name="CurrentLoggedUser" Content="Nie jesteœ zalogowany" Icon="OtherUser" SelectsOnInvoked="False"/>
+                <NavigationViewItem x:Name="CurrentLoggedUser" Content="Nie jesteÅ› zalogowany" Icon="OtherUser" SelectsOnInvoked="False"/>
                 <NavigationViewItem Icon="LeaveChat" Content="Wyloguj" Tag="LogOut" SelectsOnInvoked="False" />
                 <NavigationViewItem x:Name="SettingsNavigation" Icon="Setting" Content="Ustawienia" Tag="ChatApp.Views.SettingsPage"/> 
                 

@@ -2,7 +2,7 @@
 <!-- Licensed under the MIT License. -->
 
 <Page
-    x:Class="ChatApp.Views.PrivateMessagesDetail"
+    x:Class="ChatApp.Views.GroupMessagesDetail"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ChatApp.Views"
@@ -10,7 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Page.Resources>
-        <DataTemplate x:Key="MessageViewTemplate" x:DataType="local:PrivateMessage">
+        <DataTemplate x:Key="MessageViewTemplate" x:DataType="local:GroupMessage">
             <Grid Height="Auto" Margin="4" HorizontalAlignment="{x:Bind MsgAlignment}">
                 <StackPanel MinHeight="75" Width="350" Padding="10, 0, 0, 10" Background="{StaticResource AccentAAFillColorTertiaryBrush}" CornerRadius="{StaticResource ControlCornerRadius}">
                     <TextBlock Text="{x:Bind MsgText}" Padding="0, 10, 0, 0" FontSize="20" Foreground="{ThemeResource SystemColorHighlightTextColor}" TextWrapping="Wrap"/>
@@ -36,7 +36,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock
                 VerticalAlignment="Center"
-                x:Name="UserName"
+                x:Name="GroupName"
                 Style="{ThemeResource TitleTextBlockStyle}"
                 Grid.Row="0"
                 Grid.Column="0"/>
@@ -73,7 +73,7 @@
             </ListView>
 
             <TextBox x:Name="MessageField" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="1"/>
-            <Button Content="Wyślij" Click="AddItemToEnd" x:Uid="SendMessageButtonContent" Style="{StaticResource AccentButtonStyle}" Grid.Row="4" Grid.Column="2" ToolTipService.ToolTip="Wyślij Wiadomość"/>
+            <Button Content="Wyślij" Click="AddItemToEnd" x:Uid="SendMessageButtonContent" Style="{StaticResource AccentButtonStyle}" Grid.Row="4" Grid.Column="2" ToolTipService.ToolTip="Wy�lij Wiadomo��"/>
             <Button Content="Reply" Click="MessageReceived" Grid.Row="0" Grid.Column="2" Style="{StaticResource AccentButtonStyle}"/>
         </Grid>
     </Grid>

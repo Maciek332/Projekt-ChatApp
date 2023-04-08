@@ -11,6 +11,25 @@
     mc:Ignorable="d">
 
     <Grid>
-        <TextBlock Text="Wiadomoœci Prywatne"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ListView x:Name="PrivateMessagesList"
+            ItemsSource="{x:Bind Groups}"
+            IsItemClickEnabled="True"
+            SelectionMode="Single"
+            SelectionChanged="GroupListView_SelectionChanged"
+            SelectedIndex="0"
+            Grid.Column="0">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:Group">
+                    <TextBlock Text="{x:Bind Name}" Margin="10"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="0" Y2="9000" Margin="5" StrokeThickness="2" Grid.Column="1" />
+        <Frame x:Name="GroupMessagesDetailsFrame" Grid.Column="2" />
     </Grid>
 </Page>

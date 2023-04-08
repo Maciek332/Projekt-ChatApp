@@ -55,7 +55,7 @@
         <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="O Aplikacji" Grid.Row="4" Margin="20,0,0,0"/>
 
         <StackPanel Grid.Row="5">
-            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" Margin="30,0,0,0">Koci k¹cik rozmów to aplikacja umo¿liwiaj¹ca wysy³anie i odbieranie wiadomoœci prywatnych jak i grupowych.</TextBlock>
+            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" Margin="30,0,0,0">Koci kÄ…cik rozmÃ³w to aplikacja umoÅ¼liwiajÄ…ca wysyÅ‚anie i odbieranie wiadomoÅ›ci prywatnych jak i grupowych.</TextBlock>
 
             <TextBlock Style="{ThemeResource BodyTextBlockStyle}" />
 
@@ -63,7 +63,7 @@
         </StackPanel>
         <TextBlock Text="Autorzy" Style="{ThemeResource SubtitleTextBlockStyle}" Grid.Row="6" Margin="20,10,0,0"/>
         <RichTextBlock Grid.Row="7" Margin="30,10,0,0">
-            <Paragraph>Anna Wiêzik</Paragraph>
+            <Paragraph>Anna WiÄ™zik</Paragraph>
             <Paragraph>Szymon Nycz</Paragraph>
             <Paragraph>Krzysztof Walusiak</Paragraph>
         </RichTextBlock>

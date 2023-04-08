@@ -31,7 +31,7 @@
             <ColumnDefinition Width="150"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Row="0" Grid.Column="0" x:Name="LoginEmail" Margin="10,7,20,10" PlaceholderText="Login"/>
+        <TextBox Grid.Row="0" Grid.Column="0" x:Name="LoginEmail" Margin="10,7,20,10" PlaceholderText="E-mail"/>
         <PasswordBox Grid.Row="1" Grid.Column="0" x:Name="LoginPassword" Margin="10,7,20,10" PlaceholderText="Hasło"/>
         <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource AccentButtonStyle}" Margin="10,7,20,10" Content="Zaloguj się" Click="LoginClick"/>
         <InfoBar Grid.Row="3" Grid.RowSpan="3" IsOpen="False" x:Name="LoginSuccess" Width="auto" Severity="Success" Margin="10,5,20,5"/>
@@ -39,7 +39,7 @@
 
         <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="0" Y2="9000" StrokeThickness="2" Grid.Column="1" Grid.RowSpan="11" />
 
-        <TextBlock Grid.Row="4" Grid.Column="0"  Style="{ThemeResource TitleTextBlockStyle}" Text="Rejestracja"/>
+        <TextBlock Grid.Row="4" Grid.Column="0" Margin="28,10,0,0" Style="{ThemeResource TitleTextBlockStyle}" Text="Rejestracja"/>
         <TextBox Grid.Row="5" Grid.Column="0" x:Name="RegEmail" Margin="10,7,20,10" PlaceholderText="E-mail"/>
         <TextBox Grid.Row="6" Grid.Column="0"  x:Name="RegUsername" Margin="10,7,20,10" PlaceholderText="Login"/>
         <PasswordBox Grid.Row="7" Grid.Column="0" x:Name="RegPassword" Margin="10,7,20,10" PlaceholderText="Hasło"/>

@@ -59,7 +59,7 @@
 
             <TextBlock Style="{ThemeResource BodyTextBlockStyle}" />
 
-            <HyperlinkButton Content="Kliknij na mnie!" Margin="20,0,0,0"/>
+            <HyperlinkButton Content="Kliknij na mnie!" Margin="20,0,0,0" NavigateUri="https://www.youtube.com/watch?v=n8rVSB4Ej2U"/>
         </StackPanel>
         <TextBlock Text="Autorzy" Style="{ThemeResource SubtitleTextBlockStyle}" Grid.Row="6" Margin="20,10,0,0"/>
         <RichTextBlock Grid.Row="7" Margin="30,10,0,0">

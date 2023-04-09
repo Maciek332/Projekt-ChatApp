@@ -8,7 +8,7 @@
     xmlns:local="using:ChatApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:Models="using:ChatApp.Models"
+    xmlns:Models="using:ChatApp.DBModels"
     mc:Ignorable="d">
 
         <Grid HorizontalAlignment="Left">

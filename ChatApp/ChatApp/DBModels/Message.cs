@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ChatApp.Models;
+namespace ChatApp.DBModels;
 
-public partial class GroupMessage
+public partial class Message
 {
-    public int GroupMessageId { get; set; }
-
-    public string GroupName { get; set; }
+    public int MessageId { get; set; }
 
     public DateTime SentDate { get; set; }
 
     public int MessageAuthor { get; set; }
 
-    public int MessageGroup { get; set; }
+    public int MessageDestination { get; set; }
 
     public string MessageContent { get; set; }
 }

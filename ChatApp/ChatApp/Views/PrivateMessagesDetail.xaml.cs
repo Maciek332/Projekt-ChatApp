@@ -35,7 +35,7 @@ namespace ChatApp.Views
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var exampleParameter = e.Parameter as Models.User;
+            var exampleParameter = e.Parameter as DBModels.User;
             //string exampleParameter = e.Parameter as string;
             if (exampleParameter != null)
             {

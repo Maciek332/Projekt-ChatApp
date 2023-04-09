@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation and Contributors.
 // Licensed under the MIT License.
 
-using ChatApp.Models;
+using ChatApp.DBModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -29,7 +29,7 @@ namespace ChatApp.Views
     /// </summary>
     public sealed partial class CreateGroupMessagePage : Page
     {
-        public ObservableCollection<Models.User> Users { get; set; } = new ObservableCollection<Models.User>();
+        public ObservableCollection<DBModels.User> Users { get; set; } = new ObservableCollection<DBModels.User>();
         public CreateGroupMessagePage()
         {
             this.InitializeComponent();
@@ -72,7 +72,7 @@ namespace ChatApp.Views
                 .FirstOrDefault();
 
             ListView listView = FindName("UsersListListview") as ListView;
-            List<Models.User> usersToAdd = new List<Models.User>();
+            List<DBModels.User> usersToAdd = new List<DBModels.User>();
             //var selectedItems = listView.SelectedItems;
             //foreach (var item in selectedItems)
             //{
@@ -84,15 +84,15 @@ namespace ChatApp.Views
             //    };
             //    context.Set<UserGroup>().Add(userGroupAdd);
             //}
-            var selectedUsers = listView.SelectedItems.Cast<Models.User>();
+            var selectedUsers = listView.SelectedItems.Cast<DBModels.User>();
             foreach (var item in selectedUsers)
             {
-                var userGroupAdd = new UserGroup
+                var userGroupAdd = new Usergroup
                 {
                     UserId = item.UserId,
                     GroupId = groupName.GroupId
                 };
-                context.Set<UserGroup>().Add(userGroupAdd);
+                context.Set<Usergroup>().Add(userGroupAdd);
             }
 
             context.SaveChanges();

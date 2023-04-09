@@ -60,6 +60,5 @@
   　            l、ﾞ ~ヽ<LineBreak/>
   　            じしf_, )ノ<LineBreak/>
         </TextBlock>
-        <TextBlock Text="{Binding LoginEmail}" Grid.Row="7"/>
     </Grid>
 </Page>

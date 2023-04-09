@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Windows.System;
 
-namespace ChatApp.Models;
+namespace ChatApp.DBModels;
 
 public partial class ChatDbContext : DbContext
 {
@@ -15,15 +16,17 @@ public partial class ChatDbContext : DbContext
     {
     }
 
+    public virtual DbSet<Efmigrationshistory> Efmigrationshistories { get; set; }
+
     public virtual DbSet<Group> Groups { get; set; }
 
-    public virtual DbSet<GroupMessage> Groupmessages { get; set; }
+    public virtual DbSet<Groupmessage> Groupmessages { get; set; }
 
     public virtual DbSet<Message> Messages { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
-    public virtual DbSet<UserGroup> Usergroups { get; set; }
+    public virtual DbSet<Usergroup> Usergroups { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -31,6 +34,17 @@ public partial class ChatDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Efmigrationshistory>(entity =>
+        {
+            entity.HasKey(e => e.MigrationId).HasName("PRIMARY");
+
+            entity.ToTable("__efmigrationshistory");
+
+            entity.Property(e => e.MigrationId).HasMaxLength(150);
+            entity.Property(e => e.ProductVersion)
+                .IsRequired()
+                .HasMaxLength(32);
+        });
 
         modelBuilder.Entity<Group>(entity =>
         {
@@ -47,7 +61,7 @@ public partial class ChatDbContext : DbContext
                 .HasMaxLength(50);
         });
 
-        modelBuilder.Entity<GroupMessage>(entity =>
+        modelBuilder.Entity<Groupmessage>(entity =>
         {
             entity.HasKey(e => e.GroupMessageId).HasName("PRIMARY");
 
@@ -106,7 +120,7 @@ public partial class ChatDbContext : DbContext
                 .HasMaxLength(25);
         });
 
-        modelBuilder.Entity<UserGroup>(entity =>
+        modelBuilder.Entity<Usergroup>(entity =>
         {
             entity
                 .HasNoKey()
@@ -133,6 +147,9 @@ public partial class ChatDbContext : DbContext
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("UserGroupUser");
         });
+
+        modelBuilder.Entity<Usergroup>()
+            .HasKey(e => new { e.UserId, e.GroupId });
 
         OnModelCreatingPartial(modelBuilder);
     }

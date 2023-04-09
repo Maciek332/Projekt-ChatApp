@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ChatApp.Models;
+namespace ChatApp.DBModels;
 
 public partial class Group
 {

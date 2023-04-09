@@ -1,0 +1,58 @@
+<!-- Copyright (c) Microsoft Corporation and Contributors. -->
+<!-- Licensed under the MIT License. -->
+
+<Page
+    x:Class="ChatApp.Views.CreateGroupMessagePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ChatApp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:Models="using:ChatApp.Models"
+    mc:Ignorable="d">
+
+        <Grid HorizontalAlignment="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="55"/>
+                <RowDefinition Height="35" />
+                <RowDefinition Height="55" />
+                <RowDefinition/>
+                <RowDefinition Height="40"/>
+            <RowDefinition />
+            <RowDefinition Height="35"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            <ColumnDefinition/>
+
+
+        </Grid.ColumnDefinitions>
+        <TextBlock
+                VerticalAlignment="Center"
+                x:Name="GroupName"
+                Text="Kreator Konwersacji"
+                Style="{ThemeResource TitleTextBlockStyle}"
+                Grid.Row="0"
+                Grid.Column="0"/>
+        <TextBlock Text="Aby utworzyæ konwersacjê nadaj jej nazwê w polu poni¿ej i dodaj osoby które ciê interesuj¹ ;)" TextWrapping="Wrap" TextAlignment="Center" Grid.Row="4" Grid.Column="2"/>
+        <Image Source="/Assets/Cat.png" Height="50" Grid.Column="2" Grid.Row="2" Margin="0,0,0,-20"/>
+        <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="10000" Y2="0" StrokeThickness="2" Grid.Row="1" Grid.ColumnSpan="3"/>
+        <TextBox PlaceholderText="Nazwa konwersacji" x:Name="ConversationName" Grid.Row="2" Margin="0,0,50,0"/>
+        <TextBlock Text="Wybierz osoby z listy" Grid.Row="3" FontWeight="Bold" FontSize="15" Margin="0,30,50,0"/>
+        <ListView x:Name="UsersListListview"
+              ItemsSource="{x:Bind Users}"
+              IsItemClickEnabled="True"
+              SelectionMode="Multiple"
+              Grid.Column="0"
+              Grid.Row="4"
+              Margin="0,30,50,0">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="Models:User">
+                    <TextBlock Text="{x:Bind UserName}" Margin="10"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button Content="Zapisz" Style="{ThemeResource AccentButtonStyle}" Click="SaveGroupClick" Grid.Row="5" Grid.Column="0"/>
+    </Grid>
+</Page>

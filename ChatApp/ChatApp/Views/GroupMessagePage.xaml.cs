@@ -67,5 +67,12 @@ namespace ChatApp.Views
             // ustaw zawartoœæ kontrolki Frame na now¹ stronê
             GroupMessagesDetailsFrame.Navigate(typeof(GroupMessagesDetail), selectedGroup);
         }
+
+        private void CreateGroupConversation(object sender, RoutedEventArgs e)
+        {
+            GroupMessageList.SelectedValue = false;
+            GroupMessagesDetailsFrame.Navigate(typeof(CreateGroupMessagePage));
+            
+        }
     }
 }

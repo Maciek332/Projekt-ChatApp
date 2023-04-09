@@ -16,20 +16,28 @@
             <ColumnDefinition Width="30"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ListView x:Name="PrivateMessagesList"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Content="Utwórz konwersację grupową" Click="CreateGroupConversation" Margin="10" HorizontalAlignment="Center"></Button>
+        <ListView x:Name="GroupMessageList"
             ItemsSource="{x:Bind Groups}"
             IsItemClickEnabled="True"
             SelectionMode="Single"
             SelectionChanged="GroupListView_SelectionChanged"
             SelectedIndex="0"
-            Grid.Column="0">
+            Grid.Column="0"
+                  Grid.Row="1"
+            Grid.RowSpan="1">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Group">
                     <TextBlock Text="{x:Bind GroupName}" Margin="10"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="0" Y2="9000" Margin="5" StrokeThickness="2" Grid.Column="1" />
-        <Frame x:Name="GroupMessagesDetailsFrame" Grid.Column="2" />
+        <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="0" Y2="9000" Margin="5" StrokeThickness="2" Grid.Column="1" Grid.RowSpan="3"/>
+        <Frame x:Name="GroupMessagesDetailsFrame" Grid.Column="2" Grid.RowSpan="3"/>
     </Grid>
 </Page>

@@ -32,6 +32,7 @@ namespace ChatApp.Views
         public static NavigationViewItem CurrentLoggedUserLabel;
         public static NavigationViewItem PrivateMessageNavigationLabel;
         public static NavigationViewItem GroupMessageNavigationLabel;
+        public static Frame ContentFramePublic;
         public ShellPage()
         {
             this.InitializeComponent();

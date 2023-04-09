@@ -12,6 +12,7 @@
     <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Views\CreateGroupMessagePage.xaml" />
     <None Remove="Views\GroupMessagePage.xaml" />
     <None Remove="Views\GroupMessagesDetail.xaml" />
     <None Remove="Views\GroupMessagesDetailControl.xaml" />
@@ -63,6 +64,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\CreateGroupMessagePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\GroupMessagesDetail.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

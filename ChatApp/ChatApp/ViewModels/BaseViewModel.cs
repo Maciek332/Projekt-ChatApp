@@ -11,11 +11,23 @@ namespace ChatApp.ViewModels
     public class BaseViewModel : INotifyPropertyChanged
     {
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public void OnPropertyChanged([CallerMemberName] string property = null)
+        protected void SetProperty<T>(ref T storage, T value, string propertyName, Action validator = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+            if (EqualityComparer<T>.Default.Equals(storage, value))
+            {
+                return;
+            }
+
+            storage = value;
+            OnPropertyChanged(propertyName);
+            validator?.Invoke();
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

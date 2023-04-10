@@ -25,16 +25,6 @@ namespace ChatApp.ViewModels
             }
         }
 
-        private string _selectedUserName;
-        public string SelectedUserName
-        {
-            get { return _selectedUserName; }
-            set
-            {
-                _selectedUserName = value;
-                OnPropertyChanged(nameof(SelectedUserName));
-            }
-        }
         public PrivateMessagesPageViewModel(Frame privateMessageDetailsFrame)
         {
             PrivateMessageDetailFrame = privateMessageDetailsFrame;
@@ -46,7 +36,6 @@ namespace ChatApp.ViewModels
         {
             // pobierz wybrany element z listy
             var selectedPerson = e.AddedItems.FirstOrDefault() as User;
-            SelectedUserName = selectedPerson.UserName;
             // ustaw zawartość kontrolki Frame na nową stronę
             PrivateMessageDetailFrame.Navigate(typeof(PrivateMessagesDetail), selectedPerson);
         }

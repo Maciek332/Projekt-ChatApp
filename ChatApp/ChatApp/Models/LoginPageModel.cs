@@ -10,5 +10,10 @@ namespace ChatApp.Models
     {
         public string LoginEmail { get; set; }
         public string LoginPassword { get; set; }
+
+        public string RegisterEmail { get; set; }
+        public string RegisterUserName { get; set; }
+        public string RegisterPassword { get; set; }
+        public string RegisterPasswordRepeat { get; set; }
     }
 }

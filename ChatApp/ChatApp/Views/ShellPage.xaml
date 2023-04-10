@@ -30,18 +30,20 @@
         </Grid>
         <NavigationView
             x:Name="NavigationMenu"
-            BackRequested="NavigationMenu_BackRequested" 
-            ItemInvoked="NavigationMenu_ItemInvoked"
+            BackRequested="{x:Bind _viewModel.NavigationMenu_BackRequested}" 
+            ItemInvoked="{x:Bind _viewModel.NavigationMenu_ItemInvoked}"
+            SelectedItem="{x:Bind _viewModel.SelectedMenuItem}"
             IsSettingsVisible="False"
-            Grid.Row="1">
+            Grid.Row="1"
+            IsBackButtonVisible="Collapsed">
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Name="LoginNavigation" Icon="OtherUser" Content="Logowanie" Tag="ChatApp.Views.LoginPage"/>
-                <NavigationViewItem x:Name="PrivateMessageNavigation" Icon="Contact" Content="Konwersacje Prywatne" Tag="ChatApp.Views.PrivateMessagePage" />
-                <NavigationViewItem x:Name="GroupMessageNavigation" Icon="People" Content="Konwersacje Grupowe" Tag="ChatApp.Views.GroupMessagePage"/>
+                <NavigationViewItem x:Name="PrivateMessageNavigation" IsEnabled="{Binding PrivateMessageNavigation}" Icon="Contact" Content="Konwersacje Prywatne" Tag="ChatApp.Views.PrivateMessagePage" />
+                <NavigationViewItem x:Name="GroupMessageNavigation" Icon="People" IsEnabled="{Binding GroupMessageNavigation}" Content="Konwersacje Grupowe" Tag="ChatApp.Views.GroupMessagePage"/>
             </NavigationView.MenuItems>
 
             <NavigationView.PaneFooter>
-                <InfoBar x:Name="LoginStatusMessage" IsOpen="False" Severity="Success" Margin="20,50,20,10"/>
+                <InfoBar x:Name="LoginStatusMessage" IsOpen="{Binding LogoutStatusOpen}" Severity="Success" Message="{Binding LogoutStatusMessage, UpdateSourceTrigger=PropertyChanged}" Margin="20,50,20,10" />
             </NavigationView.PaneFooter>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem x:Name="CurrentLoggedUser" Content="Nie jesteś zalogowany" Icon="Emoji2" SelectsOnInvoked="False"/>
@@ -58,7 +60,7 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>-->
                     
-                    <Frame x:Name="ContentFrame" Navigated="ContentFrame_Navigated" Margin="30" Grid.Row="1"/>
+                    <Frame x:Name="ContentFrame" Navigated="{x:Bind _viewModel.OnNavigated}" Margin="30" Grid.Row="1"/>
                     
                 <!--</Grid>-->
                 

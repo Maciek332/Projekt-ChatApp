@@ -9,6 +9,7 @@ using Microsoft.UI.Xaml.Controls;
 using System.Windows.Input;
 using ChatApp.Commands;
 using System.Text.RegularExpressions;
+using ChatApp.DBModels;
 
 namespace ChatApp.ViewModels
 {
@@ -164,6 +165,7 @@ namespace ChatApp.ViewModels
     {
         _loginModel = loginModel;
             LoginCommand = new RelayCommand<string>(x => LoginMessage(), x => this.LoginIsValid());
+            RegisterCommand = new RelayCommand<string>(x => RegisterMessage(), x => this.RegisterIsValid);
 
         }
 
@@ -201,7 +203,7 @@ namespace ChatApp.ViewModels
         //}
         public bool RegisterIsValid
         {
-            get => !string.IsNullOrEmpty(RegisterEmail) && !string.IsNullOrEmpty(RegisterUserName) && !string.IsNullOrEmpty(RegisterPassword) && RegisterPassword == RegisterPasswordRepeat && !string.IsNullOrEmpty(RegisterPasswordRepeat) && RegisterEmail.Contains("@") && Regex.IsMatch(RegisterEmail, @"\.[a-zA-Z]{2,}$");
+            get => !string.IsNullOrEmpty(RegisterEmail) && !string.IsNullOrEmpty(RegisterUserName) && !string.IsNullOrEmpty(RegisterPassword) && RegisterPassword==RegisterPasswordRepeat && RegisterEmail.Contains("@") && Regex.IsMatch(RegisterEmail, @"\.[a-zA-Z]{2,}$");
         }
 
         private void LoginMessage()
@@ -211,6 +213,17 @@ namespace ChatApp.ViewModels
         }
         private void RegisterMessage()
         {
+            using var context = new ChatDbContext();
+            var RegisterUser = new User
+            {
+                EMail = RegisterEmail,
+                UserName = RegisterUserName,
+                Password = RegisterPassword,
+                IsLogedIn = false,
+                RegisterDate = DateTime.Now
+            };
+            context.Users.Add(RegisterUser);
+            context.SaveChanges();
             IsRegisteredIn = true;
             RegisterInfoBarMessage = $"Pomyślnie zarejestrowano użytkownika o danych:\nE-mail: {RegisterEmail}\nLogin: {RegisterUserName}\nHasło: {RegisterPassword}";
         }

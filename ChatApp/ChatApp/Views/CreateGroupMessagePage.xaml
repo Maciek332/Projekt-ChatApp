@@ -35,7 +35,7 @@
                 Style="{ThemeResource TitleTextBlockStyle}"
                 Grid.Row="0"
                 Grid.Column="0"/>
-        <TextBlock Text="Aby utworzyæ konwersacjê nadaj jej nazwê w polu poni¿ej i dodaj osoby które ciê interesuj¹ ;)" TextWrapping="Wrap" TextAlignment="Center" Grid.Row="4" Grid.Column="2"/>
+        <TextBlock Text="Aby utworzyÄ‡ konwersacjÄ™ nadaj jej nazwÄ™ w polu po lewej i dodaj osoby ktÃ³re ciÄ™ interesujÄ… ;)" TextWrapping="Wrap" TextAlignment="Center" Grid.Row="4" Grid.Column="2"/>
         <Image Source="/Assets/Cat.png" Height="50" Grid.Column="2" Grid.Row="2" Margin="0,0,0,-20"/>
         <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="10000" Y2="0" StrokeThickness="2" Grid.Row="1" Grid.ColumnSpan="3"/>
         <TextBox PlaceholderText="Nazwa konwersacji" x:Name="ConversationName" Grid.Row="2" Margin="0,0,50,0"/>

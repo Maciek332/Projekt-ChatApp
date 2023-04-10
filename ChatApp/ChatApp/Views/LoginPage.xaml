@@ -44,11 +44,11 @@
         <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="0" Y2="9000" StrokeThickness="2" Grid.Column="1" Grid.Row="1" Grid.RowSpan="15" />
 
         <TextBlock Grid.Row="6" Grid.Column="0" Margin="28,10,0,0" Style="{ThemeResource TitleTextBlockStyle}" Text="Rejestracja"/>
-        <TextBox Grid.Row="7" Grid.Column="0"  Margin="10,7,50,10" PlaceholderText="E-mail"/>
-        <TextBox Grid.Row="8" Grid.Column="0"  Margin="10,7,50,10" PlaceholderText="Login"/>
-        <PasswordBox Grid.Row="9" Grid.Column="0"  Margin="10,7,50,10" PlaceholderText="Hasło"/>
-        <PasswordBox Grid.Row="10" Grid.Column="0" Margin="10,7,50,10" PlaceholderText="Powtórz hasło"/>
-        <Button Grid.Row="11" Grid.Column="0" Style="{StaticResource AccentButtonStyle}" Margin="10,7,50,10" Content="Zarejestruj się" />
+        <TextBox Grid.Row="7" Grid.Column="0"  Margin="10,7,50,10" PlaceholderText="E-mail" Text="{Binding RegisterEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="8" Grid.Column="0"  Margin="10,7,50,10" PlaceholderText="Login" Text="{Binding RegisterUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <PasswordBox Grid.Row="9" Grid.Column="0"  Margin="10,7,50,10" PlaceholderText="Hasło" Password="{Binding RegisterPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <PasswordBox Grid.Row="10" Grid.Column="0" Margin="10,7,50,10" PlaceholderText="Powtórz hasło" Password="{Binding RegisterPasswordRepeat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Grid.Row="11" Grid.Column="0" Style="{StaticResource AccentButtonStyle}" Command="{Binding RegisterCommand}" Margin="10,7,50,10" Content="Zarejestruj się" />
         <InfoBar Grid.Row="12" Grid.RowSpan="3"  Width="auto" Severity="Success" Margin="10,5,50,5"/>
         <InfoBar Grid.Row="12" Grid.RowSpan="3" IsOpen="False" x:Name="RegisterFail" Width="auto" Severity="Error" Margin="10,5,50,5"/>
 

@@ -15,6 +15,11 @@
             <ColumnDefinition Width="30"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="28,10,0,0" Style="{ThemeResource TitleTextBlockStyle}" Text="Konwersacje Prywatne"/>
         <ListView x:Name="PrivateMessagesList"
               ItemsSource="{x:Bind Users}"
               IsItemClickEnabled="True"
@@ -28,7 +33,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="0" Y2="9000" Margin="5" StrokeThickness="2" Grid.Column="1" />
+        <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="0" Y2="9000" Margin="5" StrokeThickness="2" Grid.Column="1" Grid.Row="1"/>
         <Frame x:Name="PrivateMessageDetailsFrame" Grid.Column="2" />
     </Grid>
 </Page>

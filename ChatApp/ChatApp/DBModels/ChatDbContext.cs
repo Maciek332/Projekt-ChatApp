@@ -16,8 +16,6 @@ public partial class ChatDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Efmigrationshistory> Efmigrationshistories { get; set; }
-
     public virtual DbSet<Group> Groups { get; set; }
 
     public virtual DbSet<Groupmessage> Groupmessages { get; set; }
@@ -26,25 +24,12 @@ public partial class ChatDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    public virtual DbSet<Usergroup> Usergroups { get; set; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseMySQL("Server=localhost;Port=3306;Database=ChatDB;Uid=root;Pwd=;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Efmigrationshistory>(entity =>
-        {
-            entity.HasKey(e => e.MigrationId).HasName("PRIMARY");
-
-            entity.ToTable("__efmigrationshistory");
-
-            entity.Property(e => e.MigrationId).HasMaxLength(150);
-            entity.Property(e => e.ProductVersion)
-                .IsRequired()
-                .HasMaxLength(32);
-        });
 
         modelBuilder.Entity<Group>(entity =>
         {
@@ -77,7 +62,7 @@ public partial class ChatDbContext : DbContext
             entity.Property(e => e.MessageContent).IsRequired();
             entity.Property(e => e.MessageGroup).HasColumnType("int(11)");
             entity.Property(e => e.SentDate)
-                .HasDefaultValueSql("'current_timestamp()'")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
         });
 
@@ -94,7 +79,7 @@ public partial class ChatDbContext : DbContext
             entity.Property(e => e.MessageContent).IsRequired();
             entity.Property(e => e.MessageDestination).HasColumnType("int(11)");
             entity.Property(e => e.SentDate)
-                .HasDefaultValueSql("'current_timestamp()'")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime");
         });
 
@@ -120,36 +105,15 @@ public partial class ChatDbContext : DbContext
                 .HasMaxLength(25);
         });
 
-        modelBuilder.Entity<Usergroup>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("usergroup");
+        modelBuilder.Entity<User>()
+            .HasMany(e => e.Groups)
+            .WithMany(e => e.Users)
+            .UsingEntity(e => e.ToTable("UserGroup"));
 
-            entity.HasIndex(e => e.GroupId, "UserGroupGroup");
-
-            entity.HasIndex(e => e.UserId, "UserGroupUser");
-
-            entity.Property(e => e.GroupId)
-                .HasColumnType("int(11)")
-                .HasColumnName("GroupID");
-            entity.Property(e => e.UserId)
-                .HasColumnType("int(11)")
-                .HasColumnName("UserID");
-
-            entity.HasOne(d => d.Group).WithMany()
-                .HasForeignKey(d => d.GroupId)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasConstraintName("UserGroupGroup");
-
-            entity.HasOne(d => d.User).WithMany()
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasConstraintName("UserGroupUser");
-        });
-
-        modelBuilder.Entity<Usergroup>()
-            .HasKey(e => new { e.UserId, e.GroupId });
+        modelBuilder.Entity<Group>()
+            .HasMany(e => e.Users)
+            .WithMany(e => e.Groups)
+            .UsingEntity(e => e.ToTable("UserGroup"));
 
         OnModelCreatingPartial(modelBuilder);
     }

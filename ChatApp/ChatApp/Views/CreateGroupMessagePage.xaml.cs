@@ -84,16 +84,16 @@ namespace ChatApp.Views
             //    };
             //    context.Set<UserGroup>().Add(userGroupAdd);
             //}
-            var selectedUsers = listView.SelectedItems.Cast<DBModels.User>();
-            foreach (var item in selectedUsers)
-            {
-                var userGroupAdd = new Usergroup
-                {
-                    UserId = item.UserId,
-                    GroupId = groupName.GroupId
-                };
-                context.Set<Usergroup>().Add(userGroupAdd);
-            }
+            //var selectedUsers = listView.SelectedItems.Cast<DBModels.User>();
+            //foreach (var item in selectedUsers)
+            //{
+            //    var userGroupAdd = new Usergroup
+            //    {
+            //        UserId = item.UserId,
+            //        GroupId = groupName.GroupId
+            //    };
+            //    context.Set<Usergroup>().Add(userGroupAdd);
+            //}
 
             context.SaveChanges();
         }

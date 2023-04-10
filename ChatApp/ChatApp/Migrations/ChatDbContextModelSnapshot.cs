@@ -19,7 +19,7 @@ namespace ChatApp.Migrations
                 .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("ChatApp.Models.Group", b =>
+            modelBuilder.Entity("ChatApp.DBModels.Group", b =>
                 {
                     b.Property<int>("GroupId")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace ChatApp.Migrations
                     b.ToTable("group", (string)null);
                 });
 
-            modelBuilder.Entity("ChatApp.Models.GroupMessage", b =>
+            modelBuilder.Entity("ChatApp.DBModels.Groupmessage", b =>
                 {
                     b.Property<int>("GroupMessageId")
                         .ValueGeneratedOnAdd()
@@ -65,7 +65,7 @@ namespace ChatApp.Migrations
                     b.Property<DateTime>("SentDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValueSql("'current_timestamp()'");
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("GroupMessageId")
                         .HasName("PRIMARY");
@@ -73,7 +73,7 @@ namespace ChatApp.Migrations
                     b.ToTable("groupmessage", (string)null);
                 });
 
-            modelBuilder.Entity("ChatApp.Models.Message", b =>
+            modelBuilder.Entity("ChatApp.DBModels.Message", b =>
                 {
                     b.Property<int>("MessageId")
                         .ValueGeneratedOnAdd()
@@ -93,7 +93,7 @@ namespace ChatApp.Migrations
                     b.Property<DateTime>("SentDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasDefaultValueSql("'current_timestamp()'");
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("MessageId")
                         .HasName("PRIMARY");
@@ -101,7 +101,7 @@ namespace ChatApp.Migrations
                     b.ToTable("message", (string)null);
                 });
 
-            modelBuilder.Entity("ChatApp.Models.User", b =>
+            modelBuilder.Entity("ChatApp.DBModels.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -136,42 +136,34 @@ namespace ChatApp.Migrations
                     b.ToTable("user", (string)null);
                 });
 
-            modelBuilder.Entity("ChatApp.Models.UserGroup", b =>
+            modelBuilder.Entity("GroupUser", b =>
                 {
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int(11)")
-                        .HasColumnName("GroupID");
+                    b.Property<int>("GroupsGroupId")
+                        .HasColumnType("int(11)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int(11)")
-                        .HasColumnName("UserID");
+                    b.Property<int>("UsersUserId")
+                        .HasColumnType("int(11)");
 
-                    b.HasIndex(new[] { "GroupId" }, "UserGroupGroup");
+                    b.HasKey("GroupsGroupId", "UsersUserId");
 
-                    b.HasIndex(new[] { "UserId" }, "UserGroupUser");
+                    b.HasIndex("UsersUserId");
 
-                    b.ToTable("usergroup", (string)null);
+                    b.ToTable("UserGroup", (string)null);
                 });
 
-            modelBuilder.Entity("ChatApp.Models.UserGroup", b =>
+            modelBuilder.Entity("GroupUser", b =>
                 {
-                    b.HasOne("ChatApp.Models.Group", "Group")
+                    b.HasOne("ChatApp.DBModels.Group", null)
                         .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("UserGroupGroup");
+                        .HasForeignKey("GroupsGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("ChatApp.Models.User", "User")
+                    b.HasOne("ChatApp.DBModels.User", null)
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("UserGroupUser");
-
-                    b.Navigation("Group");
-
-                    b.Navigation("User");
+                        .HasForeignKey("UsersUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

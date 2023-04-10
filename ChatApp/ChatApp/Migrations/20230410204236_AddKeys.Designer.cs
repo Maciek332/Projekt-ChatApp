@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChatApp.Migrations
 {
     [DbContext(typeof(ChatDbContext))]
-    [Migration("20230410190644_AddKeys")]
+    [Migration("20230410204236_AddKeys")]
     partial class AddKeys
     {
         /// <inheritdoc />
@@ -141,13 +141,19 @@ namespace ChatApp.Migrations
 
             modelBuilder.Entity("GroupUser", b =>
                 {
+                    b.Property<int>("UserGroupId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
                     b.Property<int>("GroupsGroupId")
                         .HasColumnType("int(11)");
 
                     b.Property<int>("UsersUserId")
                         .HasColumnType("int(11)");
 
-                    b.HasKey("GroupsGroupId", "UsersUserId");
+                    b.HasKey("UserGroupId");
+
+                    b.HasIndex("GroupsGroupId");
 
                     b.HasIndex("UsersUserId");
 

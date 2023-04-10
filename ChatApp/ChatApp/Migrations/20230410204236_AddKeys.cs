@@ -48,12 +48,14 @@ namespace ChatApp.Migrations
                 name: "UserGroup",
                 columns: table => new
                 {
+                    UserGroupId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     GroupsGroupId = table.Column<int>(type: "int(11)", nullable: false),
                     UsersUserId = table.Column<int>(type: "int(11)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserGroup", x => new { x.GroupsGroupId, x.UsersUserId });
+                    table.PrimaryKey("PK_UserGroup", x => x.UserGroupId);
                     table.ForeignKey(
                         name: "FK_UserGroup_group_GroupsGroupId",
                         column: x => x.GroupsGroupId,
@@ -68,6 +70,11 @@ namespace ChatApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserGroup_GroupsGroupId",
+                table: "UserGroup",
+                column: "GroupsGroupId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserGroup_UsersUserId",
@@ -92,7 +99,7 @@ namespace ChatApp.Migrations
                 defaultValue: 0);
 
             migrationBuilder.CreateTable(
-                name: "messages",
+                name: "message",
                 columns: table => new
                 {
                     MessageID = table.Column<int>(type: "int(11)", nullable: false)

@@ -108,12 +108,13 @@ public partial class ChatDbContext : DbContext
         modelBuilder.Entity<User>()
             .HasMany(e => e.Groups)
             .WithMany(e => e.Users)
-            .UsingEntity(e => e.ToTable("UserGroup"));
-
-        modelBuilder.Entity<Group>()
-            .HasMany(e => e.Users)
-            .WithMany(e => e.Groups)
-            .UsingEntity(e => e.ToTable("UserGroup"));
+            .UsingEntity(
+                j =>
+                {
+                    j.ToTable("UserGroup");
+                    j.IndexerProperty<int>("UserGroupId");
+                    j.HasKey("UserGroupId");
+                });
 
         OnModelCreatingPartial(modelBuilder);
     }

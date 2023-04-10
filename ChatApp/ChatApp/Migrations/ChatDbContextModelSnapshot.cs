@@ -138,13 +138,19 @@ namespace ChatApp.Migrations
 
             modelBuilder.Entity("GroupUser", b =>
                 {
+                    b.Property<int>("UserGroupId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
                     b.Property<int>("GroupsGroupId")
                         .HasColumnType("int(11)");
 
                     b.Property<int>("UsersUserId")
                         .HasColumnType("int(11)");
 
-                    b.HasKey("GroupsGroupId", "UsersUserId");
+                    b.HasKey("UserGroupId");
+
+                    b.HasIndex("GroupsGroupId");
 
                     b.HasIndex("UsersUserId");
 

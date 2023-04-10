@@ -7,7 +7,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ChatApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:models="using:ChatApp.DBModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:models="using:ChatApp.DBModels"
+    xmlns:vm="using:ChatApp.ViewModels"
     mc:Ignorable="d">
 
     <Grid>
@@ -23,12 +25,12 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Margin="28,10,0,0" Style="{ThemeResource TitleTextBlockStyle}" Grid.ColumnSpan="3" Text="Konwersacje Grupowe"/>
-        <Button Grid.Row="1" Content="Utwórz konwersację grupową" Click="CreateGroupConversation" Margin="10" HorizontalAlignment="Center"></Button>
+        <Button Grid.Row="1" Content="Utwórz konwersację grupową" Command="{Binding CreateNewGroupCommand}" Margin="10" HorizontalAlignment="Center"/>
         <ListView x:Name="GroupMessageList"
-            ItemsSource="{x:Bind Groups}"
+            ItemsSource="{x:Bind _viewModel.Groups}"
             IsItemClickEnabled="True"
             SelectionMode="Single"
-            SelectionChanged="GroupListView_SelectionChanged"
+            SelectionChanged="{x:Bind _viewModel.GroupListView_SelectionChanged}"
             SelectedIndex="0"
             Grid.Column="0"
                   Grid.Row="2">

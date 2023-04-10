@@ -37,7 +37,6 @@ namespace ChatApp.Views
             InitializeComponent();
             _viewModel = new PrivateMessagesPageViewModel(PrivateMessageDetailsFrame);
             DataContext = _viewModel;
-
         }
     }
 

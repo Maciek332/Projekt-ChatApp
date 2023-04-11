@@ -47,16 +47,10 @@ namespace ChatApp.ViewModels
 
         private void LoadGroups()
         {
-            var user1 = new User { UserId = 1, UserName = "Ania", EMail = "blabla@gmail.com", Password = "1234", IsLogedIn = false };
-            var user2 = new User { UserId = 1, UserName = "Szymek", EMail = "blabla@gmail.com", Password = "1234", IsLogedIn = false };
-            var user3 = new User { UserId = 1, UserName = "Krzysiek", EMail = "blabla@gmail.com", Password = "1234", IsLogedIn = false };
-
-            var groupList = new List<Group>()
-            {
-                new Group() { GroupId = 1, GroupName = "Anonimowi Alkoholicy", CreationDate = new DateTime(2020,10,5)},
-                new Group() { GroupId = 2, GroupName = "Cebulaki w Akcji", CreationDate = new DateTime(2020,10,5) },
-                new Group() { GroupId = 3, GroupName = "Brokuły", CreationDate = new DateTime(2020,10,5) },
-            };
+            using var context = new ChatDbContext();
+            var groupList = context.Groups
+                .Where(x => x.GroupId > 0)
+                .ToList();
             var sortedGroups = from groupConf in groupList
                                orderby groupConf.GroupName
                                group groupConf by groupConf.GroupName.Substring(0, 1).ToUpper() into groups

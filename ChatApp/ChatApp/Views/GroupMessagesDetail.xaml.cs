@@ -37,15 +37,17 @@ namespace ChatApp.Views
             //string exampleParameter = e.Parameter as string;
             if (exampleParameter != null)
             {
-                //var groupMembers = exampleParameter.Group
-                //    .Where(m => m.Id > 0)
-                //    .Select(m => m.UserName)
-                //    .ToList();
+                var context = new ChatDbContext();
+                var groupMembers = context.Groups
+                 .Where(g => g.GroupId == exampleParameter.GroupId)
+                 .SelectMany(g => g.Users)
+                 .Select(u => u.UserName)
+                 .ToList(); 
 
-                //string members = string.Join("\n", groupMembers);
+                string members = string.Join("\n", groupMembers);
 
                 GroupName.Text = exampleParameter.GroupName;
-                //ToolTipService.SetToolTip(GroupName, members);
+                ToolTipService.SetToolTip(GroupName, members);
                 MessageField.PlaceholderText = $"Napisz w {exampleParameter.GroupName}";
             }
         }

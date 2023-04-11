@@ -38,10 +38,10 @@
         <TextBlock Text="Aby utworzyć konwersację nadaj jej nazwę w polu po lewej i dodaj osoby które cię interesują ;)" TextWrapping="Wrap" TextAlignment="Center" Grid.Row="4" Grid.Column="2"/>
         <Image Source="/Assets/Cat.png" Height="50" Grid.Column="2" Grid.Row="2" Margin="0,0,0,-20"/>
         <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="10000" Y2="0" StrokeThickness="2" Grid.Row="1" Grid.ColumnSpan="3"/>
-        <TextBox PlaceholderText="Nazwa konwersacji" x:Name="ConversationName" Grid.Row="2" Margin="0,0,50,0"/>
+        <TextBox PlaceholderText="Nazwa konwersacji" x:Name="ConversationName" Text="{Binding ConversationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Margin="0,0,50,0"/>
         <TextBlock Text="Wybierz osoby z listy" Grid.Row="3" FontWeight="Bold" FontSize="15" Margin="0,30,50,0"/>
         <ListView x:Name="UsersListListview"
-              ItemsSource="{x:Bind Users}"
+              ItemsSource="{x:Bind _viewModel.Users}"
               IsItemClickEnabled="True"
               SelectionMode="Multiple"
               Grid.Column="0"
@@ -53,6 +53,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Content="Zapisz" Style="{ThemeResource AccentButtonStyle}" Click="SaveGroupClick" Grid.Row="5" Grid.Column="0"/>
+        <Button Content="Zapisz" Style="{ThemeResource AccentButtonStyle}" Command="{Binding CreateGroupCommand}"  CommandParameter="{x:Bind UsersListListview}" Grid.Row="5" Grid.Column="0"/>
     </Grid>
 </Page>

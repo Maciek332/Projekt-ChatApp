@@ -190,6 +190,7 @@ namespace ChatApp.ViewModels
         {
             return true;
         }
+
         public void LogoutFunc()
         {
             PrivateMessageNavigation = false;

@@ -20,6 +20,7 @@ using ChatApp.Views;
 using ChatApp.Models;
 using ChatApp.DBModels;
 using ChatApp.ViewModels;
+using System.ComponentModel;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -31,6 +32,7 @@ namespace ChatApp.Views
     public sealed partial class ShellPage : Page
     {
         public ShellPageViewModel _viewModel { get; set; }
+        public Frame COntentFrame;
         public ShellPage()
         {
             InitializeComponent();
@@ -45,7 +47,7 @@ namespace ChatApp.Views
         }
 
         public static Frame ContentFramePublic;
-        
+
         public Grid CustomAppTitleBar
         {
             get { return AppTitleBar; }

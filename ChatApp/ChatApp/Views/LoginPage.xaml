@@ -39,8 +39,9 @@
         <PasswordBox Grid.Row="3" Grid.Column="0" x:Name="LoginPassword" Password="{Binding LoginPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10,7,50,10" PlaceholderText="Hasło"/>
         <Button Grid.Row="4" Grid.Column="0" Style="{StaticResource AccentButtonStyle}" Margin="10,7,50,10" Content="Zaloguj się" Command="{Binding LoginCommand}"/>
         <InfoBar Grid.Row="5" Grid.RowSpan="3" x:Name="LoginSuccess" Width="auto" Message="{Binding LoginInfoBarMessage}" IsOpen="{Binding IsLoggedIn}" Severity="Success" Margin="10,5,50,5"/>
-        <TextBlock Grid.Row="4" Grid.Column="0" Foreground="Red" Text="{Binding LoginErrorInfo, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding LoginErrorVisibility}" Margin="140,12,50,10" />
-        
+        <InfoBar Grid.Row="5" Grid.RowSpan="3" x:Name="LoginFail" Width="auto" Title="Błąd logowania" Message="{Binding LoginErrorInfo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsOpen="{Binding LoginErrorVisibility}" Severity="Error" Margin="10,5,50,5"/>
+        <!--<TextBlock Grid.Row="4" Grid.Column="0" Foreground="Red" Text="{Binding LoginEmailErrorInfo, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding LoginErrorVisibility}" Margin="130,12,50,10" />
+        <TextBlock Grid.Row="4" Grid.Column="0" Foreground="Red" Text="{Binding LoginPasswordErrorInfo, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding LoginErrorVisibility}" Margin="130,20,50,10" />-->
         <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="0" Y2="9000" StrokeThickness="2" Grid.Column="1" Grid.Row="1" Grid.RowSpan="15" />
 
         <TextBlock Grid.Row="6" Grid.Column="0" Margin="28,10,0,0" Style="{ThemeResource TitleTextBlockStyle}" Text="Rejestracja"/>

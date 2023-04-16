@@ -30,7 +30,7 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition />
             <ColumnDefinition Width="150"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
@@ -50,8 +50,8 @@
         <PasswordBox Grid.Row="9" Grid.Column="0"  Margin="10,7,50,10" PlaceholderText="Hasło" Password="{Binding RegisterPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <PasswordBox Grid.Row="10" Grid.Column="0" Margin="10,7,50,10" PlaceholderText="Powtórz hasło" Password="{Binding RegisterPasswordRepeat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Button Grid.Row="11" Grid.Column="0" Style="{StaticResource AccentButtonStyle}" Command="{Binding RegisterCommand}" Margin="10,7,50,10" Content="Zarejestruj się" />
-        <InfoBar Grid.Row="12" Grid.RowSpan="3"  Width="auto" Severity="Success" Margin="10,5,50,5"/>
-        <InfoBar Grid.Row="12" Grid.RowSpan="3" IsOpen="False" x:Name="RegisterFail" Width="auto" Severity="Error" Margin="10,5,50,5"/>
+        <InfoBar Grid.Row="12" Grid.RowSpan="3" x:Name="RegisterSuccess" Width="auto" Message="{Binding RegisterInfoBarMessage}" IsOpen="{Binding IsLoggedIn}" Severity="Success" Margin="10,5,50,5"/>
+        <InfoBar Grid.Row="12" Grid.RowSpan="3" x:Name="RegisterErrorInfo" Title="Błąd rejestracji" Message="{Binding RegisterErrorInfo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsOpen="{Binding RegisterErrorVisibility}" Width="auto" Severity="Error" Margin="10,5,50,5"/>
 
         <Image Source="/Assets/Cat.png" Height="50" Grid.Column="2" Grid.Row="3" Margin="-100,0,0,0"/>
         <TextBlock Grid.Column="2" Grid.Row="5" Grid.RowSpan="7" TextWrapping="Wrap" VerticalAlignment="Center" Margin="-100,0,0,0">

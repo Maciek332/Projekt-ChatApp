@@ -13,7 +13,7 @@ namespace ChatApp.ViewModels
 {
     public class GroupMessagesPageViewModel : BaseViewModel
     {
-        public ObservableCollection<Group> Groups { get; set; } = new ObservableCollection<Group>();
+        public ObservableCollection<Group> Groups { get; set; }
         Frame _groupMessageDetailsFrame;
         public Frame GroupMessageDetailsFrame
         {
@@ -26,6 +26,7 @@ namespace ChatApp.ViewModels
         }
         public GroupMessagesPageViewModel(Frame contentFrame)
         {
+             Groups= new ObservableCollection<Group>();
             GroupMessageDetailsFrame = contentFrame;
             CreateNewGroupCommand = new RelayCommand<string>(x => NavigateToCreationPage(), x => true);
             LoadGroups();

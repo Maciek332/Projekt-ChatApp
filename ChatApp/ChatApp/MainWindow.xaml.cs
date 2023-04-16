@@ -30,6 +30,7 @@ namespace ChatApp
         public MainWindow()
         {
             this.InitializeComponent();
+
         }
 
     }

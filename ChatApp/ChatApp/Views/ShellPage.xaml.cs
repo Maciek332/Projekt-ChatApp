@@ -31,17 +31,20 @@ namespace ChatApp.Views
     /// </summary>
     public sealed partial class ShellPage : Page
     {
+        public static NavigationViewItem CurrentLoggedUserLabel;
         public ShellPageViewModel _viewModel { get; set; }
         public Frame COntentFrame;
         public ShellPage()
         {
             InitializeComponent();
+            CurrentLoggedUserLabel = CurrentLoggedUser;
+            ContentFramePublic = ContentFrame;
             _viewModel = new ShellPageViewModel(ContentFrame);
             _viewModel.SelectedMenuItem = NavigationMenu.MenuItems.OfType<NavigationViewItem>().First();
             ContentFrame.Navigate(
                        typeof(Views.LoginPage),
-                       null,
-                       new Microsoft.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo()
+                       null
+                       //new Microsoft.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo()
                        );
             DataContext = _viewModel;
         }

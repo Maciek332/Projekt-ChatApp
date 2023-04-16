@@ -10,6 +10,7 @@ using System.Windows.Input;
 using ChatApp.Commands;
 using System.Text.RegularExpressions;
 using ChatApp.DBModels;
+using ChatApp.Views;
 
 namespace ChatApp.ViewModels
 {
@@ -138,6 +139,26 @@ namespace ChatApp.ViewModels
                 OnPropertyChanged(nameof(LoginErrorVisibility));
             }
         }
+        private bool _registerErrorVisibility;
+        public bool RegisterErrorVisibility
+        {
+            get { return _registerErrorVisibility; }
+            set
+            {
+                _registerErrorVisibility = value;
+                OnPropertyChanged(nameof(RegisterErrorVisibility));
+            }
+        }
+        private string _registerErrorInfo;
+        public string RegisterErrorInfo
+        {
+            get { return _registerErrorInfo; }
+            set
+            {
+                _registerErrorInfo = value;
+                OnPropertyChanged(nameof(RegisterErrorInfo));
+            }
+        }
         private bool _isLoggedIn;
         public bool IsLoggedIn
         {
@@ -176,8 +197,8 @@ namespace ChatApp.ViewModels
         public LoginPageViewModel(Models.LoginPageModel loginModel)
         {
             _loginModel = loginModel;
-            LoginCommand = new RelayCommand<string>(x => LoginMessage(), x => this.LoginIsValid());
-            RegisterCommand = new RelayCommand<string>(x => RegisterMessage(), x => this.RegisterIsValid);
+            LoginCommand = new RelayCommand<string>(x => LoginMessage(), x => LoginIsValid());
+            RegisterCommand = new RelayCommand<string>(x => RegisterMessage(), x => RegisterIsValid());
 
         }
 
@@ -214,15 +235,60 @@ namespace ChatApp.ViewModels
             }
 
         }
+        public bool RegisterIsValid()
+        {
+            if (string.IsNullOrEmpty(RegisterEmail))
+            {
+                RegisterErrorVisibility = true;
+                RegisterErrorInfo = "Pole E-mail nie może być puste";
+                return false;
+            }
+            else if (!Regex.IsMatch(RegisterEmail, @"\.[a-zA-Z]{2,}$"))
+            {
+                RegisterErrorVisibility = true;
+                RegisterErrorInfo = "Podano niepoprawny Email. Wymagany format to xx@xx.xx";
+                return false;
+            }
+            if(string.IsNullOrEmpty(RegisterUserName))
+            {
+                RegisterErrorVisibility = true;
+                RegisterErrorInfo = "Pole E-mail nie może być puste";
+                return false;
+            }
+            if (string.IsNullOrEmpty(RegisterPassword))
+            {
+                RegisterErrorVisibility = true; ;
+                RegisterErrorInfo = "Pole Hasło nie może być puste";
+                return false;
+            }
+            else if (RegisterPassword.Length < 8)
+            {
+                RegisterErrorVisibility = true;
+                RegisterErrorInfo = "Hasło musi zawierać conajmniej 8 znaków";
+                return false;
+            }
+            if (RegisterPasswordRepeat != RegisterPassword)
+            {
+                RegisterErrorVisibility = true;
+                RegisterErrorInfo = "Podane hasła są różne";
+                return false;
+            }
+            else
+            {
+                RegisterErrorVisibility = false;
+                return true;
+            }
+
+        }
 
         //public bool LoginIsValid
         //{
         //    get => !string.IsNullOrEmpty(LoginEmail) && !string.IsNullOrEmpty(LoginPassword) && LoginEmail.Contains("@") && Regex.IsMatch(LoginEmail, @"\.[a-zA-Z]{2,}$");
         //}
-        public bool RegisterIsValid
-        {
-            get => !string.IsNullOrEmpty(RegisterEmail) && !string.IsNullOrEmpty(RegisterUserName) && !string.IsNullOrEmpty(RegisterPassword) && RegisterPassword == RegisterPasswordRepeat && RegisterEmail.Contains("@") && Regex.IsMatch(RegisterEmail, @"\.[a-zA-Z]{2,}$");
-        }
+        //public bool RegisterIsValid
+        //{
+        //    get => !string.IsNullOrEmpty(RegisterEmail) && !string.IsNullOrEmpty(RegisterUserName) && !string.IsNullOrEmpty(RegisterPassword) && RegisterPassword == RegisterPasswordRepeat && RegisterEmail.Contains("@") && Regex.IsMatch(RegisterEmail, @"\.[a-zA-Z]{2,}$");
+        //}
 
         private void LoginMessage()
         {
@@ -244,6 +310,7 @@ namespace ChatApp.ViewModels
 
                 IsLoggedIn = true;
                 LoginInfoBarMessage = $"Pomyślnie zalogowano jako {LoggedUserNameField}";
+                ShellPage.CurrentLoggedUserLabel.Content = LoggedUserNameField;
             }
             else
             {

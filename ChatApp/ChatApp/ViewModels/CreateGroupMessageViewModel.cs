@@ -1,5 +1,6 @@
 ﻿using ChatApp.Commands;
 using ChatApp.DBModels;
+using ChatApp.Views;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.UI.Xaml.Controls;
 using System;
@@ -54,6 +55,8 @@ namespace ChatApp.ViewModels
 
             context.Groups.Add(group);
             context.SaveChanges();
+
+            ShellPage.ContentFramePublic.Navigate(typeof(GroupMessagePage));
         }
 
         public void LoadPeople()

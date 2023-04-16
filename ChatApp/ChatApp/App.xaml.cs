@@ -56,7 +56,6 @@ namespace ChatApp
             //shellPage.MainContentFrame.Navigate(typeof(LoginPage));
             // Wyświetl okno
             window.ExtendsContentIntoTitleBar = true;
-            
             window.SetTitleBar(shellPage.CustomAppTitleBar);
             window.Activate();
         }

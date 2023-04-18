@@ -30,8 +30,10 @@ namespace ChatApp
         public MainWindow()
         {
             this.InitializeComponent();
-
+            Width = 1350;
+            Height = 800;
         }
 
     }
+    
 }

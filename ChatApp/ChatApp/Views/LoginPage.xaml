@@ -20,19 +20,15 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="220"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="150"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="450"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="225"/>
+            <ColumnDefinition Width="225"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="1" Grid.Column="0" Margin="28,10,0,0" Style="{ThemeResource TitleTextBlockStyle}" Text="Logowanie"/>
         <TextBox Grid.Row="2" Grid.Column="0" x:Name="LoginEmail" Text="{Binding LoginEmail , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10,7,50,10" PlaceholderText="E-mail"/>
@@ -42,19 +38,20 @@
         <InfoBar Grid.Row="5" Grid.RowSpan="3" x:Name="LoginFail" Width="auto" Title="Błąd logowania" Message="{Binding LoginErrorInfo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsOpen="{Binding LoginErrorVisibility}" Severity="Error" Margin="10,5,50,5"/>
         <!--<TextBlock Grid.Row="4" Grid.Column="0" Foreground="Red" Text="{Binding LoginEmailErrorInfo, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding LoginErrorVisibility}" Margin="130,12,50,10" />
         <TextBlock Grid.Row="4" Grid.Column="0" Foreground="Red" Text="{Binding LoginPasswordErrorInfo, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding LoginErrorVisibility}" Margin="130,20,50,10" />-->
-        <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="0" Y2="9000" StrokeThickness="2" Grid.Column="1" Grid.Row="1" Grid.RowSpan="15" />
+        <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="0" Y2="9000" StrokeThickness="2" Grid.Column="1" Grid.Row="1" Grid.RowSpan="7" />
 
-        <TextBlock Grid.Row="6" Grid.Column="0" Margin="28,10,0,0" Style="{ThemeResource TitleTextBlockStyle}" Text="Rejestracja"/>
-        <TextBox Grid.Row="7" Grid.Column="0"  Margin="10,7,50,10" PlaceholderText="E-mail" Text="{Binding RegisterEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox Grid.Row="8" Grid.Column="0"  Margin="10,7,50,10" PlaceholderText="Login" Text="{Binding RegisterUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <PasswordBox Grid.Row="9" Grid.Column="0"  Margin="10,7,50,10" PlaceholderText="Hasło" Password="{Binding RegisterPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <PasswordBox Grid.Row="10" Grid.Column="0" Margin="10,7,50,10" PlaceholderText="Powtórz hasło" Password="{Binding RegisterPasswordRepeat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <Button Grid.Row="11" Grid.Column="0" Style="{StaticResource AccentButtonStyle}" Command="{Binding RegisterCommand}" Margin="10,7,50,10" Content="Zarejestruj się" />
-        <InfoBar Grid.Row="12" Grid.RowSpan="3" x:Name="RegisterSuccess" Width="auto" Message="{Binding RegisterInfoBarMessage}" IsOpen="{Binding IsLoggedIn}" Severity="Success" Margin="10,5,50,5"/>
-        <InfoBar Grid.Row="12" Grid.RowSpan="3" x:Name="RegisterErrorInfo" Title="Błąd rejestracji" Message="{Binding RegisterErrorInfo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsOpen="{Binding RegisterErrorVisibility}" Width="auto" Severity="Error" Margin="10,5,50,5"/>
+        <TextBlock Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Margin="28,10,0,0" Style="{ThemeResource TitleTextBlockStyle}" Text="Rejestracja"/>
+        <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Margin="10,7,50,10" PlaceholderText="E-mail" Text="{Binding RegisterEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Margin="10,7,50,10" PlaceholderText="Login" Text="{Binding RegisterUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <PasswordBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Margin="10,7,50,10" PlaceholderText="Hasło" Password="{Binding RegisterPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <PasswordBox Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" Margin="10,7,50,10" PlaceholderText="Powtórz hasło" Password="{Binding RegisterPasswordRepeat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource AccentButtonStyle}" Command="{Binding RegisterCommand}" Margin="10,7,50,10" Content="Zarejestruj się" />
+        <InfoBar Grid.Row="7" Grid.RowSpan="2" Grid.ColumnSpan="2" x:Name="RegisterSuccess" Width="auto" Message="{Binding RegisterInfoBarMessage}" IsOpen="{Binding IsLoggedIn}" Severity="Success" Margin="10,5,50,5"/>
+        <InfoBar Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="2" x:Name="RegisterErrorInfo" Title="Błąd rejestracji" Message="{Binding RegisterErrorInfo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsOpen="{Binding RegisterErrorVisibility}" Width="auto" Severity="Error" Margin="10,5,50,5"/>
 
-        <Image Source="/Assets/Cat.png" Height="50" Grid.Column="2" Grid.Row="3" Margin="-100,0,0,0"/>
-        <TextBlock Grid.Column="2" Grid.Row="5" Grid.RowSpan="7" TextWrapping="Wrap" VerticalAlignment="Center" Margin="-100,0,0,0">
+        <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="9000" Y2="0" StrokeThickness="2" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="8" Margin="0,25,0,0"/>
+        <Image Source="/Assets/Cat.png" Height="50" Grid.Column="3" Grid.Row="9"/>
+        <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="9" TextWrapping="Wrap" VerticalAlignment="Center">
             Koci kącik rozmów to miejsce które stworzyliśmy aby umożliwić wszystkim kociakom rozmowy między sobą.<LineBreak/>
             Możesz prowadzić rozmowę tylko z jednym kotkiem, ale możliwe jest także zgromadzenie stada i rozmawiania z wszystkimi jego członkami na raz!<LineBreak/>
             Włożyliśmy w tą aplikację mnóstwo serca i kawy, więc mamy nadzieję, że każdy kociak który do nas dołączy będzie się tutaj bawił jeszcze lepiej niż z kłębkiem włóczki :3<LineBreak/>

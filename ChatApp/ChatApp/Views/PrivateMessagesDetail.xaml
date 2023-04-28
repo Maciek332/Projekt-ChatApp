@@ -7,14 +7,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ChatApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:local1="using:ChatApp.Models"
     mc:Ignorable="d">
     <Page.Resources>
-        <DataTemplate x:Key="MessageViewTemplate" x:DataType="local:PrivateMessage">
-            <Grid Height="Auto" Margin="4" HorizontalAlignment="{x:Bind MsgAlignment}">
+        <DataTemplate x:Key="MessageViewTemplate" x:DataType="local1:PrivateMessage">
+            <Grid Height="Auto" Margin="4" HorizontalAlignment="{x:Bind MessageAligment}">
                 <StackPanel MinHeight="75" Width="350" Padding="10, 0, 0, 10" Background="{StaticResource AccentAAFillColorTertiaryBrush}" CornerRadius="{StaticResource ControlCornerRadius}">
-                    <TextBlock Text="{x:Bind MsgText}" Padding="0, 10, 0, 0" FontSize="20" Foreground="{ThemeResource SystemColorHighlightTextColor}" TextWrapping="Wrap"/>
-                    <TextBlock Text="{x:Bind MsgDateTime}" Padding="0, 0, 0, 10" FontSize="15" Foreground="{ThemeResource SystemColorHighlightTextColor}" TextWrapping="Wrap"/>
+                    <TextBlock Text="{x:Bind MessageText}" Padding="0, 10, 0, 0" FontSize="20" Foreground="{ThemeResource SystemColorHighlightTextColor}" TextWrapping="Wrap"/>
+                    <TextBlock Text="{x:Bind MessageDateTime}" Padding="0, 0, 0, 10" FontSize="15" Foreground="{ThemeResource SystemColorHighlightTextColor}" TextWrapping="Wrap"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -37,10 +38,11 @@
             <TextBlock
                 VerticalAlignment="Center"
                 x:Name="UserName"
+                Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Style="{ThemeResource TitleTextBlockStyle}"
                 Grid.Row="0"
                 Grid.Column="0"/>
-            <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="10000" Y2="0" StrokeThickness="2" Grid.Row="1" Grid.ColumnSpan="3"/>
+            <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="10000" Y2="0" StrokeThickness="2" Grid.Row="1" Grid.ColumnSpan="3" />
             <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="10000" Y2="0" StrokeThickness="2" Grid.Row="3" Grid.ColumnSpan="3"/>
             <ScrollViewer
         Name="ForegroundElement"
@@ -52,8 +54,9 @@
 
             <ListView
                     x:Name="InvertedListView"
+                ItemsSource="{Binding MessagesList}"
                     ItemTemplate="{StaticResource MessageViewTemplate}"
-                    Grid.Row="2" Grid.ColumnSpan="4"
+                    Grid.Row="2" Grid.ColumnSpan="4" Margin="0,0,0,5"
                     SelectionMode="None">
 
                 <ListView.ItemsPanel>
@@ -72,9 +75,9 @@
 
             </ListView>
 
-            <TextBox x:Name="MessageField" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="1"/>
-            <Button Content="Wyślij" Click="AddItemToEnd" x:Uid="SendMessageButtonContent" Style="{StaticResource AccentButtonStyle}" Grid.Row="4" Grid.Column="2" ToolTipService.ToolTip="Wyślij Wiadomość"/>
-            <Button Content="Reply" Click="MessageReceived" Grid.Row="0" Grid.Column="2" Style="{StaticResource AccentButtonStyle}"/>
+            <TextBox x:Name="MessageField" Text="{Binding MessageContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding MessagePlaceholder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="1"/>
+            <Button Content="Wyślij" Command="{Binding SendMessageCommand}" x:Uid="SendMessageButtonContent" Style="{StaticResource AccentButtonStyle}" Grid.Row="4" Grid.Column="2" ToolTipService.ToolTip="Wyślij Wiadomość"/>
+            <Button Content="Reply" Grid.Row="0" Grid.Column="2" Command="{Binding ReplyMessageCommand}" Style="{StaticResource AccentButtonStyle}"/>
         </Grid>
     </Grid>
 </Page>

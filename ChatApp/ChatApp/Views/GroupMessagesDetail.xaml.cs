@@ -56,7 +56,7 @@ namespace ChatApp.Views
             var messageContent = MessageField.Text;
 
             InvertedListView.Items.Add(
-                new PrivateMessage(messageContent, DateTime.Now, HorizontalAlignment.Right)
+                new GroupMessage(messageContent, DateTime.Now, HorizontalAlignment.Right)
                 );
 
             MessageField.Text = String.Empty;

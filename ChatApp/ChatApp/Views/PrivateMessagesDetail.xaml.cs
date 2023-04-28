@@ -18,6 +18,8 @@ using Microsoft.UI.Xaml.Navigation;
 using Microsoft.VisualBasic;
 using Windows.System;
 using ChatApp.Models;
+using ChatApp.ViewModels;
+using ChatApp.DBModels;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -29,66 +31,20 @@ namespace ChatApp.Views
     /// </summary>
     public sealed partial class PrivateMessagesDetail : Page
     {
+        private PrivateMessagesDetailViewModel _viewModel { get; set; }
         public PrivateMessagesDetail()
         {
             InitializeComponent();
+
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var exampleParameter = e.Parameter as DBModels.User;
-            //string exampleParameter = e.Parameter as string;
-            if (exampleParameter != null)
+            base.OnNavigatedTo(e);
+            if (e.Parameter is DBModels.User user)
             {
-                UserName.Text = exampleParameter.UserName;
-                ToolTipService.SetToolTip(UserName, exampleParameter.EMail);
-                MessageField.PlaceholderText = $"Napisz do {exampleParameter.UserName}";
+                _viewModel = new PrivateMessagesDetailViewModel(user);
+                DataContext = _viewModel;
             }
-        }
-        private void AddItemToEnd(object sender, RoutedEventArgs e)
-        {
-            var messageContent = MessageField.Text;
-
-            InvertedListView.Items.Add(
-                new PrivateMessage(messageContent, DateTime.Now, HorizontalAlignment.Right)
-                );
-
-            MessageField.Text = String.Empty;
-
-        }
-
-        private void MessageReceived(object sender, RoutedEventArgs e)
-        {
-
-            InvertedListView.Items.Add(
-                new PrivateMessage("Message ", DateTime.Now, HorizontalAlignment.Left)
-                );
-            MessageField.Text = String.Empty;
-        }
-    }
-    public class PrivateMessage
-    {
-        public string MsgText
-        {
-            get; private set;
-        }
-        public DateTime MsgDateTime
-        {
-            get; private set;
-        }
-        public HorizontalAlignment MsgAlignment
-        {
-            get; set;
-        }
-        public PrivateMessage(string text, DateTime dateTime, HorizontalAlignment align)
-        {
-            MsgText = text;
-            MsgDateTime = dateTime;
-            MsgAlignment = align;
-        }
-
-        public override string ToString()
-        {
-            return MsgDateTime.ToString() + " " + MsgText;
         }
     }
 }

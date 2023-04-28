@@ -1,76 +1,72 @@
-﻿<Page
+<!-- Copyright (c) Microsoft Corporation and Contributors. -->
+<!-- Licensed under the MIT License. -->
+
+<Page
     x:Class="ChatApp.Views.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ChatApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:helpers="using:ChatApp.Helpers"
-    xmlns:xaml="using:Microsoft.UI.Xaml"
     mc:Ignorable="d">
-    <Page.Resources>
-        <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
-    </Page.Resources>
+
     <Grid>
-        <StackPanel
-            x:Name="ContentArea">
-            <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
-            <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                <TextBlock x:Uid="Settings_Theme" />
-
-                <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                    <RadioButton
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="180"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Personalizacja" Style="{ThemeResource TitleTextBlockStyle}" Margin="10,0,0,0" Grid.Row="0"/>
+        <StackPanel Margin="10,50,0,0" Grid.Row="1">
+            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Motywy" Margin="10,0,0,0" />
+            <StackPanel Margin="20,10,0,0">
+                <RadioButton
                         x:Uid="Settings_Theme_Light"
-                        Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                        IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}"
                         FontSize="15"
-                        GroupName="AppTheme">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Light</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
-                    <RadioButton
+                        GroupName="AppTheme"
+                        Content="Jasny">
+                </RadioButton>
+                <RadioButton
                         x:Uid="Settings_Theme_Dark"
-                        Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                        IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}"
                         FontSize="15"
-                        GroupName="AppTheme">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Dark</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
-                    <RadioButton
+                        GroupName="AppTheme"
+                        Content="Ciemny">
+                </RadioButton>
+                <RadioButton
                         x:Uid="Settings_Theme_Default"
-                        Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                        IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}"
                         FontSize="15"
-                        GroupName="AppTheme">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Default</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
-                </StackPanel>
+                        GroupName="AppTheme"
+                        Content="Systemowy">
+                </RadioButton>
             </StackPanel>
-
-            <TextBlock x:Uid="Settings_About" Style="{ThemeResource SubtitleTextBlockStyle}" />
-
-            <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                <TextBlock Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" />
-
-                <TextBlock
-                    x:Uid="Settings_AboutDescription"
-                    Margin="{StaticResource XSmallTopMargin}"
-                    Style="{ThemeResource BodyTextBlockStyle}" />
-
-                <HyperlinkButton x:Uid="SettingsPage_PrivacyTermsLink" Margin="{StaticResource SettingsPageHyperlinkButtonMargin}" />
-            </StackPanel>
-            <TextBlock x:Uid="Settings_Authors" Margin="{StaticResource XSmallTopMargin}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-            <RichTextBlock>
-
-                <Paragraph>Anna Więzik</Paragraph>
-                <Paragraph>Szymon Nycz</Paragraph>
-                <Paragraph>Krzysztof Walusiak</Paragraph>
-            </RichTextBlock>
-            <Image Source="/Assets/Cat.png" Height="50"/>
         </StackPanel>
+        <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="500" Y2="0" StrokeThickness="1" Grid.Row="3" Margin="10,0,0,0"/>
+
+        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="O Aplikacji" Grid.Row="4" Margin="20,0,0,0"/>
+
+        <StackPanel Grid.Row="5">
+            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" Margin="30,0,0,0">Koci kącik rozmów to aplikacja umożliwiająca wysyłanie i odbieranie wiadomości prywatnych jak i grupowych.</TextBlock>
+
+            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" />
+
+            <HyperlinkButton Content="Kliknij na mnie!" Margin="20,0,0,0" NavigateUri="https://www.youtube.com/watch?v=n8rVSB4Ej2U"/>
+        </StackPanel>
+        <TextBlock Text="Autorzy" Style="{ThemeResource SubtitleTextBlockStyle}" Grid.Row="6" Margin="20,10,0,0"/>
+        <RichTextBlock Grid.Row="7" Margin="30,10,0,0">
+            <Paragraph>Anna Więzik</Paragraph>
+            <Paragraph>Szymon Nycz</Paragraph>
+            <Paragraph>Krzysztof Walusiak</Paragraph>
+        </RichTextBlock>
+        <Image Source="/Assets/Cat.png" Height="50" Grid.Column="1" Grid.Row="5"/>
     </Grid>
 </Page>

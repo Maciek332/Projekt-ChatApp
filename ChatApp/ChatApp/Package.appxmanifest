@@ -2,21 +2,15 @@
 
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
-  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  xmlns:genTemplate="http://schemas.microsoft.com/appx/developer/templatestudio"
-  xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
-  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
-  IgnorableNamespaces="uap rescap genTemplate">
+  IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="88a0f909-4f9e-4c37-ae7a-6aab63346e54"
+    Name="19a03b06-f897-44d4-95a1-d4306caffddf"
     Publisher="CN=Szymon"
     Version="1.0.0.0" />
-    
-  <mp:PhoneIdentity PhoneProductId="88a0f909-4f9e-4c37-ae7a-6aab63346e54" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
-    
+
   <Properties>
     <DisplayName>ChatApp</DisplayName>
     <PublisherDisplayName>Szymon</PublisherDisplayName>
@@ -37,40 +31,18 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="ms-resource:AppDisplayName"
-        Description="ms-resource:AppDescription"
+        DisplayName="ChatApp"
+        Description="ChatApp"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
-      <Extensions>
-          <desktop:Extension Category="windows.toastNotificationActivation">
-              <desktop:ToastNotificationActivation ToastActivatorCLSID="0b5a09cb-4919-4f40-8eb4-61b4fb5a4657" />
-          </desktop:Extension>
-
-          <com:Extension Category="windows.comServer">
-              <com:ComServer>
-                  <com:ExeServer Executable="ChatApp.exe" Arguments="----AppNotificationActivated:" DisplayName="Toast activator">
-                      <com:Class Id="0b5a09cb-4919-4f40-8eb4-61b4fb5a4657" DisplayName="Toast activator"/>
-                  </com:ExeServer>
-              </com:ComServer>
-          </com:Extension>
-      </Extensions>
     </Application>
   </Applications>
 
   <Capabilities>
     <rescap:Capability Name="runFullTrust" />
   </Capabilities>
-
-  <genTemplate:Metadata>
-    <genTemplate:Item Name="generator" Value="Template Studio"/>
-    <genTemplate:Item Name="wizardVersion" Version="v5.3" />
-    <genTemplate:Item Name="projectType" Value="NavView" />
-    <genTemplate:Item Name="framework" Value="MVVMToolkit" />
-    <genTemplate:Item Name="platform" Value="WinUI" />
-    <genTemplate:Item Name="appmodel" Value="Desktop" />
-  </genTemplate:Metadata>
 </Package>

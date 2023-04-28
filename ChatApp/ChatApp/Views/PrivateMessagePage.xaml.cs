@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation and Contributors.
 // Licensed under the MIT License.
 
+using ChatApp.DBModels;
+using ChatApp.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -10,6 +12,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -24,11 +27,17 @@ namespace ChatApp.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class SettingsPage : Page
+    public sealed partial class PrivateMessagePage : Page
     {
-        public SettingsPage()
+        //public ObservableCollection<User> Users { get; set; } = new ObservableCollection<User>();
+        public PrivateMessagesPageViewModel _viewModel { get; set; }
+
+        public PrivateMessagePage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            _viewModel = new PrivateMessagesPageViewModel(PrivateMessageDetailsFrame);
+            DataContext = _viewModel;
         }
     }
+
 }

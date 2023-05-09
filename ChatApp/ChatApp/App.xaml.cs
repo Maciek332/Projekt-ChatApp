@@ -18,9 +18,14 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Fleck;
 using ChatApp.Views;
-using WinUIEx;
+using WebSocketSharp;
+using ChatApp.Services;
 using Microsoft.UI;
+using Microsoft.AspNetCore.SignalR.Client;
+using ChatApp.ViewModels;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -47,6 +52,35 @@ namespace ChatApp
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
+            HubConnection connection = new HubConnectionBuilder()
+                .WithUrl("http://localhost:5281/messagehub")
+                .Build();
+
+            //var server = new WebSocketServer("ws://localhost:8080");
+
+            //server.Start(socket =>
+            //{
+            //    socket.OnOpen = () =>
+            //    {
+            //        Console.WriteLine("Połączenie nawiązane.");
+            //    };
+
+            //    socket.OnClose = () =>
+            //    {
+            //        Console.WriteLine("Połączenie zamknięte.");
+            //    };
+
+            //    socket.OnMessage = message =>
+            //    {
+            //        Console.WriteLine("Otrzymano wiadomość: " + message);
+            //        // Tu przesyłaj wiadomość do drugiej aplikacji
+            //    };
+            //});
+
+            //Console.ReadLine();
+
+            //PrivateMessagesDetailViewModel privateMessagesDetailViewModel = PrivateMessagesDetailViewModel.CreatedConnectedViewModel(new ISignalRChatService(connection));
+
             Window window = new MainWindow();
             window.Title = "Koci kącik rozmów :3";
             ShellPage shellPage = new ShellPage();
@@ -59,6 +93,5 @@ namespace ChatApp
             window.SetTitleBar(shellPage.CustomAppTitleBar);
             window.Activate();
         }
-
     }
 }

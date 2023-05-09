@@ -1,13 +1,18 @@
 ﻿using ChatApp.Commands;
+using ChatApp.DBModels;
 using ChatApp.Models;
+using ChatApp.Services;
 using ChatApp.Views;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ChatApp.ViewModels
 {
@@ -17,6 +22,11 @@ namespace ChatApp.ViewModels
         private string _userName;
         private string _messageContent;
         private string _messagePaleholder;
+        private SignalRChatService _chatServices;
+        private readonly ChatServices _chatService1;
+        private readonly ChatServices _chatService2;
+        private HubConnection _hubConnection1;
+        private HubConnection _hubConnection2; 
         public string UserName
         {
             get { return _userName; }
@@ -57,6 +67,220 @@ namespace ChatApp.ViewModels
             }
         }
 
+        private string _errorMessage = string.Empty;
+        public string ErrorMessage
+        {
+            get
+            {
+                return _errorMessage;
+            }
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged(nameof(ErrorMessage));
+                OnPropertyChanged(nameof(HasErrorMessage));
+            }
+        }
+
+        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
+
+        private bool _isConnected;
+        public bool IsConnected
+        {
+            get
+            {
+                return _isConnected;
+            }
+            set
+            {
+                _isConnected = value;
+                OnPropertyChanged(nameof(IsConnected));
+            }
+        }
+
+        public ObservableCollection<PrivateMessagesPageViewModel> Messages { get; }
+        public ICommand SendMessageChatCommand { get; }
+        //public PrivateMessagesDetailViewModel(ISignalRChatService chatService)
+        //{
+        //    SendMessageChatCommand = new SendMessageChatCommand(this, chatService);
+
+        //    Messages = new ObservableCollection<PrivateMessagesPageViewModel>();
+
+        //    chatService.MessageReceived += ChatService_MessageReceived;
+        //}
+
+        //public static PrivateMessagesDetailViewModel CreatedConnectedViewModel(ISignalRChatService chatsService)
+        //{
+        //    PrivateMessagesDetailViewModel viewModel = new PrivateMessagesDetailViewModel(chatsService);
+
+        //    chatsService.Connect().ContinueWith(task =>
+        //    {
+        //        if (task.Exception != null)
+        //        {
+        //            viewModel.ErrorMessage = "Unable to connect to hub!";
+        //        }
+        //    });
+
+        //    return viewModel;
+        //}
+
+        public PrivateMessagesDetailViewModel()
+        {
+            _chatService1 = new ChatServices();
+            _chatService2 = new ChatServices();
+
+            // połączenie z serwerem SignalR dla pierwszej instancji
+            _hubConnection1 = new HubConnectionBuilder()
+                .WithUrl("http://localhost:5000/chatHub")
+                .Build();
+
+            // obsługa odebrania wiadomości dla pierwszej instancji
+            _hubConnection1.On<string, string>("ReceiveMessage", (user, message) =>
+            {
+                // dodanie odebranej wiadomości do listy wiadomości
+                MessagesList.Add(new PrivateMessage(message, DateTime.Now, HorizontalAlignment.Left));
+            });
+
+            // połączenie z serwerem SignalR dla drugiej instancji
+            _hubConnection2 = new HubConnectionBuilder()
+                .WithUrl("http://localhost:5000/chatHub")
+                .Build();
+
+            // obsługa odebrania wiadomości dla drugiej instancji
+            _hubConnection2.On<string, string>("ReceiveMessage", (user, message) =>
+            {
+                // dodanie odebranej wiadomości do listy wiadomości
+                MessagesList.Add(new PrivateMessage(message, DateTime.Now, HorizontalAlignment.Left));
+            });
+
+            // rozpoczęcie połączenia z serwerem SignalR dla obu instancji
+            Task.WhenAll(
+                _hubConnection1.StartAsync(),
+                _hubConnection2.StartAsync());
+        }
+
+        public async Task SendMessage1(string user, string message)
+        {
+            await _hubConnection1.InvokeAsync("SendMessage", user, message);
+        }
+
+        // metoda do wysyłania wiadomości dla drugiej instancji
+        public async Task SendMessage2(string user, string message)
+        {
+            await _hubConnection2.InvokeAsync("SendMessage", user, message);
+        }
+
+        private void ChatService_MessageReceived(DBModels.Models.Message message)
+        {
+            MessagesList.Add(new PrivateMessage(message.MessageContent, message.SentDate, HorizontalAlignment.Left));
+        }
+
+        public void SendMessageButton_Click(object sender, RoutedEventArgs e)
+        {
+            var message = new ChatApp.DBModels.Models.Message
+            {
+                MessageContent = MessageContent
+            };
+            _chatServices.SendMessage(message);
+        }
+
+        public PrivateMessagesDetailViewModel(SignalRChatService chatService)
+        {
+            // ...
+
+            //chatService.MessageReceived += ChatService_MessageReceived;
+        }
+
+        //public PrivateMessagesDetailViewModel(ISignalRChatService chatService, PrivateMessagesDetailViewModel mainViewModel)
+        //{
+        //    _chatServices = chatService;
+        //    _mainViewModel = mainViewModel;
+        //    _chatServices.MessageReceived += ChatService_MessageReceived;
+        //}
+
+        //private void ChatService_MessageReceived(DBModels.Models.Message message)
+        //{
+        //    MessagesList.Add(new PrivateMessage(message.MessageContent, message.SentDate, HorizontalAlignment.Left));
+        //    _mainViewModel.UpdateMessagesList(MessagesList);
+        //}
+
+        //public void AddMessage(string message)
+        //{
+        //    MessagesList.Add(message);
+        //}
+
+        //public async Task SendMessageAsync(string messageContent)
+        //{
+        //    var message = new Message
+        //    {
+        //        MessageAuthor = 1,
+        //        MessageContent = messageContent
+        //    };
+
+        //    await _chatServices.SendMessage(message);
+        //}
+
+        //public PrivateMessagesDetailViewModel(ISignalRChatService chatService)
+        //{
+        //    _chatServices = chatService;
+        //    _chatServices.MessageReceived += OnMessageReceived;
+        //}
+
+        private void OnMessageReceived(Message message)
+        {
+            // Przetworzenie odebranej wiadomości i dodanie jej do listy wiadomości.
+            // ...
+
+            // Powiadomienie widoku o zmianie listy wiadomości.
+            OnPropertyChanged(nameof(MessagesList));
+        }
+
+        //public PrivateMessagesDetailViewModel()
+        //{
+        //    _chatServices.MessageSent += ChatService_MessageSent;
+        //}
+
+        //private void ChatService_MessageSent(object sender, Message message)
+        //{
+        //    // Dodaj odebraną wiadomość do listy wiadomości.
+        //    _messages.Add(message);
+        //}
+        //public void AddMessage(string message)
+        //{
+        //    MessagesList.Add(message);
+        //}
+
+        //public PrivateMessagesDetailViewModel(ISignalRChatService chatService, PrivateMessagesDetailViewModel mainViewModel)
+        //{
+        //    _chatServices = chatService;
+        //    _mainViewModel = mainViewModel;
+        //    _chatServices.MessageSent += ChatService_MessageReceived;
+        //}
+
+        //private void ChatService_MessageReceived(DBModels.Models.Message message)
+        //{
+        //    MessagesList.Add(new PrivateMessage(message.Content, message.Timestamp, HorizontalAlignment.Left));
+        //    _mainViewModel.UpdateMessagesList(MessagesList);
+        //}
+
+        //private void ChatService_MessageReceived(DBModels.Models.Message message)
+        //{
+        //    Messages.Add(new PrivateMessagesPageViewModel(message));
+        //}
+
+        //public void SendMessageButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var message = new Message
+        //    {
+        //        MessageAuthor = 1,
+        //        MessageContent = MessageContent
+        //    };
+
+        //    _chatServices.SendMessage(message);
+        //}
+
+
+
         public RelayCommand<string> SendMessageCommand { get; set; }
         public RelayCommand<string> ReplyMessageCommand { get; set; }
         public PrivateMessagesDetailViewModel(DBModels.User user)
@@ -73,6 +297,7 @@ namespace ChatApp.ViewModels
         {
             MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Right));
             MessageContent = string.Empty;
+
         }
 
         private void ReplyMessageAndSend()

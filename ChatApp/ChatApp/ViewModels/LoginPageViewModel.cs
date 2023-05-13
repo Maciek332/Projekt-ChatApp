@@ -169,6 +169,29 @@ namespace ChatApp.ViewModels
                 OnPropertyChanged(nameof(IsLoggedIn));
             }
         }
+
+        private bool _isRegistering;
+        public bool IsRegistering
+        {
+            get { return _isRegistering; }
+            set
+            {
+                _isRegistering = value;
+                OnPropertyChanged(nameof(IsRegistering));
+            }
+        }
+
+        private bool _isLogging;
+        public bool IsLogging
+        {
+            get { return _isLogging; }
+            set
+            {
+                _isLogging = value;
+                //OnPropertyChanged(nameof(IsLogging));
+            }
+        }
+
         private bool _isRegisteredIn;
         public bool IsRegisteredIn
         {
@@ -292,6 +315,9 @@ namespace ChatApp.ViewModels
 
         private void LoginMessage()
         {
+            //IsLogging = true;
+            //await LoginTask();
+            //IsLogging = false;
             using var context = new ChatDbContext();
             var updateLoginStaus = context.Users
                 .Where(x => x.EMail == LoginEmail && x.Password == LoginPassword)
@@ -320,21 +346,42 @@ namespace ChatApp.ViewModels
             }
         }
 
-        private void RegisterMessage()
+        //private async Task<List<User>> LoginTask()
+        //{
+        //    var result = Task.Run(() =>
+        //    {
+                
+        //    });
+            //await result;
+        //}
+
+        private async void RegisterMessage()
         {
-            using var context = new ChatDbContext();
-            var RegisterUser = new User
-            {
-                EMail = RegisterEmail,
-                UserName = RegisterUserName,
-                Password = RegisterPassword,
-                IsLogedIn = false,
-                RegisterDate = DateTime.Now
-            };
-            context.Users.Add(RegisterUser);
-            context.SaveChanges();
+            IsRegistering = true;
+            await RegisterTask();
+            IsRegistering = false;
             IsRegisteredIn = true;
             RegisterInfoBarMessage = $"Pomyślnie zarejestrowano użytkownika o danych:\nE-mail: {RegisterEmail}\nLogin: {RegisterUserName}\nHasło: {RegisterPassword}";
+        }
+
+        private async Task RegisterTask()
+        {
+            var result = Task.Run(() =>
+            {
+                using var context = new ChatDbContext();
+                var RegisterUser = new User
+                {
+                    EMail = RegisterEmail,
+                    UserName = RegisterUserName,
+                    Password = RegisterPassword,
+                    IsLogedIn = false,
+                    RegisterDate = DateTime.Now
+                };
+                context.Users.Add(RegisterUser);
+                context.SaveChanges();
+            });
+            await result;
+            //var result = await Task.Run(() => context.SaveChanges());
         }
     }
 }

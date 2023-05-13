@@ -5,6 +5,7 @@ using ChatApp.Services;
 using ChatApp.Views;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,7 +19,7 @@ namespace ChatApp.ViewModels
 {
     public class PrivateMessagesDetailViewModel : BaseViewModel
     {
-        public ObservableCollection<PrivateMessage> MessagesList { get; } = new ObservableCollection<PrivateMessage>();
+        public ObservableCollection<PrivateMessage> MessagesList { get; set; } = new ObservableCollection<PrivateMessage>();
         private string _userName;
         private string _messageContent;
         private string _messagePaleholder;
@@ -177,9 +178,15 @@ namespace ChatApp.ViewModels
 
         public void SendMessageButton_Click(object sender, RoutedEventArgs e)
         {
+
+            using var context = new ChatDbContext();
+
+         
+
             var message = new ChatApp.DBModels.Models.Message
             {
                 MessageContent = MessageContent
+                
             };
             _chatServices.SendMessage(message);
         }
@@ -296,6 +303,19 @@ namespace ChatApp.ViewModels
         private void CreateMessageAndSend()
         {
             MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Right));
+
+            var context = new ChatDbContext();
+
+            var message = new Message
+            {
+                MessageContent = MessageContent,
+                MessageAuthor = 1,
+                MessageDestination = 1
+
+            };
+
+            context.Add(message);
+            context.SaveChanges();
             MessageContent = string.Empty;
 
         }

@@ -6,20 +6,6 @@ namespace ChatApp.SignalR
 {
     public class Program
     {
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddRazorPages();
-            services.AddSignalR().AddAzureSignalR();
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapRazorPages();
-                endpoints.MapHub<ChatHub>("/chatHub");
-            });
-        }
 
         public static void Main(string[] args)
         {
@@ -47,6 +33,7 @@ namespace ChatApp.SignalR
             //Console.ReadLine();
 
             builder.Services.AddRazorPages();
+            builder.Services.AddSignalR();
 
             var app = builder.Build();
 
@@ -59,16 +46,12 @@ namespace ChatApp.SignalR
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            //app.UseEndpoints(endpoint =>
-            //{
-            //    endpoint.MapHub<ChatHub>("/messagehub");
-            //});
-
             app.UseRouting();
 
             app.UseAuthorization();
 
             app.MapRazorPages();
+            app.MapHub<ChatHub>("/chatHub");
 
             app.Run();
         }

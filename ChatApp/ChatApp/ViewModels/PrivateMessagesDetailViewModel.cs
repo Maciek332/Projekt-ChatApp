@@ -101,29 +101,6 @@ namespace ChatApp.ViewModels
 
         public ObservableCollection<PrivateMessagesPageViewModel> Messages { get; }
         public ICommand SendMessageChatCommand { get; }
-        //public PrivateMessagesDetailViewModel(ISignalRChatService chatService)
-        //{
-        //    SendMessageChatCommand = new SendMessageChatCommand(this, chatService);
-
-        //    Messages = new ObservableCollection<PrivateMessagesPageViewModel>();
-
-        //    chatService.MessageReceived += ChatService_MessageReceived;
-        //}
-
-        //public static PrivateMessagesDetailViewModel CreatedConnectedViewModel(ISignalRChatService chatsService)
-        //{
-        //    PrivateMessagesDetailViewModel viewModel = new PrivateMessagesDetailViewModel(chatsService);
-
-        //    chatsService.Connect().ContinueWith(task =>
-        //    {
-        //        if (task.Exception != null)
-        //        {
-        //            viewModel.ErrorMessage = "Unable to connect to hub!";
-        //        }
-        //    });
-
-        //    return viewModel;
-        //}
 
         public PrivateMessagesDetailViewModel()
         {
@@ -198,41 +175,6 @@ namespace ChatApp.ViewModels
             //chatService.MessageReceived += ChatService_MessageReceived;
         }
 
-        //public PrivateMessagesDetailViewModel(ISignalRChatService chatService, PrivateMessagesDetailViewModel mainViewModel)
-        //{
-        //    _chatServices = chatService;
-        //    _mainViewModel = mainViewModel;
-        //    _chatServices.MessageReceived += ChatService_MessageReceived;
-        //}
-
-        //private void ChatService_MessageReceived(DBModels.Models.Message message)
-        //{
-        //    MessagesList.Add(new PrivateMessage(message.MessageContent, message.SentDate, HorizontalAlignment.Left));
-        //    _mainViewModel.UpdateMessagesList(MessagesList);
-        //}
-
-        //public void AddMessage(string message)
-        //{
-        //    MessagesList.Add(message);
-        //}
-
-        //public async Task SendMessageAsync(string messageContent)
-        //{
-        //    var message = new Message
-        //    {
-        //        MessageAuthor = 1,
-        //        MessageContent = messageContent
-        //    };
-
-        //    await _chatServices.SendMessage(message);
-        //}
-
-        //public PrivateMessagesDetailViewModel(ISignalRChatService chatService)
-        //{
-        //    _chatServices = chatService;
-        //    _chatServices.MessageReceived += OnMessageReceived;
-        //}
-
         private void OnMessageReceived(Message message)
         {
             // Przetworzenie odebranej wiadomości i dodanie jej do listy wiadomości.
@@ -241,52 +183,6 @@ namespace ChatApp.ViewModels
             // Powiadomienie widoku o zmianie listy wiadomości.
             OnPropertyChanged(nameof(MessagesList));
         }
-
-        //public PrivateMessagesDetailViewModel()
-        //{
-        //    _chatServices.MessageSent += ChatService_MessageSent;
-        //}
-
-        //private void ChatService_MessageSent(object sender, Message message)
-        //{
-        //    // Dodaj odebraną wiadomość do listy wiadomości.
-        //    _messages.Add(message);
-        //}
-        //public void AddMessage(string message)
-        //{
-        //    MessagesList.Add(message);
-        //}
-
-        //public PrivateMessagesDetailViewModel(ISignalRChatService chatService, PrivateMessagesDetailViewModel mainViewModel)
-        //{
-        //    _chatServices = chatService;
-        //    _mainViewModel = mainViewModel;
-        //    _chatServices.MessageSent += ChatService_MessageReceived;
-        //}
-
-        //private void ChatService_MessageReceived(DBModels.Models.Message message)
-        //{
-        //    MessagesList.Add(new PrivateMessage(message.Content, message.Timestamp, HorizontalAlignment.Left));
-        //    _mainViewModel.UpdateMessagesList(MessagesList);
-        //}
-
-        //private void ChatService_MessageReceived(DBModels.Models.Message message)
-        //{
-        //    Messages.Add(new PrivateMessagesPageViewModel(message));
-        //}
-
-        //public void SendMessageButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    var message = new Message
-        //    {
-        //        MessageAuthor = 1,
-        //        MessageContent = MessageContent
-        //    };
-
-        //    _chatServices.SendMessage(message);
-        //}
-
-
 
         public RelayCommand<string> SendMessageCommand { get; set; }
         public RelayCommand<string> ReplyMessageCommand { get; set; }

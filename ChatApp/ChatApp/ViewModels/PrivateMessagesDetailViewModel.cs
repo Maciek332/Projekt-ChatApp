@@ -24,10 +24,6 @@ namespace ChatApp.ViewModels
         private string _messageContent;
         private string _messagePaleholder;
         private SignalRChatService _chatServices;
-        private readonly ChatServices _chatService1;
-        private readonly ChatServices _chatService2;
-        private HubConnection _hubConnection1;
-        private HubConnection _hubConnection2; 
         public string UserName
         {
             get { return _userName; }
@@ -99,66 +95,11 @@ namespace ChatApp.ViewModels
             }
         }
 
-        public ObservableCollection<PrivateMessagesPageViewModel> Messages { get; }
-        public ICommand SendMessageChatCommand { get; }
-
-        public PrivateMessagesDetailViewModel()
-        {
-            _chatService1 = new ChatServices();
-            _chatService2 = new ChatServices();
-
-            // połączenie z serwerem SignalR dla pierwszej instancji
-            _hubConnection1 = new HubConnectionBuilder()
-                .WithUrl("http://localhost:5000/chatHub")
-                .Build();
-
-            // obsługa odebrania wiadomości dla pierwszej instancji
-            _hubConnection1.On<string, string>("ReceiveMessage", (user, message) =>
-            {
-                // dodanie odebranej wiadomości do listy wiadomości
-                MessagesList.Add(new PrivateMessage(message, DateTime.Now, HorizontalAlignment.Left));
-            });
-
-            // połączenie z serwerem SignalR dla drugiej instancji
-            _hubConnection2 = new HubConnectionBuilder()
-                .WithUrl("http://localhost:5000/chatHub")
-                .Build();
-
-            // obsługa odebrania wiadomości dla drugiej instancji
-            _hubConnection2.On<string, string>("ReceiveMessage", (user, message) =>
-            {
-                // dodanie odebranej wiadomości do listy wiadomości
-                MessagesList.Add(new PrivateMessage(message, DateTime.Now, HorizontalAlignment.Left));
-            });
-
-            // rozpoczęcie połączenia z serwerem SignalR dla obu instancji
-            Task.WhenAll(
-                _hubConnection1.StartAsync(),
-                _hubConnection2.StartAsync());
-        }
-
-        public async Task SendMessage1(string user, string message)
-        {
-            await _hubConnection1.InvokeAsync("SendMessage", user, message);
-        }
-
-        // metoda do wysyłania wiadomości dla drugiej instancji
-        public async Task SendMessage2(string user, string message)
-        {
-            await _hubConnection2.InvokeAsync("SendMessage", user, message);
-        }
-
-        private void ChatService_MessageReceived(DBModels.Models.Message message)
-        {
-            MessagesList.Add(new PrivateMessage(message.MessageContent, message.SentDate, HorizontalAlignment.Left));
-        }
-
         public void SendMessageButton_Click(object sender, RoutedEventArgs e)
         {
 
             using var context = new ChatDbContext();
 
-         
 
             var message = new ChatApp.DBModels.Models.Message
             {
@@ -166,22 +107,6 @@ namespace ChatApp.ViewModels
                 
             };
             _chatServices.SendMessage(message);
-        }
-
-        public PrivateMessagesDetailViewModel(SignalRChatService chatService)
-        {
-            // ...
-
-            //chatService.MessageReceived += ChatService_MessageReceived;
-        }
-
-        private void OnMessageReceived(Message message)
-        {
-            // Przetworzenie odebranej wiadomości i dodanie jej do listy wiadomości.
-            // ...
-
-            // Powiadomienie widoku o zmianie listy wiadomości.
-            OnPropertyChanged(nameof(MessagesList));
         }
 
         public RelayCommand<string> SendMessageCommand { get; set; }

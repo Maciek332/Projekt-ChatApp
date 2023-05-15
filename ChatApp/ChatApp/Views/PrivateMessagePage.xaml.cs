@@ -29,7 +29,7 @@ namespace ChatApp.Views
     /// </summary>
     public sealed partial class PrivateMessagePage : Page
     {
-        //public ObservableCollection<User> Users { get; set; } = new ObservableCollection<User>();
+        public ObservableCollection<User> Users { get; set; } = new ObservableCollection<User>();
         public PrivateMessagesPageViewModel _viewModel { get; set; }
 
         public PrivateMessagePage()

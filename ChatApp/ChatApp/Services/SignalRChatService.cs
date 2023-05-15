@@ -13,7 +13,7 @@ namespace ChatApp.Services
         private readonly HubConnection _connection;
 
         public event Action<Message> MessageReceived;
-        //public event EventHandler<Exception> ConnectionError;
+        public event EventHandler<Exception> ConnectionError;
 
         public SignalRChatService(HubConnection connection)
         {
@@ -21,21 +21,21 @@ namespace ChatApp.Services
 
             _connection.On<Message>("ReceiveColorMessage", (message) => MessageReceived?.Invoke(message));
 
-            //_connection = new HubConnectionBuilder()
-            //        .WithUrl("https://localhost:5001/hub")
-            //        .Build();
+            _connection = new HubConnectionBuilder()
+                    .WithUrl("https://localhost:5001/hub")
+                    .Build();
 
-            //_connection.On<Message>("ReceiveMessage", message =>
-            //{
-            //    MessageReceived?.DynamicInvoke(this, message);
-            //});
+            _connection.On<Message>("ReceiveMessage", message =>
+            {
+                MessageReceived?.DynamicInvoke(this, message);
+            });
 
-            //_connection.Closed += async (error) =>
-            //{
-            //    ConnectionError?.Invoke(this, error.InnerException);
-            //    await Task.Delay(new Random().Next(0, 5) * 1000);
-            //    await _connection.StartAsync();
-            //};
+            _connection.Closed += async (error) =>
+            {
+                ConnectionError?.Invoke(this, error.InnerException);
+                await Task.Delay(new Random().Next(0, 5) * 1000);
+                await _connection.StartAsync();
+            };
         }
 
         public async Task Connect()
@@ -43,10 +43,10 @@ namespace ChatApp.Services
             await _connection.StartAsync();
         }
 
-        //public async Task Disconnect()
-        //{
-        //    await _connection.StopAsync();
-        //}
+        public async Task Disconnect()
+        {
+            await _connection.StopAsync();
+        }
 
         public async Task SendMessage(Message message)
         {

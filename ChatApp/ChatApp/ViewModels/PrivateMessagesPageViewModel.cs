@@ -13,7 +13,6 @@ namespace ChatApp.ViewModels
     public class PrivateMessagesPageViewModel : BaseViewModel
     {
         public ObservableCollection<User> Users { get; set; } = new ObservableCollection<User>();
-        public ChatApp.DBModels.Models.Message Message { get; set; }
 
         private Frame _privateMessageDetailsFrame;
         public Frame PrivateMessageDetailFrame
@@ -31,11 +30,6 @@ namespace ChatApp.ViewModels
             PrivateMessageDetailFrame = privateMessageDetailsFrame;
 
             LoadPeople();
-        }
-
-        public PrivateMessagesPageViewModel(DBModels.Models.Message message)
-        {
-            Message = message;
         }
 
         public void PeopleListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

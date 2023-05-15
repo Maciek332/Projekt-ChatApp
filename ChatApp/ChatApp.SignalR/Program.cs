@@ -11,27 +11,6 @@ namespace ChatApp.SignalR
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            //var server = new WebSocketServer("ws://localhost:8080");
-            //server.Start(socket =>
-            //{
-            //    socket.OnOpen = () =>
-            //    {
-            //        Console.WriteLine("Po³¹czenie nawi¹zane.");
-            //    };
-
-            //    socket.OnClose = () =>
-            //    {
-            //        Console.WriteLine("Po³¹czenie zamkniête.");
-            //    };
-
-            //    socket.OnMessage = message =>
-            //    {
-            //        Console.WriteLine("Otrzymano wiadomoœæ: " + message);
-            //    };
-            //});
-
-            //Console.ReadLine();
-
             builder.Services.AddRazorPages();
             builder.Services.AddSignalR();
 

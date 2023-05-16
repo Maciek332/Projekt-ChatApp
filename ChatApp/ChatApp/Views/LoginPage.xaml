@@ -34,7 +34,7 @@
         <TextBox Grid.Row="2" Grid.Column="0" x:Name="LoginEmail" Text="{Binding LoginEmail , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10,7,50,10" PlaceholderText="E-mail"/>
         <PasswordBox Grid.Row="3" Grid.Column="0" x:Name="LoginPassword" Password="{Binding LoginPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10,7,50,10" PlaceholderText="Hasło"/>
         <Button Grid.Row="4" Grid.Column="0" Style="{StaticResource AccentButtonStyle}" Margin="10,7,50,10" Content="Zaloguj się" Command="{Binding LoginCommand}"/>
-        <ProgressBar Width="130" Grid.Row="4" Grid.Column="0" Margin="-50,0,0,0" IsIndeterminate="true" Visibility="{Binding IsLogging}" />
+        <ProgressBar Width="130" Grid.Row="4" Grid.Column="0" Margin="-60,0,0,0" IsIndeterminate="true" Visibility="{Binding IsLogging}" />
         <InfoBar Grid.Row="5" Grid.RowSpan="3" x:Name="LoginSuccess" Width="auto" Message="{Binding LoginInfoBarMessage}" IsOpen="{Binding IsLoggedIn}" Severity="Success" Margin="10,5,50,5"/>
         <InfoBar Grid.Row="5" Grid.RowSpan="3" x:Name="LoginFail" Width="auto" Title="Błąd logowania" Message="{Binding LoginErrorInfo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsOpen="{Binding LoginErrorVisibility}" Severity="Error" Margin="10,5,50,5"/>
         <!--<TextBlock Grid.Row="4" Grid.Column="0" Foreground="Red" Text="{Binding LoginEmailErrorInfo, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding LoginErrorVisibility}" Margin="130,12,50,10" />

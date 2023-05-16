@@ -34,9 +34,7 @@ namespace ChatApp.ViewModels
 
         public void PeopleListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // pobierz wybrany element z listy
             var selectedPerson = e.AddedItems.FirstOrDefault() as User;
-            // ustaw zawartość kontrolki Frame na nową stronę
             PrivateMessageDetailFrame.Navigate(typeof(PrivateMessagesDetail), selectedPerson);
         }
         private void LoadPeople()

@@ -1,6 +1,3 @@
-<!-- Copyright (c) Microsoft Corporation and Contributors. -->
-<!-- Licensed under the MIT License. -->
-
 <Page
     x:Class="ChatApp.Views.GroupMessagesDetail"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -32,7 +29,6 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="60"/>
-
             </Grid.ColumnDefinitions>
             <TextBlock
                 VerticalAlignment="Center"

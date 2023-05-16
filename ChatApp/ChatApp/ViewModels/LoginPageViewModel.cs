@@ -169,6 +169,29 @@ namespace ChatApp.ViewModels
                 OnPropertyChanged(nameof(IsLoggedIn));
             }
         }
+
+        private bool _isRegistering;
+        public bool IsRegistering
+        {
+            get { return _isRegistering; }
+            set
+            {
+                _isRegistering = value;
+                OnPropertyChanged(nameof(IsRegistering));
+            }
+        }
+
+        private bool _isLogging;
+        public bool IsLogging
+        {
+            get { return _isLogging; }
+            set
+            {
+                _isLogging = value;
+                OnPropertyChanged(nameof(IsLogging));
+            }
+        }
+
         private bool _isRegisteredIn;
         public bool IsRegisteredIn
         {
@@ -201,7 +224,6 @@ namespace ChatApp.ViewModels
             RegisterCommand = new RelayCommand<string>(x => RegisterMessage(), x => RegisterIsValid());
 
         }
-
         public bool LoginIsValid()
         {
             if (string.IsNullOrEmpty(LoginEmail))
@@ -281,60 +303,90 @@ namespace ChatApp.ViewModels
 
         }
 
-        //public bool LoginIsValid
-        //{
-        //    get => !string.IsNullOrEmpty(LoginEmail) && !string.IsNullOrEmpty(LoginPassword) && LoginEmail.Contains("@") && Regex.IsMatch(LoginEmail, @"\.[a-zA-Z]{2,}$");
-        //}
-        //public bool RegisterIsValid
-        //{
-        //    get => !string.IsNullOrEmpty(RegisterEmail) && !string.IsNullOrEmpty(RegisterUserName) && !string.IsNullOrEmpty(RegisterPassword) && RegisterPassword == RegisterPasswordRepeat && RegisterEmail.Contains("@") && Regex.IsMatch(RegisterEmail, @"\.[a-zA-Z]{2,}$");
-        //}
+        private bool LoginStatushelp;
+        private string LoginStatusmessageHelp;
+        private string LoggedUserHelp;
 
-        private void LoginMessage()
+        private async void LoginMessage()
         {
-            using var context = new ChatDbContext();
-            var updateLoginStaus = context.Users
-                .Where(x => x.EMail == LoginEmail && x.Password == LoginPassword)
-                .ToList();
-            if (updateLoginStaus.Any())
+            IsLogging = true;
+            await UpdateLoggedUserAsync();
+            IsLoggedIn = LoginStatushelp;
+            LoggedUserNameField = LoggedUserHelp;
+            if (IsLoggedIn)
             {
-                foreach (var user in updateLoginStaus)
-                {
-                    user.IsLogedIn = true;
-                }
-                context.SaveChanges();
-                var LoggedUserName = context.Users
-                    .FirstOrDefault(x => x.EMail == LoginEmail);
-
-                LoggedUserNameField = LoggedUserName.UserName;
-
-                IsLoggedIn = true;
-                LoginInfoBarMessage = $"Pomyślnie zalogowano jako {LoggedUserNameField}";
+                LoginInfoBarMessage = LoginStatusmessageHelp;
                 ShellPage.CurrentLoggedUserLabel.Content = LoggedUserNameField;
             }
+
             else
             {
-                IsLoggedIn = false;
                 LoginErrorVisibility = true;
-                LoginErrorInfo = "Nie znaleziono użytkownika o takich danych";
+                LoginErrorInfo = LoginStatusmessageHelp;
             }
+            IsLogging = false;
         }
 
-        private void RegisterMessage()
+        private async Task UpdateLoggedUserAsync()
         {
-            using var context = new ChatDbContext();
-            var RegisterUser = new User
+            var result = Task.Run(() =>
             {
-                EMail = RegisterEmail,
-                UserName = RegisterUserName,
-                Password = RegisterPassword,
-                IsLogedIn = false,
-                RegisterDate = DateTime.Now
-            };
-            context.Users.Add(RegisterUser);
-            context.SaveChanges();
+                using var context = new ChatDbContext();
+                var updateLoginStaus = context.Users
+                    .Where(x => x.EMail == LoginEmail && x.Password == LoginPassword)
+                    .ToList();
+
+                if (updateLoginStaus.Any())
+                {
+                    foreach (var user in updateLoginStaus)
+                    {
+                        user.IsLogedIn = true;
+                    }
+                    context.SaveChanges();
+                    var LoggedUserName = context.Users
+                        .FirstOrDefault(x => x.EMail == LoginEmail);
+
+                    LoginStatushelp = true;
+                    LoggedUserHelp = LoggedUserName.UserName;
+                    LoginStatusmessageHelp = $"Pomyślnie zalogowano jako {LoggedUserName.UserName}";
+                }
+
+                else
+                {
+                    LoginStatushelp = false;
+                    LoginStatusmessageHelp = "Nie znaleziono użytkownika o takich danych";
+                }
+            });
+            await result;
+        }
+
+        private async void RegisterMessage()
+        {
+            IsRegistering = true;
+            await RegisterTask();
+            IsRegistering = false;
             IsRegisteredIn = true;
             RegisterInfoBarMessage = $"Pomyślnie zarejestrowano użytkownika o danych:\nE-mail: {RegisterEmail}\nLogin: {RegisterUserName}\nHasło: {RegisterPassword}";
+        }
+
+        private async Task RegisterTask()
+        {
+            var result = Task.Run(() =>
+            {
+                using var context = new ChatDbContext();
+                var RegisterUser = new User
+                {
+                    EMail = RegisterEmail,
+                    UserName = RegisterUserName,
+                    Password = RegisterPassword,
+                    IsLogedIn = false,
+                    RegisterDate = DateTime.Now
+                };
+                context.Users.Add(RegisterUser);
+                context.SaveChanges();
+            });
+            await result;
+        
         }
     }
 }

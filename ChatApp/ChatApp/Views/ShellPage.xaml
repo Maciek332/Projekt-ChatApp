@@ -1,6 +1,3 @@
-<!-- Copyright (c) Microsoft Corporation and Contributors. -->
-<!-- Licensed under the MIT License. -->
-
 <Page
     x:Class="ChatApp.Views.ShellPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -28,6 +25,7 @@
                        VerticalAlignment="Center"
                        Margin="28,0,0,0"/>
         </Grid>
+
         <NavigationView
             x:Name="NavigationMenu"
             BackRequested="{x:Bind _viewModel.NavigationMenu_BackRequested}" 
@@ -48,24 +46,12 @@
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem x:Name="CurrentLoggedUser" Content="Nie jesteś zalogowany" Icon="Emoji2" SelectsOnInvoked="False"/>
                 <NavigationViewItem Icon="LeaveChat" Content="Wyloguj" Tag="LogOut" SelectsOnInvoked="False" />
-                <NavigationViewItem x:Name="SettingsNavigation" Icon="Setting" Content="Ustawienia" Tag="ChatApp.Views.SettingsPage"/> 
-                
-
-
+                <NavigationViewItem x:Name="SettingsNavigation" Icon="Setting" Content="Ustawienia" Tag="ChatApp.Views.SettingsPage"/>
             </NavigationView.FooterMenuItems>
+
             <NavigationView.Content >
-                <!--<Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="60"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>-->
-                    
-                    <Frame x:Name="ContentFrame" Navigated="{x:Bind _viewModel.OnNavigated}" Margin="30" Grid.Row="1"/>
-                    
-                <!--</Grid>-->
-                
+                <Frame x:Name="ContentFrame" Navigated="{x:Bind _viewModel.OnNavigated}" Margin="30" Grid.Row="1"/>
             </NavigationView.Content>
         </NavigationView>
-        
     </Grid>
 </Page>

@@ -63,7 +63,6 @@ namespace ChatApp.ViewModels
         {
             UserName = user.UserName;
             MessagePlaceholder = $"Napisz do {user.UserName}";
-            
             SendMessageCommand = new RelayCommand<string>(x => CreateMessageAndSend(), x => MessageIsValid);
             ReplyMessageCommand = new RelayCommand<string>(x => ReplyMessageAndSend(), x => true);
 

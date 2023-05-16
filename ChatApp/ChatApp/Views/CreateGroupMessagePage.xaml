@@ -1,6 +1,3 @@
-<!-- Copyright (c) Microsoft Corporation and Contributors. -->
-<!-- Licensed under the MIT License. -->
-
 <Page
     x:Class="ChatApp.Views.CreateGroupMessagePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -19,15 +16,13 @@
                 <RowDefinition Height="55" />
                 <RowDefinition/>
                 <RowDefinition Height="40"/>
-            <RowDefinition />
-            <RowDefinition Height="35"/>
+                <RowDefinition />
+                <RowDefinition Height="35"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-            <ColumnDefinition/>
-
-
-        </Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
         <TextBlock
                 VerticalAlignment="Center"
                 x:Name="GroupName"

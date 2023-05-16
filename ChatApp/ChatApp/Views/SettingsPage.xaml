@@ -1,6 +1,3 @@
-<!-- Copyright (c) Microsoft Corporation and Contributors. -->
-<!-- Licensed under the MIT License. -->
-
 <Page
     x:Class="ChatApp.Views.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -26,6 +23,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        
         <TextBlock Text="Personalizacja" Style="{ThemeResource TitleTextBlockStyle}" Margin="10,0,0,0" Grid.Row="0"/>
         <StackPanel Margin="10,50,0,0" Grid.Row="1">
             <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Motywy" Margin="10,0,0,0" />

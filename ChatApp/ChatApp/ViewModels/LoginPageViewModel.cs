@@ -224,7 +224,6 @@ namespace ChatApp.ViewModels
             RegisterCommand = new RelayCommand<string>(x => RegisterMessage(), x => RegisterIsValid());
 
         }
-
         public bool LoginIsValid()
         {
             if (string.IsNullOrEmpty(LoginEmail))
@@ -304,16 +303,6 @@ namespace ChatApp.ViewModels
 
         }
 
-        //public bool LoginIsValid
-        //{
-        //    get => !string.IsNullOrEmpty(LoginEmail) && !string.IsNullOrEmpty(LoginPassword) && LoginEmail.Contains("@") && Regex.IsMatch(LoginEmail, @"\.[a-zA-Z]{2,}$");
-        //}
-        //public bool RegisterIsValid
-        //{
-        //    get => !string.IsNullOrEmpty(RegisterEmail) && !string.IsNullOrEmpty(RegisterUserName) && !string.IsNullOrEmpty(RegisterPassword) && RegisterPassword == RegisterPasswordRepeat && RegisterEmail.Contains("@") && Regex.IsMatch(RegisterEmail, @"\.[a-zA-Z]{2,}$");
-        //}
-
-
         private bool LoginStatushelp;
         private string LoginStatusmessageHelp;
         private string LoggedUserHelp;
@@ -329,6 +318,7 @@ namespace ChatApp.ViewModels
                 LoginInfoBarMessage = LoginStatusmessageHelp;
                 ShellPage.CurrentLoggedUserLabel.Content = LoggedUserNameField;
             }
+
             else
             {
                 LoginErrorVisibility = true;
@@ -339,8 +329,6 @@ namespace ChatApp.ViewModels
 
         private async Task UpdateLoggedUserAsync()
         {
-
-
             var result = Task.Run(() =>
             {
                 using var context = new ChatDbContext();
@@ -358,17 +346,14 @@ namespace ChatApp.ViewModels
                     var LoggedUserName = context.Users
                         .FirstOrDefault(x => x.EMail == LoginEmail);
 
-                    //LoggedUserNameField = LoggedUserName.UserName;
-
                     LoginStatushelp = true;
                     LoggedUserHelp = LoggedUserName.UserName;
                     LoginStatusmessageHelp = $"Pomyślnie zalogowano jako {LoggedUserName.UserName}";
-                    //ShellPage.CurrentLoggedUserLabel.Content = LoggedUserNameField;
                 }
+
                 else
                 {
                     LoginStatushelp = false;
-                    //LoginErrorVisibility = true;
                     LoginStatusmessageHelp = "Nie znaleziono użytkownika o takich danych";
                 }
             });
@@ -401,7 +386,7 @@ namespace ChatApp.ViewModels
                 context.SaveChanges();
             });
             await result;
-            //var result = await Task.Run(() => context.SaveChanges());
+        
         }
     }
 }

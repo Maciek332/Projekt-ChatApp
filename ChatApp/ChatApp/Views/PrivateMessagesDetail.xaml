@@ -1,6 +1,3 @@
-<!-- Copyright (c) Microsoft Corporation and Contributors. -->
-<!-- Licensed under the MIT License. -->
-
 <Page
     x:Class="ChatApp.Views.PrivateMessagesDetail"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -33,8 +30,8 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="60"/>
-
             </Grid.ColumnDefinitions>
+            
             <TextBlock
                 VerticalAlignment="Center"
                 x:Name="UserName"
@@ -72,7 +69,6 @@
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                     </Style>
                 </ListView.ItemContainerStyle>
-
             </ListView>
 
             <TextBox x:Name="MessageField" Text="{Binding MessageContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding MessagePlaceholder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="1"/>

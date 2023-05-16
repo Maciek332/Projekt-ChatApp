@@ -57,7 +57,6 @@ namespace ChatApp.ViewModels
                 OnPropertyChanged(nameof(ContentFrame));
             }
         }
-
         public bool PrivateMessageNavigation
         {
             get { return _privateMessageNavigation; }
@@ -129,18 +128,12 @@ namespace ChatApp.ViewModels
         public ShellPageViewModel(Frame contentFrame)
         {
             _navigationService = new NavigationService(contentFrame);
-
-            // Dodajemy obsługę zdarzeń dla elementów NavigationView
             NavigationMenu = new NavigationView();
             NavigationMenu.ItemInvoked += NavigationMenu_ItemInvoked;
             NavigationMenu.BackRequested += NavigationMenu_BackRequested;
             PrivateMessageNavigation = true;
             GroupMessageNavigation = true;
             ContentFrame = contentFrame;
-            //ContentFrame.Navigated += OnNavigated;
-            //PrivateMessageNavigation = new NavigationViewItem() { Content = "Private Messages", Tag = typeof(Views.PrivateMessagePage) };
-            //GroupMessageNavigation = new NavigationViewItem() { Content = "Group Messages", Tag = typeof(Views.GroupMessagePage), IsSelected=true};
-            //CurrentLoggedUserField = new NavigationViewItem() { Content = "Logged in as: John Smith" };
         }
         public void NavigationMenu_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
@@ -190,7 +183,6 @@ namespace ChatApp.ViewModels
         {
             return true;
         }
-
         public void LogoutFunc()
         {
             PrivateMessageNavigation = false;

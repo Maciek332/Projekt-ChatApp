@@ -20,6 +20,7 @@ using ChatApp.DBModels;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -31,12 +32,20 @@ namespace ChatApp.Views
     /// </summary>
     public sealed partial class PrivateMessagesDetail : Page
     {
-        private PrivateMessagesDetailViewModel _viewModel { get; set; }
+        public PrivateMessagesDetailViewModel _viewModel { get; set; }
         HubConnection hubConnection;
         public PrivateMessagesDetail()
         {
             InitializeComponent();
             
+            hubConnection = new HubConnectionBuilder()
+                .WithUrl("http://localhost:53353/ChatHub")
+                .Build();
+            hubConnection.Closed += async (error) =>
+            {
+                await Task.Delay(new Random().Next(0, 5) * 1000);
+                await hubConnection.StartAsync();
+            };
         }
 
         async private void DoRealTimeSuff()
@@ -49,8 +58,13 @@ namespace ChatApp.Views
         {
             hubConnection = new HubConnectionBuilder().WithUrl($"/chatHub").Build();
 
-            hubConnection.On<string>("ReceiveDashUpdate", (dashupdate) =>
+            hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
             {
+                this.Dispatcher.Invoke(() =>
+                {
+                    var newmessage = $"{user}: {message}";
+                    _viewModel.MessagesList.Add(newmessage);
+                });
                 //var receivedDashUpdate = dashupdate;
                 //((ArrowGaugeIndicator)this.RadialGauge.Indicators[0]).Value = Int32.Parse(dashupdate);
                 //((LinearBarGaugeIndicator)this.LinearGauge.Indicators[0]).Value = Int32.Parse(dashupdate);

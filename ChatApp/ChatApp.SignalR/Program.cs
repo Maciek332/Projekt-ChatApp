@@ -1,5 +1,6 @@
 using ChatApp.DBModels;
 using ChatApp.SignalR.Hubs;
+using Microsoft.AspNetCore.ResponseCompression;
 using Fleck;
 
 namespace ChatApp.SignalR
@@ -12,7 +13,14 @@ namespace ChatApp.SignalR
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddRazorPages();
+            builder.Services.AddServerSideBlazor();
+            //builder.Services.AddSingleton<>();
             builder.Services.AddSignalR();
+            builder.Services.AddResponseCompression(opts =>
+            {
+                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    new[] { "application/octet-stream" });
+            });
 
             var app = builder.Build();
 
@@ -21,7 +29,7 @@ namespace ChatApp.SignalR
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
+            app.UseResponseCompression();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

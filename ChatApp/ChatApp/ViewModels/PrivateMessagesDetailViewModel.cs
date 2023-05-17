@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace ChatApp.ViewModels
 {
@@ -22,7 +23,7 @@ namespace ChatApp.ViewModels
             get { return _userName; }
             set
             {
-                if(_userName != value)
+                if (_userName != value)
                 {
                     _userName = value;
                     OnPropertyChanged(nameof(UserName));
@@ -56,9 +57,10 @@ namespace ChatApp.ViewModels
                 }
             }
         }
-
+        HubConnection connection;
         public RelayCommand<string> SendMessageCommand { get; set; }
         public RelayCommand<string> ReplyMessageCommand { get; set; }
+        public PrivateMessage messate;
         public PrivateMessagesDetailViewModel(DBModels.User user)
         {
             UserName = user.UserName;
@@ -66,20 +68,63 @@ namespace ChatApp.ViewModels
             SendMessageCommand = new RelayCommand<string>(x => CreateMessageAndSend(), x => MessageIsValid);
             ReplyMessageCommand = new RelayCommand<string>(x => ReplyMessageAndSend(), x => true);
 
+            connection = new HubConnectionBuilder()
+                .WithUrl("https://localhost:7026/ChatHub")
+                .WithAutomaticReconnect()
+                .Build();
+            connection.StartAsync();
+
+            connection.On<string, string>("ReceiveMessage", (UserName, MessageContent) =>
+            {
+                messate = new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left);
+                //MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
+
+            });
+
+
         }
 
-        private void CreateMessageAndSend()
+        private async void CreateMessageAndSend()
         {
-            MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Right));
-            MessageContent = string.Empty;
-        }
+            try
+            {
+                await connection.InvokeAsync("SendMessage", UserName, MessageContent);
+                MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Right));
+                MessageContent = string.Empty;
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+
+        }
         private void ReplyMessageAndSend()
         {
-            MessageContent = "Odpowiadam na twoją wiadomość";
-            MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
-            MessageContent = string.Empty;
+            MessagesList.Add(messate);
         }
+        //private async void ReplyMessageAndSend()
+        //{
+        //    connection.On<string, string>("ReceiveMessage", (UserName, MessageContent) =>
+        //    {
+        //        MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
+        //        MessageContent = string.Empty;
+        //    });
+        //    //try
+        //    //{
+        //    //    await connection.StartAsync();
+
+        //    //}
+        //    //catch (Exception ex)
+        //    //{
+
+        //    //    MessagesList.Add(new PrivateMessage(ex.Message, DateTime.Now, HorizontalAlignment.Left));
+        //    //}
+        //    //MessagesList.Add(new PrivateMessage("Utworzono połączenie", DateTime.Now, HorizontalAlignment.Left));
+        //    //MessageContent = "Odpowiadam na twoją wiadomość";
+        //    //MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
+        //    //MessageContent = string.Empty;
+        //}
 
         public bool MessageIsValid
         {

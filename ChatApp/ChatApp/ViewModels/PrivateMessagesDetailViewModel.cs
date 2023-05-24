@@ -18,7 +18,7 @@ namespace ChatApp.ViewModels
         public ObservableCollection<PrivateMessage> MessagesList { get; } = new ObservableCollection<PrivateMessage>();
         private string _userName;
         private string _messageContent;
-        private string _messagePaleholder;
+        private string _messagePlaceholder;
         public string UserName
         {
             get { return _userName; }
@@ -34,12 +34,12 @@ namespace ChatApp.ViewModels
 
         public string MessagePlaceholder
         {
-            get { return _messagePaleholder; }
+            get { return _messagePlaceholder; }
             set
             {
-                if (_messagePaleholder != value)
+                if (_messagePlaceholder != value)
                 {
-                    _messagePaleholder = value;
+                    _messagePlaceholder = value;
                     OnPropertyChanged(nameof(MessagePlaceholder));
                 }
             }
@@ -60,14 +60,12 @@ namespace ChatApp.ViewModels
         }
         HubConnection connection;
         public RelayCommand<string> SendMessageCommand { get; set; }
-        public RelayCommand<string> ReplyMessageCommand { get; set; }
-        public PrivateMessage messate;
+
         public PrivateMessagesDetailViewModel(DBModels.User user)
         {
             UserName = user.UserName;
             MessagePlaceholder = $"Napisz do {user.UserName}";
             SendMessageCommand = new RelayCommand<string>(x => CreateMessageAndSend(), x => MessageIsValid);
-            ReplyMessageCommand = new RelayCommand<string>(x => ReplyMessageAndSend(), x => true);
 
             connection = new HubConnectionBuilder()
                 .WithUrl("https://localhost:7026/ChatHub")
@@ -77,14 +75,13 @@ namespace ChatApp.ViewModels
 
             connection.On<string, string>("ReceiveMessage", (UserName, MessageContent) =>
             {
-                //messate = new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left);
                 PrivateMessagesDetail.PrivateMessageP.DispatcherQueue.TryEnqueue(() =>
                 {
                     MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
                 });
 
             });
-            }
+        }
 
         private async void CreateMessageAndSend()
         {
@@ -96,37 +93,9 @@ namespace ChatApp.ViewModels
             }
             catch (Exception)
             {
-
                 throw;
             }
-
         }
-        private void ReplyMessageAndSend()
-        {
-            MessagesList.Add(messate);
-        }
-        //private async void ReplyMessageAndSend()
-        //{
-        //    connection.On<string, string>("ReceiveMessage", (UserName, MessageContent) =>
-        //    {
-        //        MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
-        //        MessageContent = string.Empty;
-        //    });
-        //    //try
-        //    //{
-        //    //    await connection.StartAsync();
-
-        //    //}
-        //    //catch (Exception ex)
-        //    //{
-
-        //    //    MessagesList.Add(new PrivateMessage(ex.Message, DateTime.Now, HorizontalAlignment.Left));
-        //    //}
-        //    //MessagesList.Add(new PrivateMessage("Utworzono połączenie", DateTime.Now, HorizontalAlignment.Left));
-        //    //MessageContent = "Odpowiadam na twoją wiadomość";
-        //    //MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
-        //    //MessageContent = string.Empty;
-        //}
 
         public bool MessageIsValid
         {

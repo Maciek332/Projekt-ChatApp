@@ -60,7 +60,7 @@ namespace ChatApp.ViewModels
         HubConnection connection;
         public RelayCommand<string> SendMessageCommand { get; set; }
         public RelayCommand<string> ReplyMessageCommand { get; set; }
-        public PrivateMessage message;
+        public PrivateMessage messate;
         public PrivateMessagesDetailViewModel(DBModels.User user)
         {
             UserName = user.UserName;
@@ -76,8 +76,8 @@ namespace ChatApp.ViewModels
 
             connection.On<string, string>("ReceiveMessage", (UserName, MessageContent) =>
             {
-                //messate = new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left);
-                MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
+                messate = new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left);
+                //MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
 
             });
 
@@ -101,7 +101,7 @@ namespace ChatApp.ViewModels
         }
         private void ReplyMessageAndSend()
         {
-            MessagesList.Add(message);
+            MessagesList.Add(messate);
         }
         //private async void ReplyMessageAndSend()
         //{

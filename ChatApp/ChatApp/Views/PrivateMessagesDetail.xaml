@@ -31,7 +31,7 @@
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="60"/>
             </Grid.ColumnDefinitions>
-            
+
             <TextBlock
                 VerticalAlignment="Center"
                 x:Name="UserName"

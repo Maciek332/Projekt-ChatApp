@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.UI.Dispatching;
 
 namespace ChatApp.ViewModels
 {
@@ -76,13 +77,14 @@ namespace ChatApp.ViewModels
 
             connection.On<string, string>("ReceiveMessage", (UserName, MessageContent) =>
             {
-                messate = new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left);
-                //MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
+                //messate = new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left);
+                PrivateMessagesDetail.PrivateMessageP.DispatcherQueue.TryEnqueue(() =>
+                {
+                    MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
+                });
 
             });
-
-
-        }
+            }
 
         private async void CreateMessageAndSend()
         {

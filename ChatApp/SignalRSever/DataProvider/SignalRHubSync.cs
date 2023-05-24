@@ -1,13 +1,9 @@
-﻿using ChatApp.Models;
-using CommunityToolkit.WinUI.UI.Triggers;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SignalRSever.Hubs;
+using ChatApp.Models;
+using SignalRSever.Logging;
+using Microsoft.AspNet.SignalR.Client;
 
-namespace ChatApp.DataProvider
+namespace SignalRSever.DataProvider
 {
     public class SignalRHubSync : ISignalRHubSync
     {
@@ -52,7 +48,7 @@ namespace ChatApp.DataProvider
         {
             if (_myHubClient.State == ConnectionState.Connected)
             {
-                _myHubClient.AddMessage(message.Name, message.Message);
+                _myHubClient.AddMessage(message.MessageText, message.MessageDateTime);
             }
             else
             {

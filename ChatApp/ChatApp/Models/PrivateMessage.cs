@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Microsoft.AspNet.SignalR.Client.Hubs;
+using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;

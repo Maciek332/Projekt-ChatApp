@@ -1,4 +1,8 @@
 ﻿using ChatApp.Models;
+using Microsoft.AspNet.SignalR.Client;
+using Microsoft.UI.Xaml;
+using SignalRSever.Logging;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 
@@ -7,6 +11,8 @@ namespace SignalRSever.Hubs
     public class MyHubClient : BaseHubClient, ISendHubSync, IRecieveHubSync
     {
         public event Action<PrivateMessage> RecievedMessageEvent;
+        public ObservableCollection<PrivateMessage> MessagesList { get; } = new ObservableCollection<PrivateMessage>();
+
 
         public MyHubClient()
         {
@@ -22,9 +28,9 @@ namespace SignalRSever.Hubs
 
             base.Init();
 
-            _myHubProxy.On<string, string>("addMessage", Recieve_AddMessage);
+            _myHubProxy.On<string, DateTime, HorizontalAlignment>("addMessage", Recieve_AddMessage);
             _myHubProxy.On("heartbeat", Recieve_Heartbeat);
-            _myHubProxy.On<HelloModel>("sendHelloObject", Recieve_SendHelloObject);
+            _myHubProxy.On<PrivateMessage>("sendHelloObject", Recieve_SendHelloObject);
 
             StartHubInternal();
         }
@@ -35,27 +41,27 @@ namespace SignalRSever.Hubs
             Init();
         }
 
-        public void Recieve_AddMessage(string name, string message)
+        public void Recieve_AddMessage(string messageContent, DateTime dateTime, HorizontalAlignment horizontalAlignment)
         {
-            if (RecievedMessageEvent != null) RecievedMessageEvent.Invoke(new MyMessage { Name = name, Message = message });
-            HubClientEvents.Log.Informational("Recieved addMessage: " + name + ": " + message);
+            if (RecievedMessageEvent != null) RecievedMessageEvent.Invoke(new PrivateMessage { messageText = messageContent, Message = message });
+            HubClientEvents.Log.Informational("Recieved addMessage: " + messageContent + ": " + dateTime);
         }
 
         public void Recieve_Heartbeat()
         {
-            if (RecievedMessageEvent != null) RecievedMessageEvent.Invoke(new MyMessage { Name = "Heartbeat", Message = "recieved" });
+            if (RecievedMessageEvent != null) RecievedMessageEvent.Invoke(new PrivateMessage { Name = "Heartbeat", Message = "recieved" });
             HubClientEvents.Log.Informational("Recieved heartbeat ");
         }
 
-        public void Recieve_SendHelloObject(HelloModel hello)
+        public void Recieve_SendHelloObject(PrivateMessage hello)
         {
-            if (RecievedMessageEvent != null) RecievedMessageEvent.Invoke(new MyMessage { Name = hello.Age.ToString(), Message = hello.Molly });
-            HubClientEvents.Log.Informational("Recieved sendHelloObject " + hello.Molly + ", " + hello.Age);
+            if (RecievedMessageEvent != null) RecievedMessageEvent.Invoke(new PrivateMessage { Name = hello.Age.ToString(), Message = hello.Molly });
+            HubClientEvents.Log.Informational("Recieved sendHelloObject " + hello.MessageText + ", " + hello.MessageDateTime);
         }
 
-        public void AddMessage(string name, string message)
+        public void AddMessage(string messageContent, DateTime dateTime, HorizontalAlignment horizontalAlignment)
         {
-            _myHubProxy.Invoke("addMessage", name, message).ContinueWith(task =>
+            _myHubProxy.Invoke("addMessage", messageContent, dateTime, horizontalAlignment).ContinueWith(task =>
             {
                 if (task.IsFaulted)
                 {
@@ -79,9 +85,9 @@ namespace SignalRSever.Hubs
             HubClientEvents.Log.Informational("Client heartbeat sent to server");
         }
 
-        public void SendHelloObject(HelloModel hello)
+        public void SendHelloObject(PrivateMessage hello)
         {
-            _myHubProxy.Invoke<HelloModel>("SendHelloObject", hello).ContinueWith(task =>
+            _myHubProxy.Invoke<PrivateMessage>("SendHelloObject", hello).ContinueWith(task =>
             {
                 if (task.IsFaulted)
                 {

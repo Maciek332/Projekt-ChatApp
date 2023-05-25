@@ -1,5 +1,6 @@
 ﻿using ChatApp.Commands;
 using ChatApp.Models;
+using ChatApp.Views;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.UI.Xaml;
 using System;
@@ -57,27 +58,43 @@ namespace ChatApp.ViewModels
                 }
             }
         }
+        HubConnection connection;
         public RelayCommand<string> SendGroupMessageCommand { get; set; }
-        public RelayCommand<string> ReplyMessageCommand { get; set; }
         public GroupMessagesDetailViewModel(DBModels.Group group)
         {
             GroupName = group.GroupName;
             GroupMessagePlaceholder = $"Napisz na {group.GroupName}";
             SendGroupMessageCommand = new RelayCommand<string>(x => CreateMessageAndSend(), x => MessageIsValid);
-            ReplyMessageCommand = new RelayCommand<string>(x => ReplyMessageAndSend(), x => true);
+
+            connection = new HubConnectionBuilder()
+                .WithUrl("https://localhost:7026/ChatHub")
+                .WithAutomaticReconnect()
+                .Build();
+            connection.StartAsync();
+
+            connection.On<string, string>("ReceiveMessage", (GroupName, MessageContent) =>
+            {
+                GroupMessagesDetail.GroupMessageP.DispatcherQueue.TryEnqueue(() =>
+                {
+                    GroupMessagesList.Add(new GroupMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
+                });
+            });
         }
 
-        private void CreateMessageAndSend()
+        private async void CreateMessageAndSend()
         {
-            GroupMessagesList.Add(new GroupMessage(GroupMessageContent, DateTime.Now, HorizontalAlignment.Right));
-            GroupMessageContent = string.Empty;
+            try
+            {
+                await connection.InvokeAsync("SendMessage", GroupName, GroupMessageContent);
+                GroupMessagesList.Add(new GroupMessage(GroupMessageContent, DateTime.Now, HorizontalAlignment.Right));
+                GroupMessageContent = string.Empty;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
-        private void ReplyMessageAndSend()
-        {
-            GroupMessageContent = "odpowiadam na twoją wiadomość";
-            GroupMessagesList.Add(new GroupMessage(GroupMessageContent, DateTime.Now, HorizontalAlignment.Left));
-            GroupMessageContent = string.Empty;
-        }
+
         public bool MessageIsValid
         {
             get => !string.IsNullOrEmpty(GroupMessageContent);

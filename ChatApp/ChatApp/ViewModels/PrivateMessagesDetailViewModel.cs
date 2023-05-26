@@ -98,7 +98,7 @@ namespace ChatApp.ViewModels
 
             connection.On<int,int,string>("ReceiveMessage", (MessageAuthor, MessageDestination, MessageContent) =>
             {
-                if (MessageAuthor == LoginPageViewModel.LoggedUser.UserId || MessageDestination == LoginPageViewModel.LoggedUser.UserId)
+                if (MessageAuthor == SelectedUser.UserId && MessageDestination == LoginPageViewModel.LoggedUser.UserId)
                 {
                     PrivateMessagesDetail.PrivateMessageP.DispatcherQueue.TryEnqueue(() =>
                     {

@@ -305,14 +305,14 @@ namespace ChatApp.ViewModels
 
         private bool LoginStatushelp;
         private string LoginStatusmessageHelp;
-        private string LoggedUserHelp;
+        public static User LoggedUser;
 
         private async void LoginMessage()
         {
             IsLogging = true;
             await UpdateLoggedUserAsync();
             IsLoggedIn = LoginStatushelp;
-            LoggedUserNameField = LoggedUserHelp;
+            LoggedUserNameField = LoggedUser.UserName;
             if (IsLoggedIn)
             {
                 LoginInfoBarMessage = LoginStatusmessageHelp;
@@ -347,7 +347,7 @@ namespace ChatApp.ViewModels
                         .FirstOrDefault(x => x.EMail == LoginEmail);
 
                     LoginStatushelp = true;
-                    LoggedUserHelp = LoggedUserName.UserName;
+                    LoggedUser = LoggedUserName;
                     LoginStatusmessageHelp = $"Pomyślnie zalogowano jako {LoggedUserName.UserName}";
                 }
 

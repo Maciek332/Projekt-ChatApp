@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.UI.Dispatching;
+using ChatApp.DBModels;
 
 namespace ChatApp.ViewModels
 {
@@ -60,12 +61,34 @@ namespace ChatApp.ViewModels
         }
         HubConnection connection;
         public RelayCommand<string> SendMessageCommand { get; set; }
+        private User SelectedUser;
 
         public PrivateMessagesDetailViewModel(DBModels.User user)
         {
+            SelectedUser= user;
             UserName = user.UserName;
             MessagePlaceholder = $"Napisz do {user.UserName}";
             SendMessageCommand = new RelayCommand<string>(x => CreateMessageAndSend(), x => MessageIsValid);
+
+            var context = new ChatDbContext();
+            var messagesHistory = context.Messages
+                .Where(u => u.MessageAuthor == LoginPageViewModel.LoggedUser.UserId || u.MessageDestination == LoginPageViewModel.LoggedUser.UserId)
+                .ToList();
+            foreach (Message message in messagesHistory)
+            {
+                if (message.MessageDestination==SelectedUser.UserId)
+                {
+                    if (message.MessageAuthor == LoginPageViewModel.LoggedUser.UserId)
+                    {
+                        MessagesList.Add(new PrivateMessage(message.MessageContent, message.SentDate, HorizontalAlignment.Right));
+                    }
+                }
+                if (message.MessageAuthor== SelectedUser.UserId)
+                {
+                    MessagesList.Add(new PrivateMessage(message.MessageContent, message.SentDate, HorizontalAlignment.Left));
+                }
+                
+            }
 
             connection = new HubConnectionBuilder()
                 .WithUrl("https://localhost:7026/ChatHub")
@@ -73,12 +96,16 @@ namespace ChatApp.ViewModels
                 .Build();
             connection.StartAsync();
 
-            connection.On<string, string>("ReceiveMessage", (UserName, MessageContent) =>
+            connection.On<int,int,string>("ReceiveMessage", (MessageAuthor, MessageDestination, MessageContent) =>
             {
-                PrivateMessagesDetail.PrivateMessageP.DispatcherQueue.TryEnqueue(() =>
+                if (MessageAuthor == LoginPageViewModel.LoggedUser.UserId || MessageDestination == LoginPageViewModel.LoggedUser.UserId)
                 {
-                    MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
-                });
+                    PrivateMessagesDetail.PrivateMessageP.DispatcherQueue.TryEnqueue(() =>
+                    {
+                        MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
+                    });
+                }
+                
 
             });
         }
@@ -87,8 +114,22 @@ namespace ChatApp.ViewModels
         {
             try
             {
-                await connection.InvokeAsync("SendMessage", UserName, MessageContent);
+                await connection.InvokeAsync("SendMessage", LoginPageViewModel.LoggedUser.UserId, SelectedUser.UserId, MessageContent);
                 MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Right));
+
+                var context = new ChatDbContext();
+                var privateMessage = new Message
+                {
+                    SentDate = DateTime.Now,
+                    MessageAuthor = LoginPageViewModel.LoggedUser.UserId,
+                    MessageDestination = SelectedUser.UserId,
+                    MessageContent = MessageContent,
+                };
+                context.Add(privateMessage);
+                context.SaveChanges();
+
+
+
                 MessageContent = string.Empty;
             }
             catch (Exception)

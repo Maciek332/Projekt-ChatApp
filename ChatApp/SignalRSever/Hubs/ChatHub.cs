@@ -3,8 +3,8 @@ namespace SignalRSever.Hubs;
 
 public class ChatHub : Hub
 {
-    public Task SendMessage(string user, string message)
+    public Task SendMessage(int author, int destination, string message)
     {
-        return Clients.All.SendAsync("ReceiveMessage", user, message);
+        return Clients.All.SendAsync("ReceiveMessage", author, destination, message);
     }
 }

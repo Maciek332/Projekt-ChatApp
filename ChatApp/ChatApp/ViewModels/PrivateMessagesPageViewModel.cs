@@ -41,7 +41,7 @@ namespace ChatApp.ViewModels
         {
             using var context = new ChatDbContext();
             var userList = context.Users
-                .Where(x => x.UserId > 0)
+                .Where(x => x.UserId != LoginPageViewModel.LoggedUser.UserId)
                 .ToList(); ;
             var sortedPeople = from user in userList
                                orderby user.UserName

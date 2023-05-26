@@ -222,6 +222,7 @@ namespace ChatApp.ViewModels
             _loginModel = loginModel;
             LoginCommand = new RelayCommand<string>(x => LoginMessage(), x => LoginIsValid());
             RegisterCommand = new RelayCommand<string>(x => RegisterMessage(), x => RegisterIsValid());
+            TryingLogin = true;
 
         }
         public bool LoginIsValid()
@@ -302,7 +303,27 @@ namespace ChatApp.ViewModels
             }
 
         }
-
+        
+        private bool _tryingRegister;
+        public bool TryingRegister
+        {
+            get { return _tryingRegister; }
+            set
+            {
+                _tryingRegister = value;
+                OnPropertyChanged(nameof(TryingRegister));
+            }
+        }
+        private bool _tryingLogin;
+        public bool TryingLogin
+        {
+            get { return _tryingLogin; }
+            set
+            {
+                _tryingLogin = value;
+                OnPropertyChanged(nameof(TryingLogin));
+            }
+        }
         private bool LoginStatushelp;
         private string LoginStatusmessageHelp;
         public static User LoggedUser;
@@ -310,9 +331,14 @@ namespace ChatApp.ViewModels
         private async void LoginMessage()
         {
             IsLogging = true;
+            TryingLogin = false;
             await UpdateLoggedUserAsync();
             IsLoggedIn = LoginStatushelp;
-            LoggedUserNameField = LoggedUser.UserName;
+            if (IsLoggedIn != false)
+            {
+                LoggedUserNameField = LoggedUser.UserName;
+            }
+            
             if (IsLoggedIn)
             {
                 LoginInfoBarMessage = LoginStatusmessageHelp;
@@ -324,6 +350,7 @@ namespace ChatApp.ViewModels
                 LoginErrorVisibility = true;
                 LoginErrorInfo = LoginStatusmessageHelp;
             }
+            TryingLogin = true;
             IsLogging = false;
         }
 

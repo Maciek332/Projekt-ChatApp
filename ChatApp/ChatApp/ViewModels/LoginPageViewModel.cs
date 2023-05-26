@@ -223,6 +223,7 @@ namespace ChatApp.ViewModels
             LoginCommand = new RelayCommand<string>(x => LoginMessage(), x => LoginIsValid());
             RegisterCommand = new RelayCommand<string>(x => RegisterMessage(), x => RegisterIsValid());
             TryingLogin = true;
+            TryingRegister = true;
 
         }
         public bool LoginIsValid()
@@ -389,11 +390,13 @@ namespace ChatApp.ViewModels
 
         private async void RegisterMessage()
         {
+            TryingRegister = false;
             IsRegistering = true;
             await RegisterTask();
             IsRegistering = false;
             IsRegisteredIn = true;
             RegisterInfoBarMessage = $"Pomyślnie zarejestrowano użytkownika o danych:\nE-mail: {RegisterEmail}\nLogin: {RegisterUserName}\nHasło: {RegisterPassword}";
+            TryingRegister = true;
         }
 
         private async Task RegisterTask()

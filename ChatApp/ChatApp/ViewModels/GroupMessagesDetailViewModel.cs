@@ -100,17 +100,19 @@ namespace ChatApp.ViewModels
             var groupMessagesHistory = context.Groupmessages
                 .Where(u => u.MessageAuthor == LoginPageViewModel.LoggedUser.UserId || u.MessageGroup == SelectedGroup.GroupId)
                 .ToList();
+
+            
             foreach (Groupmessage groupMessage in groupMessagesHistory)
             {
                 if (groupMessage.MessageGroup == SelectedGroup.GroupId)
                 {
                     if (groupMessage.MessageAuthor == LoginPageViewModel.LoggedUser.UserId)
                     {
-                        GroupMessagesList.Add(new GroupMessage(groupMessage.MessageContent, groupMessage.SentDate, HorizontalAlignment.Right));
+                        GroupMessagesList.Add(new GroupMessage(groupMessage.MessageAuthor.ToString(),groupMessage.MessageContent, groupMessage.SentDate, HorizontalAlignment.Right));
                     }
                     else if (groupMessage.MessageAuthor != LoginPageViewModel.LoggedUser.UserId)
                     {
-                        GroupMessagesList.Add(new GroupMessage(groupMessage.MessageContent, groupMessage.SentDate, HorizontalAlignment.Left));
+                        GroupMessagesList.Add(new GroupMessage(groupMessage.MessageAuthor.ToString(), groupMessage.MessageContent, groupMessage.SentDate, HorizontalAlignment.Left));
                     }
                 }
             }
@@ -123,12 +125,16 @@ namespace ChatApp.ViewModels
 
             connection.On<int, int, string>("ReceiveMessage", (MessageAuthor, MessageGroup, MessageContent) =>
             {
-
+                
                 if (MessageAuthor != LoginPageViewModel.LoggedUser.UserId && MessageGroup == SelectedGroup.GroupId)
                 {
+                    var context = new ChatDbContext();
+                    var messageUser = context.Users
+                    .FirstOrDefault(x => x.UserId == MessageAuthor);
+
                     GroupMessagesDetail.GroupMessageP.DispatcherQueue.TryEnqueue(() =>
                     {
-                        GroupMessagesList.Add(new GroupMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
+                        GroupMessagesList.Add(new GroupMessage(messageUser.UserName, MessageContent, DateTime.Now, HorizontalAlignment.Left));
                     });
                 }
             });
@@ -139,7 +145,7 @@ namespace ChatApp.ViewModels
             try
             {
                 await connection.InvokeAsync("SendMessage", LoginPageViewModel.LoggedUser.UserId, SelectedGroup.GroupId, GroupMessageContent);
-                GroupMessagesList.Add(new GroupMessage(GroupMessageContent, DateTime.Now, HorizontalAlignment.Right));
+                GroupMessagesList.Add(new GroupMessage(LoginPageViewModel.LoggedUser.UserName, GroupMessageContent, DateTime.Now, HorizontalAlignment.Right));
 
                 var context = new ChatDbContext();
                 var groupMessage = new Groupmessage

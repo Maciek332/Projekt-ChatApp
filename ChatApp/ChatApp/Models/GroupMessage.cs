@@ -11,10 +11,12 @@ namespace ChatApp.Models
     {
         public string MessageText { get; }
         public DateTime MessageDateTime { get; }
+        public string MessageAuthor { get; }
         public HorizontalAlignment MessageAligment { get; }
 
-        public GroupMessage(string messageText, DateTime messageDateTime, HorizontalAlignment messageAligment)
+        public GroupMessage(string messageAuthor, string messageText, DateTime messageDateTime, HorizontalAlignment messageAligment)
         {
+            MessageAuthor = $"~{messageAuthor}";
             MessageText = messageText;
             MessageDateTime = messageDateTime;
             MessageAligment = messageAligment;

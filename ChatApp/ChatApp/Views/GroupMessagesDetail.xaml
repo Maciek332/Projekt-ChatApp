@@ -11,8 +11,16 @@
         <DataTemplate x:Key="MessageViewTemplate" x:DataType="local1:GroupMessage">
             <Grid Height="Auto" Margin="4" HorizontalAlignment="{x:Bind MessageAligment}">
                 <StackPanel MinHeight="75" Width="350" Padding="10, 0, 0, 10" Background="{StaticResource AccentAAFillColorTertiaryBrush}" CornerRadius="{StaticResource ControlCornerRadius}">
-                    <TextBlock Text="{x:Bind MessageText}" Padding="0, 10, 0, 0" FontSize="20" Foreground="{ThemeResource SystemColorHighlightTextColor}" TextWrapping="Wrap"/>
-                    <TextBlock Text="{x:Bind MessageDateTime}" Padding="0, 0, 0, 10" FontSize="15" Foreground="{ThemeResource SystemColorHighlightTextColor}" TextWrapping="Wrap"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{x:Bind MessageText}" Padding="0, 10, 0, 0" FontSize="20" Foreground="{ThemeResource SystemColorHighlightTextColor}" TextWrapping="Wrap"/>
+                        <TextBlock Text="{x:Bind MessageDateTime}" Padding="0, 0, 0, 10" FontSize="15" Foreground="{ThemeResource SystemColorHighlightTextColor}" TextWrapping="Wrap" Grid.Row="1" HorizontalAlignment="Left"/>
+                        <TextBlock Text="{x:Bind MessageAuthor}" Padding="140, 0, 0, 10" FontSize="15" FontStyle="Italic" Foreground="{ThemeResource SystemColorHighlightTextColor}" TextWrapping="Wrap" Grid.Row="1" HorizontalAlignment="Left"/>
+                    </Grid>
+                    
                 </StackPanel>
             </Grid>
         </DataTemplate>

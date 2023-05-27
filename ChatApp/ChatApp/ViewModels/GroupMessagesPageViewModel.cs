@@ -50,7 +50,7 @@ namespace ChatApp.ViewModels
         {
             using var context = new ChatDbContext();
             var groupList = context.Groups
-                .Where(x => x.GroupId > 0)
+                .Where(x => x.GroupId != LoginPageViewModel.LoggedUser.UserId)
                 .ToList();
             var sortedGroups = from groupConf in groupList
                                orderby groupConf.GroupName

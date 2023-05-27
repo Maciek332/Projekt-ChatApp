@@ -1,4 +1,5 @@
 ﻿using ChatApp.Commands;
+using ChatApp.DBModels;
 using ChatApp.Models;
 using ChatApp.Views;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -60,11 +61,32 @@ namespace ChatApp.ViewModels
         }
         HubConnection connection;
         public RelayCommand<string> SendGroupMessageCommand { get; set; }
+        private Group SelectedGroup;
         public GroupMessagesDetailViewModel(DBModels.Group group)
         {
+            SelectedGroup = group;
             GroupName = group.GroupName;
             GroupMessagePlaceholder = $"Napisz na {group.GroupName}";
             SendGroupMessageCommand = new RelayCommand<string>(x => CreateMessageAndSend(), x => MessageIsValid);
+
+            var context = new ChatDbContext();
+            var groupMessagesHistory = context.Groupmessages
+                .Where(u => u.MessageAuthor == LoginPageViewModel.LoggedUser.UserId || u.MessageGroup == LoginPageViewModel.LoggedUser.UserId)
+                .ToList();
+            foreach (Groupmessage groupMessage in groupMessagesHistory)
+            {
+                if (groupMessage.MessageGroup == SelectedGroup.GroupId)
+                {
+                    if (groupMessage.MessageAuthor == LoginPageViewModel.LoggedUser.UserId)
+                    {
+                        GroupMessagesList.Add(new GroupMessage(groupMessage.MessageContent, groupMessage.SentDate, HorizontalAlignment.Right));
+                    }
+                }
+                if (groupMessage.MessageAuthor == SelectedGroup.GroupId)
+                {
+                    GroupMessagesList.Add(new GroupMessage(groupMessage.MessageContent, groupMessage.SentDate, HorizontalAlignment.Right));
+                }
+            }
 
             connection = new HubConnectionBuilder()
                 .WithUrl("https://localhost:7026/ChatHub")
@@ -72,12 +94,15 @@ namespace ChatApp.ViewModels
                 .Build();
             connection.StartAsync();
 
-            connection.On<string, string>("ReceiveMessage", (GroupName, MessageContent) =>
+            connection.On<int, int, string>("ReceiveMessage", (MessageAuthor, MessageGroup, MessageContent) =>
             {
-                GroupMessagesDetail.GroupMessageP.DispatcherQueue.TryEnqueue(() =>
+                if(MessageAuthor == SelectedGroup.GroupId && MessageGroup == LoginPageViewModel.LoggedUser.UserId)
                 {
-                    GroupMessagesList.Add(new GroupMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
-                });
+                    GroupMessagesDetail.GroupMessageP.DispatcherQueue.TryEnqueue(() =>
+                    {
+                        GroupMessagesList.Add(new GroupMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
+                    });
+                }
             });
         }
 
@@ -85,8 +110,17 @@ namespace ChatApp.ViewModels
         {
             try
             {
-                await connection.InvokeAsync("SendMessage", GroupName, GroupMessageContent);
+                await connection.InvokeAsync("SendMessage", LoginPageViewModel.LoggedUser.UserId, SelectedGroup.GroupId, GroupMessageContent);
                 GroupMessagesList.Add(new GroupMessage(GroupMessageContent, DateTime.Now, HorizontalAlignment.Right));
+
+                var context = new ChatDbContext();
+                var groupMessage = new Groupmessage
+                {
+                    SentDate = DateTime.Now,
+                    MessageAuthor = LoginPageViewModel.LoggedUser.UserId,
+                    MessageGroup = SelectedGroup.GroupId,
+                    MessageContent = GroupMessageContent,
+                };
                 GroupMessageContent = string.Empty;
             }
             catch (Exception)

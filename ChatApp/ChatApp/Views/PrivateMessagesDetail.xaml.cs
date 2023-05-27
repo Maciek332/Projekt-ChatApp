@@ -32,8 +32,10 @@ namespace ChatApp.Views
     public sealed partial class PrivateMessagesDetail : Page
     {
         private PrivateMessagesDetailViewModel _viewModel { get; set; }
+        public static Page PrivateMessageP;
         public PrivateMessagesDetail()
         {
+            PrivateMessageP = this;
             InitializeComponent();
 
         }

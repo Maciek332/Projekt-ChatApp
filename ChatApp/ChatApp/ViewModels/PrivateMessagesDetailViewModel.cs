@@ -8,6 +8,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.UI.Dispatching;
+using ChatApp.DBModels;
 
 namespace ChatApp.ViewModels
 {
@@ -16,13 +19,13 @@ namespace ChatApp.ViewModels
         public ObservableCollection<PrivateMessage> MessagesList { get; } = new ObservableCollection<PrivateMessage>();
         private string _userName;
         private string _messageContent;
-        private string _messagePaleholder;
+        private string _messagePlaceholder;
         public string UserName
         {
             get { return _userName; }
             set
             {
-                if(_userName != value)
+                if (_userName != value)
                 {
                     _userName = value;
                     OnPropertyChanged(nameof(UserName));
@@ -32,12 +35,12 @@ namespace ChatApp.ViewModels
 
         public string MessagePlaceholder
         {
-            get { return _messagePaleholder; }
+            get { return _messagePlaceholder; }
             set
             {
-                if (_messagePaleholder != value)
+                if (_messagePlaceholder != value)
                 {
-                    _messagePaleholder = value;
+                    _messagePlaceholder = value;
                     OnPropertyChanged(nameof(MessagePlaceholder));
                 }
             }
@@ -56,29 +59,78 @@ namespace ChatApp.ViewModels
                 }
             }
         }
-
+        HubConnection connection;
         public RelayCommand<string> SendMessageCommand { get; set; }
-        public RelayCommand<string> ReplyMessageCommand { get; set; }
+        private User SelectedUser;
+
         public PrivateMessagesDetailViewModel(DBModels.User user)
         {
+            SelectedUser= user;
             UserName = user.UserName;
             MessagePlaceholder = $"Napisz do {user.UserName}";
             SendMessageCommand = new RelayCommand<string>(x => CreateMessageAndSend(), x => MessageIsValid);
-            ReplyMessageCommand = new RelayCommand<string>(x => ReplyMessageAndSend(), x => true);
 
+            var context = new ChatDbContext();
+            var messagesHistory = context.Messages
+                .Where(u => u.MessageAuthor == LoginPageViewModel.LoggedUser.UserId || u.MessageDestination == LoginPageViewModel.LoggedUser.UserId)
+                .ToList();
+            foreach (Message message in messagesHistory)
+            {
+                if (message.MessageDestination == SelectedUser.UserId)
+                {
+                    if (message.MessageAuthor == LoginPageViewModel.LoggedUser.UserId)
+                    {
+                        MessagesList.Add(new PrivateMessage(message.MessageContent, message.SentDate, HorizontalAlignment.Right));
+                    }
+                }
+                if (message.MessageAuthor == SelectedUser.UserId)
+                {
+                    MessagesList.Add(new PrivateMessage(message.MessageContent, message.SentDate, HorizontalAlignment.Left));
+                }
+            }
+
+            connection = new HubConnectionBuilder()
+                .WithUrl("https://localhost:7026/ChatHub")
+                .WithAutomaticReconnect()
+                .Build();
+            connection.StartAsync();
+
+            connection.On<int,int,string>("ReceiveMessage", (MessageAuthor, MessageDestination, MessageContent) =>
+            {
+                if (MessageAuthor == SelectedUser.UserId && MessageDestination == LoginPageViewModel.LoggedUser.UserId)
+                {
+                    PrivateMessagesDetail.PrivateMessageP.DispatcherQueue.TryEnqueue(() =>
+                    {
+                        MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
+                    });
+                }
+            });
         }
 
-        private void CreateMessageAndSend()
+        private async void CreateMessageAndSend()
         {
-            MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Right));
-            MessageContent = string.Empty;
-        }
+            try
+            {
+                await connection.InvokeAsync("SendMessage", LoginPageViewModel.LoggedUser.UserId, SelectedUser.UserId, MessageContent);
+                MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Right));
 
-        private void ReplyMessageAndSend()
-        {
-            MessageContent = "Odpowiadam na twoją wiadomość";
-            MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
-            MessageContent = string.Empty;
+                var context = new ChatDbContext();
+                var privateMessage = new Message
+                {
+                    SentDate = DateTime.Now,
+                    MessageAuthor = LoginPageViewModel.LoggedUser.UserId,
+                    MessageDestination = SelectedUser.UserId,
+                    MessageContent = MessageContent,
+                };
+                context.Add(privateMessage);
+                context.SaveChanges();
+
+                MessageContent = string.Empty;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public bool MessageIsValid

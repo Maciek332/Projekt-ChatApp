@@ -222,6 +222,8 @@ namespace ChatApp.ViewModels
             _loginModel = loginModel;
             LoginCommand = new RelayCommand<string>(x => LoginMessage(), x => LoginIsValid());
             RegisterCommand = new RelayCommand<string>(x => RegisterMessage(), x => RegisterIsValid());
+            TryingLogin = true;
+            TryingRegister = true;
 
         }
         public bool LoginIsValid()
@@ -302,17 +304,42 @@ namespace ChatApp.ViewModels
             }
 
         }
-
+        
+        private bool _tryingRegister;
+        public bool TryingRegister
+        {
+            get { return _tryingRegister; }
+            set
+            {
+                _tryingRegister = value;
+                OnPropertyChanged(nameof(TryingRegister));
+            }
+        }
+        private bool _tryingLogin;
+        public bool TryingLogin
+        {
+            get { return _tryingLogin; }
+            set
+            {
+                _tryingLogin = value;
+                OnPropertyChanged(nameof(TryingLogin));
+            }
+        }
         private bool LoginStatushelp;
         private string LoginStatusmessageHelp;
-        private string LoggedUserHelp;
+        public static User LoggedUser;
 
         private async void LoginMessage()
         {
             IsLogging = true;
+            TryingLogin = false;
             await UpdateLoggedUserAsync();
             IsLoggedIn = LoginStatushelp;
-            LoggedUserNameField = LoggedUserHelp;
+            if (IsLoggedIn != false)
+            {
+                LoggedUserNameField = LoggedUser.UserName;
+            }
+            
             if (IsLoggedIn)
             {
                 LoginInfoBarMessage = LoginStatusmessageHelp;
@@ -324,6 +351,7 @@ namespace ChatApp.ViewModels
                 LoginErrorVisibility = true;
                 LoginErrorInfo = LoginStatusmessageHelp;
             }
+            TryingLogin = true;
             IsLogging = false;
         }
 
@@ -347,7 +375,7 @@ namespace ChatApp.ViewModels
                         .FirstOrDefault(x => x.EMail == LoginEmail);
 
                     LoginStatushelp = true;
-                    LoggedUserHelp = LoggedUserName.UserName;
+                    LoggedUser = LoggedUserName;
                     LoginStatusmessageHelp = $"Pomyślnie zalogowano jako {LoggedUserName.UserName}";
                 }
 
@@ -362,11 +390,13 @@ namespace ChatApp.ViewModels
 
         private async void RegisterMessage()
         {
+            TryingRegister = false;
             IsRegistering = true;
             await RegisterTask();
             IsRegistering = false;
             IsRegisteredIn = true;
             RegisterInfoBarMessage = $"Pomyślnie zarejestrowano użytkownika o danych:\nE-mail: {RegisterEmail}\nLogin: {RegisterUserName}\nHasło: {RegisterPassword}";
+            TryingRegister = true;
         }
 
         private async Task RegisterTask()

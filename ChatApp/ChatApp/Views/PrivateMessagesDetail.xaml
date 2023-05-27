@@ -31,7 +31,7 @@
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="60"/>
             </Grid.ColumnDefinitions>
-            
+
             <TextBlock
                 VerticalAlignment="Center"
                 x:Name="UserName"
@@ -73,7 +73,6 @@
 
             <TextBox x:Name="MessageField" Text="{Binding MessageContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding MessagePlaceholder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="1"/>
             <Button Content="Wyślij" Command="{Binding SendMessageCommand}" x:Uid="SendMessageButtonContent" Style="{StaticResource AccentButtonStyle}" Grid.Row="4" Grid.Column="2" ToolTipService.ToolTip="Wyślij Wiadomość"/>
-            <Button Content="Reply" Grid.Row="0" Grid.Column="2" Command="{Binding ReplyMessageCommand}" Style="{StaticResource AccentButtonStyle}"/>
         </Grid>
     </Grid>
 </Page>

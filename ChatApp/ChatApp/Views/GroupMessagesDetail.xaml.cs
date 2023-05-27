@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 using ChatApp.DBModels;
+using ChatApp.Models;
+using ChatApp.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -27,75 +29,84 @@ namespace ChatApp.Views
     /// </summary>
     public sealed partial class GroupMessagesDetail : Page
     {
+        private GroupMessagesDetailViewModel _viewModel { get; set; }
+        public static Page GroupMessageP; //na tym masz u¿yc dispatchera KRZYSIEK
         public GroupMessagesDetail()
         {
+            GroupMessageP = this;
             this.InitializeComponent();
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var exampleParameter = e.Parameter as Group;
-            //string exampleParameter = e.Parameter as string;
-            if (exampleParameter != null)
+            base.OnNavigatedTo(e);
+            if (e.Parameter is DBModels.Group group)
             {
-                var context = new ChatDbContext();
-                var groupMembers = context.Groups
-                 .Where(g => g.GroupId == exampleParameter.GroupId)
-                 .SelectMany(g => g.Users)
-                 .Select(u => u.UserName)
-                 .ToList(); 
-
-                string members = string.Join("\n", groupMembers);
-
-                GroupName.Text = exampleParameter.GroupName;
-                ToolTipService.SetToolTip(GroupName, members);
-                MessageField.PlaceholderText = $"Napisz w {exampleParameter.GroupName}";
+                _viewModel = new GroupMessagesDetailViewModel(group);
+                DataContext = _viewModel;
             }
-        }
-        private void AddItemToEnd(object sender, RoutedEventArgs e)
-        {
-            var messageContent = MessageField.Text;
+            //var exampleParameter = e.Parameter as Group;
+            //string exampleParameter = e.Parameter as string;
+            //if (exampleParameter != null)
+            //{
+            //    var context = new ChatDbContext();
+            //    var groupMembers = context.Groups
+            //     .Where(g => g.GroupId == exampleParameter.GroupId)
+            //     .SelectMany(g => g.Users)
+            //     .Select(u => u.UserName)
+            //     .ToList(); 
 
-            InvertedListView.Items.Add(
-                new GroupMessage(messageContent, DateTime.Now, HorizontalAlignment.Right)
-                );
+            //    string members = string.Join("\n", groupMembers);
 
-            MessageField.Text = String.Empty;
+            //    GroupName.Text = exampleParameter.GroupName;
+            //    ToolTipService.SetToolTip(GroupName, members);
+            //    MessageField.PlaceholderText = $"Napisz w {exampleParameter.GroupName}";
+            //}
+        }
+    //    private void AddItemToEnd(object sender, RoutedEventArgs e)
+    //    {
+    //        var messageContent = MessageField.Text;
 
-        }
+    //        InvertedListView.Items.Add(
+    //            new GroupMessage(messageContent, DateTime.Now, HorizontalAlignment.Right)
+    //            );
 
-        private void MessageReceived(object sender, RoutedEventArgs e)
-        {
+    //        MessageField.Text = String.Empty;
 
-            InvertedListView.Items.Add(
-                new GroupMessage("Message ", DateTime.Now, HorizontalAlignment.Left)
-                );
-            MessageField.Text = String.Empty;
-        }
-    }
-    public class GroupMessage
-    {
-        public string MsgText
-        {
-            get; private set;
-        }
-        public DateTime MsgDateTime
-        {
-            get; private set;
-        }
-        public HorizontalAlignment MsgAlignment
-        {
-            get; set;
-        }
-        public GroupMessage(string text, DateTime dateTime, HorizontalAlignment align)
-        {
-            MsgText = text;
-            MsgDateTime = dateTime;
-            MsgAlignment = align;
-        }
+    //    }
 
-        public override string ToString()
-        {
-            return MsgDateTime.ToString() + " " + MsgText;
-        }
+    //    private void MessageReceived(object sender, RoutedEventArgs e)
+    //    {
+
+    //        InvertedListView.Items.Add(
+    //            new GroupMessage("Message ", DateTime.Now, HorizontalAlignment.Left)
+    //            );
+    //        MessageField.Text = String.Empty;
+    //    }
+    //}
+    //public class GroupMessage
+    //{
+    //    public string MsgText
+    //    {
+    //        get; private set;
+    //    }
+    //    public DateTime MsgDateTime
+    //    {
+    //        get; private set;
+    //    }
+    //    public HorizontalAlignment MsgAlignment
+    //    {
+    //        get; set;
+    //    }
+    //    public GroupMessage(string text, DateTime dateTime, HorizontalAlignment align)
+    //    {
+    //        MsgText = text;
+    //        MsgDateTime = dateTime;
+    //        MsgAlignment = align;
+    //    }
+
+    //    public override string ToString()
+    //    {
+    //        return MsgDateTime.ToString() + " " + MsgText;
+    //    }
     }
 }

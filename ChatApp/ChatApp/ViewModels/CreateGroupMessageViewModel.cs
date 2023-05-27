@@ -24,6 +24,7 @@ namespace ChatApp.ViewModels
             {
                 _conversationName = value;
                 OnPropertyChanged(nameof(ConversationName));
+                CreateGroupCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -31,9 +32,13 @@ namespace ChatApp.ViewModels
         public CreateGroupMessageViewModel() 
         {
             LoadPeople();
-            CreateGroupCommand = new RelayCommand<ListView>(SaveGroup);
+            CreateGroupCommand = new RelayCommand<ListView>(SaveGroup, x=>CantCreate);
+            //new RelayCommand<string>(x => LeaveGroup(), x => true);
         }
-
+        public bool CantCreate 
+        {
+            get => !string.IsNullOrEmpty(ConversationName);
+        }
         public void SaveGroup(ListView listView)
         {
             var selectedItems = listView.SelectedItems;
@@ -44,6 +49,7 @@ namespace ChatApp.ViewModels
             var group = new Group
             {
                 GroupName = GroupNameTextBlock,
+                CreationDate = DateTime.Now,
                 Users = new List<DBModels.User>()
             };
 

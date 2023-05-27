@@ -73,7 +73,6 @@
 
             <TextBox x:Name="MessageField" Text="{Binding GroupMessageContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding GroupMessagePlaceholder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="1"/>
             <Button Content="Wyślij" Command="{Binding SendGroupMessageCommand}" x:Uid="SendMessageButtonContent" Style="{StaticResource AccentButtonStyle}" Grid.Row="4" Grid.Column="2" ToolTipService.ToolTip="Wy�lij Wiadomo��"/>
-            <Button Content="Reply" Command="{Binding ReplyMessageCommand}" Grid.Row="0" Grid.Column="2" Style="{StaticResource AccentButtonStyle}"/>
         </Grid>
     </Grid>
 </Page>

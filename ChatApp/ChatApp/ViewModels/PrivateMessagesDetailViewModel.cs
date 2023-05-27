@@ -76,18 +76,17 @@ namespace ChatApp.ViewModels
                 .ToList();
             foreach (Message message in messagesHistory)
             {
-                if (message.MessageDestination==SelectedUser.UserId)
+                if (message.MessageDestination == SelectedUser.UserId)
                 {
                     if (message.MessageAuthor == LoginPageViewModel.LoggedUser.UserId)
                     {
                         MessagesList.Add(new PrivateMessage(message.MessageContent, message.SentDate, HorizontalAlignment.Right));
                     }
                 }
-                if (message.MessageAuthor== SelectedUser.UserId)
+                if (message.MessageAuthor == SelectedUser.UserId)
                 {
                     MessagesList.Add(new PrivateMessage(message.MessageContent, message.SentDate, HorizontalAlignment.Left));
                 }
-                
             }
 
             connection = new HubConnectionBuilder()
@@ -105,8 +104,6 @@ namespace ChatApp.ViewModels
                         MessagesList.Add(new PrivateMessage(MessageContent, DateTime.Now, HorizontalAlignment.Left));
                     });
                 }
-                
-
             });
         }
 
@@ -127,8 +124,6 @@ namespace ChatApp.ViewModels
                 };
                 context.Add(privateMessage);
                 context.SaveChanges();
-
-
 
                 MessageContent = string.Empty;
             }

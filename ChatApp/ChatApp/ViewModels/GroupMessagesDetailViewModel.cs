@@ -71,7 +71,7 @@ namespace ChatApp.ViewModels
 
             var context = new ChatDbContext();
             var groupMessagesHistory = context.Groupmessages
-                .Where(u => u.MessageAuthor == LoginPageViewModel.LoggedUser.UserId || u.MessageGroup == LoginPageViewModel.LoggedUser.UserId)
+                .Where(u => u.MessageAuthor == LoginPageViewModel.LoggedUser.UserId || u.MessageGroup == SelectedGroup.GroupId)
                 .ToList();
             foreach (Groupmessage groupMessage in groupMessagesHistory)
             {
@@ -81,10 +81,10 @@ namespace ChatApp.ViewModels
                     {
                         GroupMessagesList.Add(new GroupMessage(groupMessage.MessageContent, groupMessage.SentDate, HorizontalAlignment.Right));
                     }
-                }
-                if (groupMessage.MessageAuthor == SelectedGroup.GroupId)
-                {
-                    GroupMessagesList.Add(new GroupMessage(groupMessage.MessageContent, groupMessage.SentDate, HorizontalAlignment.Right));
+                    else if (groupMessage.MessageAuthor != LoginPageViewModel.LoggedUser.UserId)
+                    {
+                        GroupMessagesList.Add(new GroupMessage(groupMessage.MessageContent, groupMessage.SentDate, HorizontalAlignment.Left));
+                    }
                 }
             }
 
@@ -96,7 +96,7 @@ namespace ChatApp.ViewModels
 
             connection.On<int, int, string>("ReceiveMessage", (MessageAuthor, MessageGroup, MessageContent) =>
             {
-                if(MessageAuthor == SelectedGroup.GroupId && MessageGroup == LoginPageViewModel.LoggedUser.UserId)
+                if (MessageAuthor != LoginPageViewModel.LoggedUser.UserId && MessageGroup == SelectedGroup.GroupId)
                 {
                     GroupMessagesDetail.GroupMessageP.DispatcherQueue.TryEnqueue(() =>
                     {
@@ -116,11 +116,15 @@ namespace ChatApp.ViewModels
                 var context = new ChatDbContext();
                 var groupMessage = new Groupmessage
                 {
+                    GroupName = GroupName,
                     SentDate = DateTime.Now,
                     MessageAuthor = LoginPageViewModel.LoggedUser.UserId,
                     MessageGroup = SelectedGroup.GroupId,
                     MessageContent = GroupMessageContent,
                 };
+                context.Add(groupMessage);
+                context.SaveChanges();
+
                 GroupMessageContent = string.Empty;
             }
             catch (Exception)

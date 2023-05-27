@@ -3,7 +3,9 @@ using ChatApp.DBModels;
 using ChatApp.Models;
 using ChatApp.Views;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +16,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ChatApp.ViewModels
 {
-    public class GroupMessagesDetailViewModel: BaseViewModel
+    public class GroupMessagesDetailViewModel : BaseViewModel
     {
         public ObservableCollection<GroupMessage> GroupMessagesList { get; } = new ObservableCollection<GroupMessage>();
         private string _GroupName;
@@ -59,17 +61,42 @@ namespace ChatApp.ViewModels
                 }
             }
         }
+        private string _groupMembesList;
+        public string GroupMembesList
+        {
+            get { return _groupMembesList; }
+            set
+            {
+                if (_groupMembesList != value)
+                {
+                    _groupMembesList = value;
+                    OnPropertyChanged(nameof(GroupMembesList));
+                }
+            }
+        }
         HubConnection connection;
         public RelayCommand<string> SendGroupMessageCommand { get; set; }
+        public RelayCommand<string> LeaveGroupCommand { get; set; }
         private Group SelectedGroup;
+        private List<User> GroupMembers;
         public GroupMessagesDetailViewModel(DBModels.Group group)
         {
+            var context = new ChatDbContext();
             SelectedGroup = group;
+
+            GroupMembers = context.Groups
+                 .Where(g => g.GroupId == SelectedGroup.GroupId)
+                 .SelectMany(g => g.Users)
+                 .ToList();
+
+
+            GroupMembesList = string.Join("\n", GroupMembers.Select(u => u.UserName));
             GroupName = group.GroupName;
             GroupMessagePlaceholder = $"Napisz na {group.GroupName}";
             SendGroupMessageCommand = new RelayCommand<string>(x => CreateMessageAndSend(), x => MessageIsValid);
+            LeaveGroupCommand = new RelayCommand<string>(x => LeaveGroup(), x => true);
 
-            var context = new ChatDbContext();
+
             var groupMessagesHistory = context.Groupmessages
                 .Where(u => u.MessageAuthor == LoginPageViewModel.LoggedUser.UserId || u.MessageGroup == LoginPageViewModel.LoggedUser.UserId)
                 .ToList();
@@ -96,7 +123,7 @@ namespace ChatApp.ViewModels
 
             connection.On<int, int, string>("ReceiveMessage", (MessageAuthor, MessageGroup, MessageContent) =>
             {
-                if(MessageAuthor == SelectedGroup.GroupId && MessageGroup == LoginPageViewModel.LoggedUser.UserId)
+                if (MessageAuthor == SelectedGroup.GroupId && MessageGroup == LoginPageViewModel.LoggedUser.UserId)
                 {
                     GroupMessagesDetail.GroupMessageP.DispatcherQueue.TryEnqueue(() =>
                     {
@@ -132,6 +159,60 @@ namespace ChatApp.ViewModels
         public bool MessageIsValid
         {
             get => !string.IsNullOrEmpty(GroupMessageContent);
+        }
+
+        private async void LeaveGroup()
+        {
+            var LeaveGroupDialog = new ContentDialog
+            {
+                Title = "Opuszczanie grupy",
+                Content = $"Czy napewno chcesz opuścić grupę: {GroupName}?",
+                PrimaryButtonText = "Tak",
+                SecondaryButtonText = "Anuluj",
+                DefaultButton = ContentDialogButton.Primary
+            };
+
+            LeaveGroupDialog.XamlRoot = GroupMessagesDetail.GroupMessageP.Content.XamlRoot;
+            var leaveResult = await LeaveGroupDialog.ShowAsync();
+
+            if (leaveResult == ContentDialogResult.Primary)
+            {
+                var usersList = GroupMembers.Select(u => u.UserId);
+                var contex = new ChatDbContext();
+                var groupToLeave = contex.Groups
+                    .Include(g => g.Users)
+                    .FirstOrDefault(g => g.GroupId == SelectedGroup.GroupId);
+
+                if (groupToLeave != null)
+                {
+                    foreach (var user in usersList)
+                    {
+                        var userGroup = groupToLeave.Users.FirstOrDefault(ug => ug.UserId == user);
+                        if (userGroup.UserId == LoginPageViewModel.LoggedUser.UserId)
+                        {
+                            groupToLeave.Users.Remove(userGroup);
+                            if (groupToLeave.Users.Count == 1)
+                            {
+                                groupToLeave.Users.Remove(userGroup);
+
+                            }
+                        }
+                    }
+                    if (groupToLeave.Users.Count == 1)
+                    {
+                        foreach (var user in usersList)
+                        {
+                            var userGroup = groupToLeave.Users.FirstOrDefault(ug => ug.UserId == user);
+
+                            groupToLeave.Users.Remove(userGroup);
+                            contex.Groups.Remove(groupToLeave);
+
+                        }
+                    }
+                    contex.SaveChanges();
+                    ShellPage.ContentFramePublic.Navigate(typeof(GroupMessagePage));
+                }
+            }
         }
     }
 }

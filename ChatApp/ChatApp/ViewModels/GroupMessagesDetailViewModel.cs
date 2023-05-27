@@ -104,15 +104,17 @@ namespace ChatApp.ViewModels
             
             foreach (Groupmessage groupMessage in groupMessagesHistory)
             {
+                var messageUser = context.Users
+                    .FirstOrDefault(x => x.UserId == groupMessage.MessageAuthor);
                 if (groupMessage.MessageGroup == SelectedGroup.GroupId)
                 {
                     if (groupMessage.MessageAuthor == LoginPageViewModel.LoggedUser.UserId)
                     {
-                        GroupMessagesList.Add(new GroupMessage(groupMessage.MessageAuthor.ToString(),groupMessage.MessageContent, groupMessage.SentDate, HorizontalAlignment.Right));
+                        GroupMessagesList.Add(new GroupMessage(messageUser.UserName, groupMessage.MessageContent, groupMessage.SentDate, HorizontalAlignment.Right));
                     }
                     else if (groupMessage.MessageAuthor != LoginPageViewModel.LoggedUser.UserId)
                     {
-                        GroupMessagesList.Add(new GroupMessage(groupMessage.MessageAuthor.ToString(), groupMessage.MessageContent, groupMessage.SentDate, HorizontalAlignment.Left));
+                        GroupMessagesList.Add(new GroupMessage(messageUser.UserName, groupMessage.MessageContent, groupMessage.SentDate, HorizontalAlignment.Left));
                     }
                 }
             }
@@ -189,8 +191,8 @@ namespace ChatApp.ViewModels
             if (leaveResult == ContentDialogResult.Primary)
             {
                 var usersList = GroupMembers.Select(u => u.UserId);
-                var contex = new ChatDbContext();
-                var groupToLeave = contex.Groups
+                var context = new ChatDbContext();
+                var groupToLeave = context.Groups
                     .Include(g => g.Users)
                     .FirstOrDefault(g => g.GroupId == SelectedGroup.GroupId);
 
@@ -216,11 +218,11 @@ namespace ChatApp.ViewModels
                             var userGroup = groupToLeave.Users.FirstOrDefault(ug => ug.UserId == user);
 
                             groupToLeave.Users.Remove(userGroup);
-                            contex.Groups.Remove(groupToLeave);
+                            context.Groups.Remove(groupToLeave);
 
                         }
                     }
-                    contex.SaveChanges();
+                    context.SaveChanges();
                     ShellPage.ContentFramePublic.Navigate(typeof(GroupMessagePage));
                 }
             }

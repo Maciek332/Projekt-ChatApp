@@ -49,6 +49,7 @@ namespace ChatApp.ViewModels
             var group = new Group
             {
                 GroupName = GroupNameTextBlock,
+                CreationDate = DateTime.Now,
                 Users = new List<DBModels.User>()
             };
 

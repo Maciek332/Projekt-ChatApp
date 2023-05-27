@@ -35,6 +35,7 @@
                 VerticalAlignment="Center"
                 x:Name="GroupName"
                 Text="{Binding GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                ToolTipService.ToolTip="{Binding GroupMembesList, Mode=TwoWay}"
                 Style="{ThemeResource TitleTextBlockStyle}"
                 Grid.Row="0"
                 Grid.Column="0"/>
@@ -72,7 +73,11 @@
             </ListView>
 
             <TextBox x:Name="MessageField" Text="{Binding GroupMessageContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{Binding GroupMessagePlaceholder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="1"/>
-            <Button Content="Wyślij" Command="{Binding SendGroupMessageCommand}" x:Uid="SendMessageButtonContent" Style="{StaticResource AccentButtonStyle}" Grid.Row="4" Grid.Column="2" ToolTipService.ToolTip="Wy�lij Wiadomo��"/>
+            <Button Content="Wyślij" Command="{Binding SendGroupMessageCommand}" x:Uid="SendMessageButtonContent" Style="{StaticResource AccentButtonStyle}" Grid.Row="4" Grid.Column="2" ToolTipService.ToolTip="Wyślij Wiadomość"/>
+            <Button Grid.Row="0" Grid.Column="2" ToolTipService.ToolTip="Opuść konwersację" Command="{Binding LeaveGroupCommand}">
+                <FontIcon Glyph="&#xE89B;" />
+            </Button>
+
         </Grid>
     </Grid>
 </Page>

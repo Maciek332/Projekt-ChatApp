@@ -26,7 +26,7 @@ namespace ChatApp.ViewModels
         }
         public GroupMessagesPageViewModel(Frame contentFrame)
         {
-             Groups= new ObservableCollection<Group>();
+            Groups= new ObservableCollection<Group>();
             GroupMessageDetailsFrame = contentFrame;
             CreateNewGroupCommand = new RelayCommand<string>(x => NavigateToCreationPage(), x => true);
             LoadGroups();
@@ -35,7 +35,8 @@ namespace ChatApp.ViewModels
         public void GroupListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            var selectedGroup = e.AddedItems.FirstOrDefault() as Group;
+            var selectedGroup = e.AddedItems
+                .FirstOrDefault() as Group;
             
 
             GroupMessageDetailsFrame.Navigate(typeof(GroupMessagesDetail), selectedGroup);

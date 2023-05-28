@@ -9,62 +9,49 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="180"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="350"/>
             <RowDefinition Height="50"/>
+            <RowDefinition Height="80"/>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="600"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+
+        <TextBlock Text="O Aplikacji" Style="{ThemeResource TitleTextBlockStyle}" Margin="10,0,0,0" Grid.Row="0"/>
         
-        <TextBlock Text="Personalizacja" Style="{ThemeResource TitleTextBlockStyle}" Margin="10,0,0,0" Grid.Row="0"/>
-        <StackPanel Margin="10,50,0,0" Grid.Row="1">
-            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Motywy" Margin="10,0,0,0" />
-            <StackPanel Margin="20,10,0,0">
-                <RadioButton
-                        x:Uid="Settings_Theme_Light"
-                        FontSize="15"
-                        GroupName="AppTheme"
-                        Content="Jasny">
-                </RadioButton>
-                <RadioButton
-                        x:Uid="Settings_Theme_Dark"
-                        FontSize="15"
-                        GroupName="AppTheme"
-                        Content="Ciemny">
-                </RadioButton>
-                <RadioButton
-                        x:Uid="Settings_Theme_Default"
-                        FontSize="15"
-                        GroupName="AppTheme"
-                        Content="Systemowy">
-                </RadioButton>
-            </StackPanel>
-        </StackPanel>
-        <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="500" Y2="0" StrokeThickness="1" Grid.Row="3" Margin="10,0,0,0"/>
+        <Line Stroke="{StaticResource AccentFillColorDefaultBrush}" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Grid.Row="1" Margin="0,10,0,0"/>
 
-        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="O Aplikacji" Grid.Row="4" Margin="20,0,0,0"/>
+        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Opis" Grid.Row="2" Margin="20,0,0,0"/>
 
-        <StackPanel Grid.Row="5">
-            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" Margin="30,0,0,0">Koci kącik rozmów to aplikacja umożliwiająca wysyłanie i odbieranie wiadomości prywatnych jak i grupowych.</TextBlock>
+        <StackPanel Grid.Row="3">
+            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" Margin="30,0,0,0">
+                Jest to aplikacja umożliwiająca wysyłanie jak i odbieranie wiadomości prywatnych jak i grupowych na jednym urządzeniu.<LineBreak/>
+                Koci kącik rozmów to miejsce które stworzyliśmy aby umożliwić wszystkim kociakom rozmowy między sobą.<LineBreak/>
+                Możesz prowadzić rozmowę tylko z jednym kotkiem, ale możliwe jest także zgromadzenie stada i rozmawiania z wszystkimi jego członkami na raz!<LineBreak/>
+                Włożyliśmy w tą aplikację mnóstwo serca i kawy, więc mamy nadzieję, że każdy kociak który do nas dołączy będzie się tutaj bawił jeszcze lepiej niż z kłębkiem włóczki :3<LineBreak/>
+                Bawcie się dobrze! =^.^=<LineBreak/>
+　                 ／l<LineBreak/>
+                ﾞ（ﾟ､ ｡ ７ <LineBreak/>
+　                l、ﾞ ~ヽ<LineBreak/>
+　                じしf_, )ノ<LineBreak/>
+            </TextBlock>
 
             <TextBlock Style="{ThemeResource BodyTextBlockStyle}" />
 
             <HyperlinkButton Content="Kliknij na mnie!" Margin="20,0,0,0" NavigateUri="https://www.youtube.com/watch?v=n8rVSB4Ej2U"/>
         </StackPanel>
-        <TextBlock Text="Autorzy" Style="{ThemeResource SubtitleTextBlockStyle}" Grid.Row="6" Margin="20,10,0,0"/>
-        <RichTextBlock Grid.Row="7" Margin="30,10,0,0">
+        <TextBlock Text="Autorzy" Style="{ThemeResource SubtitleTextBlockStyle}" Grid.Row="4" Margin="20,10,0,0"/>
+        <RichTextBlock Grid.Row="5" Margin="30,10,0,0">
             <Paragraph>Anna Więzik</Paragraph>
             <Paragraph>Szymon Nycz</Paragraph>
             <Paragraph>Krzysztof Walusiak</Paragraph>
         </RichTextBlock>
-        <Image Source="/Assets/Cat.png" Height="50" Grid.Column="1" Grid.Row="5"/>
+        <Image Source="/Assets/Cat.png" Height="50" Grid.Column="1" Grid.Row="3"/>
     </Grid>
 </Page>

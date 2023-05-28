@@ -220,24 +220,20 @@ namespace ChatApp.ViewModels
         public LoginPageViewModel(Models.LoginPageModel loginModel)
         {
             _loginModel = loginModel;
-            LoginCommand = new RelayCommand<string>(x => LoginMessage(), x => LoginIsValid());
-            RegisterCommand = new RelayCommand<string>(x => RegisterMessage(), x => RegisterIsValid());
+            LoginCommand = new RelayCommand<string>(x => LoginMessage(), x => LoginIsValid);
+            RegisterCommand = new RelayCommand<string>(x => RegisterMessage(), x => RegisterIsValid);
             TryingLogin = true;
             TryingRegister = true;
+            LoginErrorVisibility = false;
 
         }
-        public bool LoginIsValid()
+        public bool LoginValidation()
         {
-            if (string.IsNullOrEmpty(LoginEmail))
+
+            if (!Regex.IsMatch(LoginEmail, @"\.[a-zA-Z]{2,}$"))
             {
                 LoginErrorVisibility = true;
-                LoginErrorInfo = "Pole E-mail nie może być puste";
-                return false;
-            }
-            else if (!Regex.IsMatch(LoginEmail, @"\.[a-zA-Z]{2,}$"))
-            {
-                LoginErrorVisibility = true;
-                LoginErrorInfo = "Podano niepoprawny Email. Wymagany format to xx@xx.xx";
+                LoginErrorInfo = "Podano niepoprawny format E-mail";
                 return false;
             }
             if (string.IsNullOrEmpty(LoginPassword))
@@ -246,7 +242,7 @@ namespace ChatApp.ViewModels
                 LoginErrorInfo = "Pole Hasło nie może być puste";
                 return false;
             }
-            else if (LoginPassword.Length < 8)
+            if (LoginPassword.Length < 8)
             {
                 LoginErrorVisibility = true;
                 LoginErrorInfo = "Hasło musi zawierać conajmniej 8 znaków";
@@ -257,20 +253,23 @@ namespace ChatApp.ViewModels
                 LoginErrorVisibility = false;
                 return true;
             }
-
         }
-        public bool RegisterIsValid()
+
+        public bool LoginIsValid
         {
-            if (string.IsNullOrEmpty(RegisterEmail))
+            get => !string.IsNullOrEmpty(LoginEmail)&& !string.IsNullOrEmpty(LoginPassword);
+        }
+        public bool RegisterIsValid
+        {
+            get => !string.IsNullOrEmpty(RegisterEmail) && !string.IsNullOrEmpty(RegisterUserName) && !string.IsNullOrEmpty(RegisterPassword) && !string.IsNullOrEmpty(RegisterPasswordRepeat);
+        }
+        
+        public bool RegisterValidation()
+        {
+            if (!Regex.IsMatch(RegisterEmail, @"\.[a-zA-Z]{2,}$"))
             {
                 RegisterErrorVisibility = true;
-                RegisterErrorInfo = "Pole E-mail nie może być puste";
-                return false;
-            }
-            else if (!Regex.IsMatch(RegisterEmail, @"\.[a-zA-Z]{2,}$"))
-            {
-                RegisterErrorVisibility = true;
-                RegisterErrorInfo = "Podano niepoprawny Email. Wymagany format to xx@xx.xx";
+                RegisterErrorInfo = "Podano niepoprawny Email";
                 return false;
             }
             if(string.IsNullOrEmpty(RegisterUserName))
@@ -285,7 +284,7 @@ namespace ChatApp.ViewModels
                 RegisterErrorInfo = "Pole Hasło nie może być puste";
                 return false;
             }
-            else if (RegisterPassword.Length < 8)
+            if (RegisterPassword.Length < 8)
             {
                 RegisterErrorVisibility = true;
                 RegisterErrorInfo = "Hasło musi zawierać conajmniej 8 znaków";
@@ -331,29 +330,42 @@ namespace ChatApp.ViewModels
 
         private async void LoginMessage()
         {
-            IsLogging = true;
-            TryingLogin = false;
-            await UpdateLoggedUserAsync();
-            IsLoggedIn = LoginStatushelp;
-            if (IsLoggedIn != false)
-            {
-                LoggedUserNameField = LoggedUser.UserName;
-            }
+            //LoginErrorVisibility = false;
             
-            if (IsLoggedIn)
+            var loginValidated = LoginValidation();
+            if (loginValidated) 
             {
-                LoginInfoBarMessage = LoginStatusmessageHelp;
-                ShellPage.CurrentLoggedUserLabel.Content = LoggedUserNameField;
-            }
+                IsLogging = true;
+                TryingLogin = false;
+                await UpdateLoggedUserAsync();
+                IsLoggedIn = LoginStatushelp;
+                if (IsLoggedIn != false)
+                {
+                    LoggedUserNameField = LoggedUser.UserName;
+                }
 
-            else
-            {
-                LoginErrorVisibility = true;
-                LoginErrorInfo = LoginStatusmessageHelp;
+                if (IsLoggedIn)
+                {
+                    LoginInfoBarMessage = LoginStatusmessageHelp;
+                    ShellPage.CurrentLoggedUserLabel.Content = LoggedUserNameField;
+                    ShellPage.PrivateMessagesLabel.IsEnabled = true;
+                    ShellPage.GroupMessagesLabel.IsEnabled = true;
+                    ShellPage.LogoutLabel.IsEnabled = true;
+                    TryingLogin = false;
+                }
+
+                else
+                {
+                    LoginErrorVisibility = true;
+                    LoginErrorInfo = LoginStatusmessageHelp;
+                    TryingLogin = true;
+                    
+                }
+                IsLogging = false;
+
             }
-            TryingLogin = true;
-            IsLogging = false;
         }
+            
 
         private async Task UpdateLoggedUserAsync()
         {
@@ -387,15 +399,31 @@ namespace ChatApp.ViewModels
             });
             await result;
         }
-
+        private bool RegisterStatushelp;
+        private string RegisterStatusmessageHelp;
         private async void RegisterMessage()
         {
-            TryingRegister = false;
-            IsRegistering = true;
-            await RegisterTask();
-            IsRegistering = false;
-            IsRegisteredIn = true;
-            RegisterInfoBarMessage = $"Pomyślnie zarejestrowano użytkownika o danych:\nE-mail: {RegisterEmail}\nLogin: {RegisterUserName}\nHasło: {RegisterPassword}";
+            
+            var registerValidated = RegisterValidation();
+            if (registerValidated)
+            {
+                TryingRegister = false;
+                IsRegistering = true;
+                await RegisterTask();
+                IsRegistering = false;
+                IsRegisteredIn = RegisterStatushelp;
+                RegisterInfoBarMessage = RegisterStatusmessageHelp;
+                if (!IsRegisteredIn)
+                {
+                    RegisterErrorInfo = RegisterStatusmessageHelp;
+                    RegisterErrorVisibility = true;
+                }
+            }
+            else 
+            {
+                RegisterStatusmessageHelp = RegisterErrorInfo;
+                RegisterErrorVisibility = true;
+            }
             TryingRegister = true;
         }
 
@@ -404,16 +432,30 @@ namespace ChatApp.ViewModels
             var result = Task.Run(() =>
             {
                 using var context = new ChatDbContext();
-                var RegisterUser = new User
+                var checkCanRegister = context.Users
+                    .FirstOrDefault(e => e.EMail == RegisterEmail);
+                if ( checkCanRegister == null)
                 {
-                    EMail = RegisterEmail,
-                    UserName = RegisterUserName,
-                    Password = RegisterPassword,
-                    IsLogedIn = false,
-                    RegisterDate = DateTime.Now
-                };
-                context.Users.Add(RegisterUser);
-                context.SaveChanges();
+                    var RegisterUser = new User
+                    {
+                        EMail = RegisterEmail,
+                        UserName = RegisterUserName,
+                        Password = RegisterPassword,
+                        IsLogedIn = false,
+                        RegisterDate = DateTime.Now
+                    };
+                    context.Users.Add(RegisterUser);
+                    context.SaveChanges();
+                    RegisterStatusmessageHelp = $"Pomyślnie zarejestrowano użytkownika o danych:\nE-mail: {RegisterEmail}\nLogin: {RegisterUserName}.\n Możesz teraz się zalogować";
+                    RegisterStatushelp = true;
+                }
+                else
+                {
+                    RegisterStatusmessageHelp = $"Podany email jest już w użyciu";
+                    RegisterStatushelp = false;
+
+                }
+                
             });
             await result;
         

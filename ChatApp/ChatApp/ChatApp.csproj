@@ -10,8 +10,10 @@
     <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
+    <DefaultLanguage>pl-PL</DefaultLanguage>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Views\AboutPage.xaml" />
     <None Remove="Views\CreateGroupMessagePage.xaml" />
     <None Remove="Views\GroupMessagePage.xaml" />
     <None Remove="Views\GroupMessagesDetail.xaml" />
@@ -19,7 +21,6 @@
     <None Remove="Views\LoginPage.xaml" />
     <None Remove="Views\PrivateMessagePage.xaml" />
     <None Remove="Views\PrivateMessagesDetail.xaml" />
-    <None Remove="Views\SettingsPage.xaml" />
     <None Remove="Views\ShellPage.xaml" />
   </ItemGroup>
 
@@ -89,7 +90,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Views\SettingsPage.xaml">
+    <Page Update="Views\AboutPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

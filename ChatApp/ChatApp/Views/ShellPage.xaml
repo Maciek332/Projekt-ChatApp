@@ -45,8 +45,18 @@
             </NavigationView.PaneFooter>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem x:Name="CurrentLoggedUser" Content="Nie jesteś zalogowany" Icon="Emoji2" SelectsOnInvoked="False"/>
-                <NavigationViewItem Icon="LeaveChat" Content="Wyloguj" Tag="LogOut" SelectsOnInvoked="False" />
-                <NavigationViewItem x:Name="SettingsNavigation" Icon="Setting" Content="Ustawienia" Tag="ChatApp.Views.SettingsPage"/>
+                <NavigationViewItem x:Name="LogoutButton" Icon="LeaveChat" Content="Wyloguj" Tag="LogOut" SelectsOnInvoked="False" IsEnabled="False"/>
+                <NavigationViewItem x:Name="SettingsNavigation" Tag="ChatApp.Views.SettingsPage">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="32"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <FontIcon Glyph="&#xE946;" HorizontalAlignment="Left" Grid.Column="0" />
+                        <TextBlock Text="O Aplikacji" HorizontalAlignment="Left" Grid.Column="1"/>
+                    </Grid>
+                    
+                </NavigationViewItem>
             </NavigationView.FooterMenuItems>
 
             <NavigationView.Content >

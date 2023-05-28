@@ -1,4 +1,5 @@
 ﻿using ChatApp.Commands;
+using ChatApp.DBModels;
 using ChatApp.Services;
 using ChatApp.Views;
 using Microsoft.UI.Xaml.Controls;
@@ -131,8 +132,8 @@ namespace ChatApp.ViewModels
             NavigationMenu = new NavigationView();
             NavigationMenu.ItemInvoked += NavigationMenu_ItemInvoked;
             NavigationMenu.BackRequested += NavigationMenu_BackRequested;
-            PrivateMessageNavigation = true;
-            GroupMessageNavigation = true;
+            PrivateMessageNavigation = false;
+            GroupMessageNavigation = false;
             ContentFrame = contentFrame;
         }
         public void NavigationMenu_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
@@ -185,10 +186,21 @@ namespace ChatApp.ViewModels
         }
         public void LogoutFunc()
         {
-            PrivateMessageNavigation = false;
-            GroupMessageNavigation = false;
+            var context = new ChatDbContext();
+            var logoutUser = context.Users
+                .FirstOrDefault(u => u.UserId == LoginPageViewModel.LoggedUser.UserId);
+            if(logoutUser != null) 
+            {
+                logoutUser.IsLogedIn = false;
+            }
+            context.SaveChanges();
+            ShellPage.PrivateMessagesLabel.IsEnabled = false;
+            ShellPage.GroupMessagesLabel.IsEnabled = false;
+            ShellPage.LogoutLabel.IsEnabled = false;
+            ShellPage.CurrentLoggedUserLabel.Content = "Nie jesteś zalogowany";
             LogoutStatusMessage = "Pomyślnie wylogowano";
             LogoutStatusOpen = true;
+            ShellPage.ContentFramePublic.Navigate(typeof(LoginPage));
         }
     }
 }

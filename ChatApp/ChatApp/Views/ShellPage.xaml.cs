@@ -32,19 +32,24 @@ namespace ChatApp.Views
     public sealed partial class ShellPage : Page
     {
         public static NavigationViewItem CurrentLoggedUserLabel;
+        public static NavigationViewItem GroupMessagesLabel;
+        public static NavigationViewItem PrivateMessagesLabel;
+        public static NavigationViewItem LogoutLabel;
         public ShellPageViewModel _viewModel { get; set; }
         public Frame COntentFrame;
         public ShellPage()
         {
             InitializeComponent();
             CurrentLoggedUserLabel = CurrentLoggedUser;
+            GroupMessagesLabel = GroupMessageNavigation;
+            PrivateMessagesLabel = PrivateMessageNavigation;
+            LogoutLabel = LogoutButton;
             ContentFramePublic = ContentFrame;
             _viewModel = new ShellPageViewModel(ContentFrame);
             _viewModel.SelectedMenuItem = NavigationMenu.MenuItems.OfType<NavigationViewItem>().First();
             ContentFrame.Navigate(
                        typeof(Views.LoginPage),
                        null
-                       //new Microsoft.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo()
                        );
             DataContext = _viewModel;
         }
